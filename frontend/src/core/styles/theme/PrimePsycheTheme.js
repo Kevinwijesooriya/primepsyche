@@ -1,0 +1,462 @@
+import { createTheme } from "@mui/material/styles";
+
+/**
+ * PrimePsyche brand colors prime-psyche
+ */
+const Colors = {
+  //prime_psyche darker green variations
+  prime_psyche_darker_green: "#014138",
+  prime_psyche_darker_green2: "#366d42",
+  prime_psyche_darker_green3: "#5e8965",
+  prime_psyche_darker_green4: "#85a689",
+  prime_psyche_darker_green5: "#acc3af",
+  //prime_psyche mid green variations
+  prime_psyche_mid_green: "#176554",
+  prime_psyche_mid_green2: "#6b9f71",
+  prime_psyche_mid_green3: "#88b28c",
+  prime_psyche_mid_green4: "#a5c5a8",
+  prime_psyche_mid_green5: "#c3d8c4",
+  //prime_psyche light green variations
+  prime_psyche_light_green: "#4d826c",
+  prime_psyche_light_green2: "#6a9683",
+  prime_psyche_light_green3: "#87aa9a",
+  prime_psyche_light_green4: "#a4bfb3",
+  prime_psyche_light_green5: "#c2d4cc",
+  //prime_psyche charcoal variations
+  prime_psyche_charcoal: "#333333",
+  prime_psyche_charcoal2: "#4E4B48",
+  prime_psyche_charcoal3: "#807D7B",
+  prime_psyche_charcoal4: "#BBB9B8",
+  prime_psyche_charcoal5: "#EDEDEC",
+  //prime_psyche common variations
+  prime_psyche_black: "#232323",
+  prime_psyche_white: "#ffffff",
+  prime_psyche_green: "#1CAA49",
+  prime_psyche_error: "#f34335",
+  prime_psyche_warning: "#d48a49",
+  prime_psyche_info: "#4b81d1",
+  //prime_psyche grey variations
+  prime_psyche_light_grey: "#e9e8e9",
+  prime_psyche_light_grey2: "#F1F1F0",
+  prime_psyche_light_grey3: "#F8F8F7",
+  prime_psyche_light_grey4: "#FDFDFD",
+  prime_psyche_light_grey5: "#fff",
+  prime_psyche_gradient: "linear-gradient(-43deg, #005221 0%, #11251a 100%)",
+  prime_psyche_blue: "#051e28",
+  prime_psyche_light_green1: "#4d826c",
+  prime_psyche_dark: "#232323",
+
+  prime_psyche_secondary: "#232323",
+  prime_psyche_dark_secondary: "#232323",
+  prime_psyche_light_secondary: "#464443",
+};
+
+const Gutter = {
+  spacing: 12,
+};
+
+const Font = {
+  primary: "'Raleway', sans-serif",
+};
+/**
+ * prime_psyche Theme
+ */
+const PrimePsycheTheme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
+  palette: {
+    mode: "light",
+    common: {
+      black: "#000000",
+      white: "#ffffff",
+    },
+    primary: {
+      main: Colors.prime_psyche_darker_green,
+      second: Colors.prime_psyche_mid_green,
+    },
+    secondary: {
+      main: "#ffffff",
+      second: Colors.prime_psyche_charcoal5,
+      third: Colors.prime_psyche_light_grey5,
+    },
+    error: {
+      main: "#f34335",
+      second: "#f34335",
+    },
+    warning: {
+      main: "#ed6c02",
+    },
+    success: {
+      main: "#2e7d32",
+      second: "#59B300",
+    },
+    info: {
+      main: "#0288d1",
+    },
+    prime_psycheColors: Colors,
+    charcoal: {
+      prime_psyche_charcoal: "#333333",
+    },
+  },
+  shape: {
+    borderRadius: 0,
+  },
+  typography: {
+    htmlFontSize: 10,
+    fontFamily: Font.primary,
+    fontSize: 12,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightBoldSemi: 600,
+    fontWeightBold: 700,
+    h1: {
+      fontFamily: Font.primary,
+    },
+    h2: {
+      fontFamily: Font.primary,
+    },
+    h3: {
+      fontFamily: Font.primary,
+    },
+    button: {
+      fontFamily: Font.primary,
+    },
+    link: {
+      fontFamily: Font.primary,
+      fontSize: 14,
+    },
+    body1: {
+      fontFamily: Font.primary,
+      fontSize: 14,
+      fontWeight: 600,
+    },
+    body: {
+      fontFamily: Font.primary,
+      fontSize: 14,
+      fontWeight: 500,
+      lineHeight: "2.4rem",
+    },
+    label: {
+      fontFamily: Font.primary,
+      fontSize: 14,
+      fontWeight: 600,
+      marginBottom: "6px",
+      color: "#9e9e9e",
+      display: "inline-block",
+    },
+  },
+  spacing: Gutter.spacing,
+  drawerWidth: 280,
+  /**
+   * Components overrides
+   */
+  components: {
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: "0px",
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          fontSize: "14px",
+          padding: "10px 12px",
+          background: Colors.prime_psyche_error,
+          margin: 0,
+          color: "#fff",
+          "&.Mui-error": {
+            color: "#fff",
+          },
+        },
+      },
+    },
+    MuiButton: {
+      variants: [
+        {
+          props: { variant: "socialBtn" },
+          style: {
+            minHeight: "40px",
+            lineHeight: "40px",
+            fontSize: "1.2rem",
+            fontWeight: 400,
+            textTransform: "none",
+            border: `1px solid ${Colors.prime_psyche_charcoal}`,
+            padding: "0px 0px",
+            background: "#fff",
+            color: `${Colors.prime_psyche_darker_green2}`,
+            "&:hover": {
+              background: "#fff",
+              color: `${Colors.prime_psyche_darker_green2}`,
+            },
+          },
+        },
+
+        {
+          props: { variant: "isLoading" },
+          style: {
+            color: "#fff",
+            backgroundColor: `${Colors.prime_psyche_darker_green3}`,
+            border: `1px solid ${Colors.prime_psyche_darker_green3}`,
+          },
+        },
+        {
+          props: { variant: "danger" },
+          style: {
+            textTransform: "none",
+            fontSize: "16px",
+            minHeight: "48px",
+            lineHeight: "48px",
+            paddingBottom: "0px",
+            minWidth: "48px",
+            paddingTop: "0px",
+            fontFamily: Font.primary,
+            backgroundColor: `${Colors.prime_psyche_error}`,
+            color: "#fff",
+
+            "&:hover": {
+              color: "#fff",
+              backgroundColor: `${Colors.prime_psyche_error}`,
+              boxShadow: "0px 0px 5px rgba(0,0,0,.25)",
+            },
+          },
+        },
+        {
+          props: { variant: "light" },
+          style: {
+            textTransform: "none",
+            fontSize: "16px",
+            minHeight: "48px",
+            lineHeight: "48px",
+            width: "48px",
+            minWidth: "48px",
+            padding: "0px",
+            paddingTop: "0px",
+            fontFamily: Font.primary,
+            backgroundColor: "#fff",
+            color: `${Colors.prime_psyche_darker_green}`,
+
+            "&:hover": {
+              backgroundColor: "#fff",
+              boxShadow: "none",
+              color: `${Colors.prime_psyche_darker_green2}`,
+            },
+          },
+        },
+
+        {
+          props: { variant: "icon" },
+          style: {
+            textTransform: "none",
+            fontSize: "16px",
+            minHeight: "44px",
+            lineHeight: "44px",
+            width: "44px",
+            minWidth: "44px",
+            padding: "0px",
+
+            paddingTop: "0px",
+            fontFamily: Font.primary,
+            backgroundColor: "transparent",
+            color: `${Colors.prime_psyche_darker_green}`,
+            "&:hover": {
+              color: `${Colors.prime_psyche_darker_green4}`,
+              backgroundColor: "transparent",
+              boxShadow: "none",
+            },
+          },
+        },
+        {
+          props: { variant: "medium" },
+          style: { height: "40px", minHeight: "40px" },
+        },
+      ],
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+          fontSize: "16px",
+          minHeight: "48px",
+          minWidth: "48px",
+          lineHeight: "48px",
+          fontWeight: 600,
+          padding: "0px 24px",
+          fontFamily: Font.primary,
+          backgroundColor: `${Colors.prime_psyche_darker_green}`,
+          color: "#fff",
+
+          "&.Mui-disabled": {
+            color: "#fff",
+          },
+
+          "&:hover": {
+            color: "#fff",
+            backgroundColor: `${Colors.prime_psyche_darker_green2}`,
+            boxShadow: "0px 0px 5px rgba(0,0,0,.25)",
+          },
+          "&:active": {
+            color: "#fff",
+            backgroundColor: `${Colors.prime_psyche_darker_green4}`,
+            boxShadow: "0px 0px 5px rgba(0,0,0,.25)",
+          },
+        },
+      },
+    },
+
+    MuiSnackbar: {
+      styleOverrides: {
+        root: {
+          zIndex: 3000,
+          borderRadius: "6px",
+        },
+      },
+    },
+
+    MuiModal: {
+      styleOverrides: {
+        root: {
+          zIndex: 3000,
+        },
+      },
+    },
+
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          "&:hover, &:active": {
+            background: Colors.prime_psyche_light,
+          },
+          "fieldset.MuiOutlinedInput-notchedOutline": {
+            transition: ".2s ease",
+            border: `thin solid ${Colors.prime_psyche_charcoal4}`,
+            boxSizing: "border-box",
+          },
+          "&.MuiOutlinedInput-root": {
+            height: "48px",
+            padding: "0px 24px",
+          },
+          "&.Mui-focused fieldset.MuiOutlinedInput-notchedOutline": {
+            border: `2px solid ${Colors.primary}`,
+          },
+          "&.Mui-disabled": {
+            background: Colors.prime_psyche_light_grey3,
+          },
+          fontSize: "1.6rem",
+          fontWeight: 400,
+          minHeight: "48px",
+          background: Colors.prime_psyche_light_grey5,
+        },
+        colorSuccess: {
+          "fieldset.MuiOutlinedInput-notchedOutline": {
+            transition: ".2s ease",
+            border: `thin solid ${Colors.prime_psyche_green}`,
+            boxSizing: "border-box",
+          },
+          "&.Mui-focused fieldset.MuiOutlinedInput-notchedOutline": {
+            border: `2px solid ${Colors.prime_psyche_green}`,
+          },
+        },
+      },
+      input: {
+        styleOverrides: {
+          padding: `${Gutter.spacing}px ${Gutter.spacing * 2}px`,
+        },
+      },
+    },
+
+    MuiTypography: {
+      root: {
+        fontFamily: Font.primary,
+      },
+    },
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: Colors.prime_psyche_charcoal,
+          color: Colors.prime_psyche_white,
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        colorPrimary: {
+          backgroundColor: Colors.prime_psyche_black,
+        },
+      },
+    },
+    //Mui icon button
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          padding: "12px",
+          borderRadius: 0,
+        },
+      },
+      variants: [
+        {
+          props: { variant: "drawerButton" },
+          style: {
+            color: Colors.prime_psyche_light_grey,
+          },
+        },
+        {
+          props: {
+            color: "primary",
+            style: {
+              backgroundColor: `${Colors.prime_psyche_darker_green}`,
+              color: "#fff",
+
+              "&.Mui-disabled": {
+                color: "#fff",
+              },
+
+              "&:hover": {
+                color: "#fff",
+                backgroundColor: `${Colors.prime_psyche_darker_green2}`,
+                boxShadow: "0px 0px 5px rgba(0,0,0,.25)",
+              },
+              "&:active": {
+                color: "#fff",
+                backgroundColor: `${Colors.prime_psyche_darker_green4}`,
+                boxShadow: "0px 0px 5px rgba(0,0,0,.25)",
+              },
+            },
+          },
+        },
+      ],
+    },
+
+    MuiContainer: {
+      variants: [
+        {
+          props: { variant: "sourceListContainer" },
+          style: {
+            paddingTop: "20px",
+            maxWidth: "940px",
+          },
+        },
+        {
+          props: { variant: "sourcePageContainer" },
+          style: {
+            paddingTop: `${Gutter.spacing * 2}px`,
+            paddingLeft: `${Gutter.spacing * 2}px`,
+          },
+        },
+      ],
+    },
+  },
+});
+
+export { PrimePsycheTheme, Colors, Gutter, Font };
