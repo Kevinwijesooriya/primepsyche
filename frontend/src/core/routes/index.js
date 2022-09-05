@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
+import { Navigate } from "react-router-dom";
 import { useRoutes } from "react-router-dom";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { AuthRoutes } from "../../components/pages/auth/routes/index";
@@ -31,6 +32,7 @@ const PrivateRoutes = () => {
       element: <Logout />,
       exact: true,
     },
+    { path: "", element: <Navigate to="primepsyche" /> },
     {
       path: "/primepsyche",
       element: <DefaultLayout />,
