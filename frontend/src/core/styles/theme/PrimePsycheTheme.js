@@ -6,22 +6,22 @@ import { createTheme } from "@mui/material/styles";
 const Colors = {
   //prime_psyche darker green variations
   prime_psyche_darker_green: "#014138",
-  prime_psyche_darker_green2: "#366d42",
-  prime_psyche_darker_green3: "#5e8965",
-  prime_psyche_darker_green4: "#85a689",
-  prime_psyche_darker_green5: "#acc3af",
+  prime_psyche_darker_green2: "#275E56",
+  prime_psyche_darker_green3: "#41716A",
+  prime_psyche_darker_green4: "#739792",
+  prime_psyche_darker_green5: "#99B3AF",
   //prime_psyche mid green variations
   prime_psyche_mid_green: "#176554",
-  prime_psyche_mid_green2: "#6b9f71",
-  prime_psyche_mid_green3: "#88b28c",
-  prime_psyche_mid_green4: "#a5c5a8",
-  prime_psyche_mid_green5: "#c3d8c4",
+  prime_psyche_mid_green2: "#3A7C6E",
+  prime_psyche_mid_green3: "#5D9387",
+  prime_psyche_mid_green4: "#7FAAA1",
+  prime_psyche_mid_green5: "#A2C1BB",
   //prime_psyche light green variations
   prime_psyche_light_green: "#4d826c",
-  prime_psyche_light_green2: "#6a9683",
-  prime_psyche_light_green3: "#87aa9a",
-  prime_psyche_light_green4: "#a4bfb3",
-  prime_psyche_light_green5: "#c2d4cc",
+  prime_psyche_light_green2: "#689582",
+  prime_psyche_light_green3: "#82A898",
+  prime_psyche_light_green4: "#9DBAAE",
+  prime_psyche_light_green5: "#B8CDC4",
   //prime_psyche charcoal variations
   prime_psyche_charcoal: "#333333",
   prime_psyche_charcoal2: "#4E4B48",
@@ -32,7 +32,7 @@ const Colors = {
   prime_psyche_black: "#232323",
   prime_psyche_white: "#ffffff",
   prime_psyche_green: "#1CAA49",
-  prime_psyche_error: "#f34335",
+  prime_psyche_error: "#f00e0e",
   prime_psyche_warning: "#d48a49",
   prime_psyche_info: "#4b81d1",
   //prime_psyche grey variations
@@ -56,7 +56,18 @@ const Gutter = {
 };
 
 const Font = {
-  primary: "'Raleway', sans-serif",
+  primary: [
+    "-apple-system",
+    "BlinkMacSystemFont",
+    '"Segoe UI"',
+    "Roboto",
+    '"Helvetica Neue"',
+    "Arial",
+    "sans-serif",
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"',
+  ].join(","),
 };
 /**
  * prime_psyche Theme
@@ -87,8 +98,8 @@ const PrimePsycheTheme = createTheme({
       third: Colors.prime_psyche_light_grey5,
     },
     error: {
-      main: "#f34335",
-      second: "#f34335",
+      main: "#f00e0e",
+      second: "#f00e0e",
     },
     warning: {
       main: "#ed6c02",
@@ -281,7 +292,7 @@ const PrimePsycheTheme = createTheme({
       ],
       styleOverrides: {
         root: {
-          textTransform: "none",
+          textTransform: "uppercase",
           fontSize: "16px",
           minHeight: "48px",
           minWidth: "48px",
@@ -292,6 +303,13 @@ const PrimePsycheTheme = createTheme({
           backgroundColor: `${Colors.prime_psyche_darker_green}`,
           color: "#fff",
 
+          "&.MuiButton-outlined": {
+            color: `${Colors.prime_psyche_darker_green}`,
+            backgroundColor: `${Colors.prime_psyche_darker_green}00`,
+            "&:hover": {
+              backgroundColor: `${Colors.prime_psyche_darker_green}`,
+            },
+          },
           "&.Mui-disabled": {
             color: "#fff",
           },
@@ -339,7 +357,8 @@ const PrimePsycheTheme = createTheme({
             boxSizing: "border-box",
           },
           "&.MuiOutlinedInput-root": {
-            height: "48px",
+            // minHeight: "48px",
+            // lineHeight: "48px",
             padding: "0px 24px",
           },
           "&.Mui-focused fieldset.MuiOutlinedInput-notchedOutline": {
@@ -375,6 +394,19 @@ const PrimePsycheTheme = createTheme({
       root: {
         fontFamily: Font.primary,
       },
+      variants: [
+        {
+          props: { variant: "PageHeader" },
+          style: {
+            fontWeight: 700,
+            fontSize: 30,
+            textTransform: "uppercase",
+            textAlign: "center",
+            padding: "0px 0px",
+            color: `${Colors.prime_psyche_darker_green}`,
+          },
+        },
+      ],
     },
     MuiButtonBase: {
       defaultProps: {
@@ -386,6 +418,15 @@ const PrimePsycheTheme = createTheme({
         paper: {
           backgroundColor: Colors.prime_psyche_charcoal,
           color: Colors.prime_psyche_white,
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          fontWeight: 700,
+          fontSize: 18,
+          textTransform: "uppercase",
         },
       },
     },
@@ -402,6 +443,7 @@ const PrimePsycheTheme = createTheme({
         root: {
           padding: "12px",
           borderRadius: 0,
+          textTransform: "uppercase",
         },
       },
       variants: [
@@ -441,9 +483,12 @@ const PrimePsycheTheme = createTheme({
     MuiContainer: {
       variants: [
         {
-          props: { variant: "sourceListContainer" },
+          props: { variant: "outletContainer" },
           style: {
+            backgroundColor: `${Colors.prime_psyche_darker_green4}`,
+            borderRadius: 15,
             paddingTop: "20px",
+            paddingBottom: "20px",
             maxWidth: "940px",
           },
         },
