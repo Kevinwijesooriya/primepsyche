@@ -2,13 +2,13 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import ForumHomePage from "../views";
 import AddPost from "../views/AddPost";
-import IconBreadcrumbs from "../views/components/BreadCrums";
+import ForumBreadcrumbs from "../views/components/Breadcrumbs";
 import EditPost from "../views/EditPost";
 
 const ForumRoutes = [
   {
     path: "forum",
-    element: <IconBreadcrumbs />,
+    element: <ForumBreadcrumbs />,
     children: [
       { path: "", element: <Navigate to="view" /> },
       { path: "view", element: <ForumHomePage /> },

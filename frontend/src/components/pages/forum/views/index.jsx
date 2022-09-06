@@ -1,7 +1,12 @@
 import React from "react";
+import ViewPosts from "./ViewPosts";
 
 const ForumHomePage = () => {
-  return <div>ForumHomePage</div>;
+  return (
+    <>
+      <ViewPosts />
+    </>
+  );
 };
 
 export default ForumHomePage;
