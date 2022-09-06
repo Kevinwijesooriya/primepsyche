@@ -166,6 +166,7 @@ const Header = () => {
           <Box
             sx={{
               flexGrow: 1,
+              justifyContent: "center",
               display: { xs: "none", md: "flex" },
             }}
           >
