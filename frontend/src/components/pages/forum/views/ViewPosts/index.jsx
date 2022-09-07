@@ -13,7 +13,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CommentIcon from "@mui/icons-material/Comment";
 import Stack from "@mui/material/Stack";
-import { Colors } from "../../../../../core/styles/theme/PrimePsycheTheme";
 import AlertDialog from "../DeleteConfirmation";
 import BasicPagination from "../components/Pagination";
 
@@ -114,11 +113,7 @@ const ViewPosts = () => {
                 />
               </Card>
               <Divider></Divider>
-              <Grid
-                container
-                spacing={3}
-                sx={{ backgroundColor: `${Colors.prime_psyche_gradient}` }}
-              >
+              <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                   <Stack direction="row" spacing={1}>
                     <IconButton>
