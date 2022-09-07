@@ -8,9 +8,15 @@ import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
 import { ImageUploadButton } from "../../styles";
+// import AddPostAlerts from "../ForumAlerts/AddPostAlerts";
 
 const AddPost = () => {
   const [files, setFiles] = React.useState();
+  // const [errors, setErrors] = React.useState({
+  //   alertType: "",
+  //   alertTitle: "",
+  //   alertMessage: "",
+  // });
   function handleChange(e) {
     console.log(e.target.files);
     setFiles(URL.createObjectURL(e.target.files[0]));
@@ -26,6 +32,11 @@ const AddPost = () => {
             display: { xs: "none", md: "flex" },
           }}
         >
+          {/* <AddPostAlerts
+            alertType={"error"}
+            alertTitle={"ERROR"}
+            alertMessage={"Woops this is an error !"}
+          /> */}
           <Typography variant="PageHeader" gutterBottom>
             Share Your Experience
           </Typography>
