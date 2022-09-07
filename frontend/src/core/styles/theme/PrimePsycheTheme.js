@@ -56,18 +56,7 @@ const Gutter = {
 };
 
 const Font = {
-  primary: [
-    "-apple-system",
-    "BlinkMacSystemFont",
-    '"Segoe UI"',
-    "Roboto",
-    '"Helvetica Neue"',
-    "Arial",
-    "sans-serif",
-    '"Apple Color Emoji"',
-    '"Segoe UI Emoji"',
-    '"Segoe UI Symbol"',
-  ].join(","),
+  primary: ["Roboto", "BlinkMacSystemFont", "sans-serif"].join(","),
 };
 /**
  * prime_psyche Theme
@@ -117,7 +106,7 @@ const PrimePsycheTheme = createTheme({
     },
   },
   shape: {
-    borderRadius: 0,
+    borderRadius: 6,
   },
   typography: {
     htmlFontSize: 10,
@@ -163,8 +152,8 @@ const PrimePsycheTheme = createTheme({
       display: "inline-block",
     },
   },
-  spacing: Gutter.spacing,
-  drawerWidth: 280,
+  // spacing: Gutter.spacing,
+  // drawerWidth: 280,
   /**
    * Components overrides
    */
@@ -297,7 +286,7 @@ const PrimePsycheTheme = createTheme({
           minHeight: "48px",
           minWidth: "48px",
           lineHeight: "48px",
-          fontWeight: 600,
+          fontWeight: 500,
           padding: "0px 24px",
           fontFamily: Font.primary,
           backgroundColor: `${Colors.prime_psyche_darker_green}`,
