@@ -4,6 +4,9 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
@@ -27,18 +30,76 @@ const EditPost = () => {
             display: { xs: "none", md: "flex" },
           }}
         >
+          {/* <AddPostAlerts
+            alertType={"error"}
+            alertTitle={"ERROR"}
+            alertMessage={"Woops this is an error !"}
+          /> */}
           <Typography variant="PageHeader" gutterBottom>
-            Update your post
+            Professional Help/request
           </Typography>
         </Box>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
-            <InputLabel>Title</InputLabel>
-            <TextField required id="title" name="title" fullWidth multiline />
+            <InputLabel>Your Name</InputLabel>
+            <TextField
+              required
+              id="name"
+              name="name"
+              // label="Title"
+              fullWidth
+              multiline
+            />
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
           <Grid item xs={12} sm={6}>
-            <InputLabel>Description</InputLabel>
+            <FormControl>
+              <InputLabel>Gender</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value="gender"
+              >
+                <MenuItem value="male">male</MenuItem>
+                <MenuItem value="female">female</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}></Grid>
+          <Grid item xs={12} sm={6}>
+            <InputLabel>Age</InputLabel>
+            <TextField required id="age" name="age" fullWidth multiline />
+          </Grid>
+          <Grid item xs={12} sm={6}></Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl>
+              <InputLabel>
+                which of the following topic match with your problem
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value="disorder"
+              >
+                <MenuItem value="Depression">Depression</MenuItem>
+                <MenuItem value="nxiety disorder">
+                  generalized anxiety disorders social anxiety disorders panic
+                  disorders, and phobias.
+                </MenuItem>
+                <MenuItem value="OCD">
+                  Obsessive-compulsive disorder (OCD)
+                </MenuItem>
+                <MenuItem value="Bipolar disorder">Bipolar disorder</MenuItem>
+                <MenuItem value="PTSD">
+                  Post-traumatic stress disorder (PTSD)
+                </MenuItem>
+                <MenuItem value="Schizophrenia">Schizophrenia</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}></Grid>
+          <Grid item xs={12} sm={6}>
+            <InputLabel>Describe the problem</InputLabel>
             <TextField
               required
               id="description"
@@ -47,7 +108,7 @@ const EditPost = () => {
               multiline
             />
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <InputLabel>Enhance your post with an image!</InputLabel>
             <ImageUploadButton component="label">
               <input type="file" hidden onChange={handleChange} />
@@ -61,16 +122,14 @@ const EditPost = () => {
                 <ImageOutlinedIcon sx={{ minHeight: 600, minWidth: 600 }} />
               )}
             </ImageUploadButton>
-          </Grid>
-          <Grid item xs={12}>
-            <Stack
-              direction="row"
-              spacing={1}
-              sx={{ display: "flex", justifyContent: "flex-end" }}
-            >
-              <Button>save</Button>
-              <WarningButton>Cancel</WarningButton>
-            </Stack>
+          </Grid> */}
+          <Grid
+            item
+            xs={12}
+            sx={{ display: "flex", justifyContent: "flex-end" }}
+          >
+            <Button>POST</Button>
+            <WarningButton>Cancel</WarningButton>
           </Grid>
         </Grid>
       </Container>
