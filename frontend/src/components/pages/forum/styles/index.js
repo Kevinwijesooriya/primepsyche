@@ -45,8 +45,9 @@ const WarningButtonOutlined = styled(Button)(({ theme }) => ({
 }));
 const PostContainer = styled(Grid)(({ theme }) => ({
   marginBottom: "40px",
-  backgroundColor: `${theme.palette.prime_psycheColors.prime_psyche_darker_green3}`,
-  border: `1px solid ${theme.palette.prime_psycheColors.prime_psyche_darker_green}75`,
+  backgroundColor: `${theme.palette.prime_psycheColors.prime_psyche_white}`,
+  border: `1px solid ${theme.palette.prime_psycheColors.prime_psyche_darker_green}`,
+  borderRadius: 6,
 }));
 const StyledLink = styled(Link)`
   text-decoration: none;

@@ -11,7 +11,6 @@ const DefaultLayout = () => {
         <Header />
       </header>
       <Box
-        fullWidth
         sx={{
           p: 1,
           backgroundColor: (theme) =>
