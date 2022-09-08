@@ -82,6 +82,7 @@ const HelpHomePage = () => {
                 which of the following topic match with your problem
               </InputLabel>
               <Select
+                sx={{ with: "100px" }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value="disorder"
