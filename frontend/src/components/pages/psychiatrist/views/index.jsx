@@ -1,7 +1,12 @@
 import React from "react";
+import ViewPosts from "./ViewPost";
 
 const HelpHomePage = () => {
-  return <div>HelpHomePage</div>;
+  return (
+    <>
+      <ViewPosts />
+    </>
+  );
 };
 
 export default HelpHomePage;
