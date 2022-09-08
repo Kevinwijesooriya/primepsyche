@@ -7,16 +7,11 @@ import Container from "@mui/material/Container";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
-import { ImageUploadButton } from "../../styles";
-// import AddPostAlerts from "../ForumAlerts/AddPostAlerts";
+import { ImageUploadButton, WarningButton } from "../../styles";
+import { Stack } from "@mui/material";
 
-const AddPost = () => {
+const EditPost = () => {
   const [files, setFiles] = React.useState();
-  // const [errors, setErrors] = React.useState({
-  //   alertType: "",
-  //   alertTitle: "",
-  //   alertMessage: "",
-  // });
   function handleChange(e) {
     console.log(e.target.files);
     setFiles(URL.createObjectURL(e.target.files[0]));
@@ -32,26 +27,14 @@ const AddPost = () => {
             display: { xs: "none", md: "flex" },
           }}
         >
-          {/* <AddPostAlerts
-            alertType={"error"}
-            alertTitle={"ERROR"}
-            alertMessage={"Woops this is an error !"}
-          /> */}
           <Typography variant="PageHeader" gutterBottom>
-            Share Your Experience
+            Update your post
           </Typography>
         </Box>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <InputLabel>Title</InputLabel>
-            <TextField
-              required
-              id="title"
-              name="title"
-              // label="Title"
-              fullWidth
-              multiline
-            />
+            <TextField required id="title" name="title" fullWidth multiline />
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
           <Grid item xs={12} sm={6}>
@@ -79,12 +62,15 @@ const AddPost = () => {
               )}
             </ImageUploadButton>
           </Grid>
-          <Grid
-            item
-            xs={12}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
-          >
-            <Button>SHARE</Button>
+          <Grid item xs={12}>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{ display: "flex", justifyContent: "flex-end" }}
+            >
+              <Button>save</Button>
+              <WarningButton>Cancel</WarningButton>
+            </Stack>
           </Grid>
         </Grid>
       </Container>
@@ -92,4 +78,4 @@ const AddPost = () => {
   );
 };
 
-export default AddPost;
+export default EditPost;

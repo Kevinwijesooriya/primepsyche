@@ -13,7 +13,7 @@ const ForumRoutes = [
       { path: "", element: <Navigate to="view" /> },
       { path: "view", element: <ForumHomePage /> },
       { path: "add", element: <AddPost /> },
-      { path: "edit", element: <EditPost /> },
+      { path: "edit/:id", element: <EditPost /> },
     ],
   },
   // { path: "forum", element: <ForumHomePage /> },

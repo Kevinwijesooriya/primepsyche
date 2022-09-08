@@ -171,7 +171,11 @@ const Header = () => {
             }}
           >
             {pages.map((page) => (
-              <Link style={{ textDecoration: "none" }} to={page.path}>
+              <Link
+                style={{ textDecoration: "none" }}
+                to={page.path}
+                key={`link${page.label}`}
+              >
                 <Button
                   key={page.label}
                   onClick={handleCloseNavMenu}
