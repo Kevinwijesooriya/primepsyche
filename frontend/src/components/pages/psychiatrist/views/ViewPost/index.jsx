@@ -71,11 +71,11 @@ const ViewPosts = () => {
         }}
       >
         <Typography variant="PageHeader" gutterBottom>
-          Welcome To our forum
+          My Help Request
         </Typography>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", py: 2 }}>
-        <StyledLink to="/primepsyche/forum/add">
+        <StyledLink to="/primepsyche/help/add">
           <Button>ADD A NEW HELP REQUEST</Button>
         </StyledLink>
       </Box>
@@ -91,6 +91,9 @@ const ViewPosts = () => {
                   <Typography variant="subtitle1" color="text.secondary">
                     {post.age}
                   </Typography>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    {post.disorder}
+                  </Typography>
                 </CardContent>
 
                 <CardContent sx={{ flex: 1, p: 2 }}>
@@ -102,14 +105,7 @@ const ViewPosts = () => {
               <Divider></Divider>
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
-                  <Stack direction="row" spacing={1}>
-                    <IconButton>
-                      <FavoriteIcon />
-                    </IconButton>
-                    <IconButton>
-                      <CommentIcon />
-                    </IconButton>
-                  </Stack>
+                  <Stack direction="row" spacing={1}></Stack>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack
@@ -117,7 +113,7 @@ const ViewPosts = () => {
                     spacing={1}
                     sx={{ display: "flex", justifyContent: "flex-end" }}
                   >
-                    <StyledLink to="/primepsyche/forum/edit">
+                    <StyledLink to="/primepsyche/help/edit">
                       <Button variant="outlined" startIcon={<EditIcon />}>
                         Edit
                       </Button>
