@@ -1,7 +1,8 @@
 import React from "react";
+import EventHomePage from "./ViewEvent";
 
-const EventHomePage = () => {
-  return <div>EventHomePage</div>;
+const ViewComponent = () => {
+  return <div><EventHomePage /></div>;
 };
 
-export default EventHomePage;
+export default ViewComponent;

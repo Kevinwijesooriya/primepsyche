@@ -5,10 +5,13 @@ import App from "./App";
 import { ThemeProvider } from "@mui/material/styles";
 import { PrimePsycheTheme } from "./core/styles/theme/PrimePsycheTheme";
 import { AuthProvider } from "./core/context/AuthProvider";
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { LocalizationProvider } from "@mui/x-date-pickers";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ThemeProvider theme={PrimePsycheTheme}>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
     <React.StrictMode>
       <AuthProvider>
         <BrowserRouter>
@@ -16,5 +19,6 @@ root.render(
         </BrowserRouter>
       </AuthProvider>
     </React.StrictMode>
+    </LocalizationProvider>
   </ThemeProvider>
 );
