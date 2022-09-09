@@ -151,6 +151,7 @@ const HelpHomePage = () => {
                   Post-traumatic stress disorder (PTSD)
                 </MenuItem>
                 <MenuItem value="Schizophrenia">Schizophrenia</MenuItem>
+                <MenuItem value="other">Other</MenuItem>
               </Select>
             </FormControl>
           </Grid>
