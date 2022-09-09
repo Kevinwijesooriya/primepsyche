@@ -15,6 +15,7 @@ import CommentIcon from "@mui/icons-material/Comment";
 import Stack from "@mui/material/Stack";
 import AlertDialog from "../DeleteConfirmation";
 import BasicPagination from "../components/Pagination";
+import { red } from "@mui/material/colors";
 
 const ViewPosts = () => {
   const [open, setOpen] = React.useState(false);
@@ -24,6 +25,7 @@ const ViewPosts = () => {
   };
   const PostList = [
     {
+      name: "Kevin Dilshan Wigesooriya",
       gender: "Male",
       age: "20",
       disorder: "Depression",
@@ -31,6 +33,7 @@ const ViewPosts = () => {
         "Initially I had this problem. So I used to do this. Then I realized this. So I stated doing this. Thats how I overcome this. You also do this",
     },
     {
+      name: "Kevin Dilshan Wigesooriya",
       gender: "Male",
       age: "20",
       disorder: "Depression",
@@ -38,6 +41,7 @@ const ViewPosts = () => {
         "Initially I had this problem. So I used to do this. Then I realized this. So I stated doing this. Thats how I overcome this. You also do this",
     },
     {
+      name: "Kevin Dilshan Wigesooriya",
       gender: "Male",
       age: "20",
       disorder: "Depression",
@@ -45,6 +49,7 @@ const ViewPosts = () => {
         "Initially I had this problem. So I used to do this. Then I realized this. So I stated doing this. Thats how I overcome this. You also do this",
     },
     {
+      name: "Kevin Dilshan Wigesooriya",
       gender: "Male",
       age: "20",
       disorder: "Depression",
@@ -52,6 +57,7 @@ const ViewPosts = () => {
         "Initially I had this problem. So I used to do this. Then I realized this. So I stated doing this. Thats how I overcome this. You also do this",
     },
     {
+      name: "Kevin Dilshan Wigesooriya",
       gender: "Male",
       age: "20",
       disorder: "Depression",
@@ -84,19 +90,19 @@ const ViewPosts = () => {
           <PostContainer item xs={12} md={6}>
             <CardActionArea component="a" href="#">
               <Card sx={{ display: "flex" }}>
-                <CardContent sx={{ flex: 0.1, p: 0.1 }}>
-                  <Typography component="h2" variant="h5">
-                    {post.gender}
-                  </Typography>
-                  <Typography variant="subtitle1" color="text.secondary">
-                    {post.age}
-                  </Typography>
-                  <Typography variant="subtitle1" color="text.secondary">
-                    {post.disorder}
-                  </Typography>
-                </CardContent>
-
                 <CardContent sx={{ flex: 1, p: 2 }}>
+                  <Typography component="h2" variant="h5">
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{" "}
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {post.name}
+                  </Typography>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    Age : {post.age}
+                  </Typography>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    Disorder Type : {post.disorder}
+                  </Typography>
+                  <br></br>
                   <Typography variant="subtitle1" paragraph>
                     {post.description}
                   </Typography>
@@ -114,16 +120,13 @@ const ViewPosts = () => {
                     sx={{ display: "flex", justifyContent: "flex-end" }}
                   >
                     <StyledLink to="/primepsyche/help/edit">
-                      <Button variant="outlined" startIcon={<EditIcon />}>
-                        Edit
-                      </Button>
+                      <IconButton>
+                        <EditIcon />
+                      </IconButton>
                     </StyledLink>
-                    <WarningButtonOutlined
-                      startIcon={<DeleteIcon />}
-                      onClick={onClickDelete}
-                    >
-                      Delete
-                    </WarningButtonOutlined>
+                    <IconButton onClick={() => onClickDelete(post._id)}>
+                      <DeleteIcon sx={{ color: red[900] }} />
+                    </IconButton>
                   </Stack>
                 </Grid>
               </Grid>

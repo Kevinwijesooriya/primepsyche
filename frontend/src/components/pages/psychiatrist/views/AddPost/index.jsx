@@ -1,4 +1,3 @@
-import React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -7,22 +6,55 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
-import { ImageUploadButton } from "../../styles";
+
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 // import AddPostAlerts from "../ForumAlerts/AddPostAlerts";
 
 const HelpHomePage = () => {
   const [files, setFiles] = React.useState();
+  const navigate = useNavigate();
   // const [errors, setErrors] = React.useState({
   //   alertType: "",
   //   alertTitle: "",
   //   alertMessage: "",
   // });
-  function handleChange(e) {
-    console.log(e.target.files);
-    setFiles(URL.createObjectURL(e.target.files[0]));
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [disorder, setDisorder] = useState("");
+  const [description, setDescription] = useState("");
+
+  function sendData(e) {
+    e.preventDefault();
+
+    const newPost = {
+      name,
+      age,
+      gender,
+      disorder,
+      description,
+    };
+
+    axios
+      .post("http://localhost:5000/api/HelpPost/create", newPost)
+      .then((res) => {
+        console.log(res);
+        alert(res.data.message);
+        navigate("/primepsyche/help/view");
+        setName("");
+        setGender("");
+        setAge("");
+        setDisorder("");
+        setDescription("");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   return (
     <>
@@ -51,9 +83,13 @@ const HelpHomePage = () => {
               required
               id="name"
               name="name"
+              placeholder="Enter your name"
               // label="Title"
-              fullWidth
+              sx={{ width: "340px" }}
               multiline
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
             />
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
@@ -61,11 +97,15 @@ const HelpHomePage = () => {
             <InputLabel>Gender</InputLabel>
             <FormControl>
               <Select
-                autoWidth="true"
-                sx={{ width: "540px" }}
+                sx={{ width: "340px" }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value="gender"
+                placeholder="Gender"
+                required
+                onChange={(e) => {
+                  setGender(e.target.value);
+                }}
               >
                 <MenuItem value="male">Male</MenuItem>
                 <MenuItem value="female">Female</MenuItem>
@@ -75,20 +115,32 @@ const HelpHomePage = () => {
           <Grid item xs={12} sm={6}></Grid>
           <Grid item xs={12} sm={6}>
             <InputLabel>Age</InputLabel>
-            <TextField required id="age" name="age" fullWidth multiline />
+            <TextField
+              required
+              id="age"
+              name="age"
+              placeholder="How old are you?"
+              sx={{ width: "340px" }}
+              multiline
+              onChange={(e) => {
+                setAge(e.target.value);
+              }}
+            />
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
           <Grid item xs={12} sm={6}>
-            <InputLabel>
-              which of the following topic match with your problem
-            </InputLabel>
+            <InputLabel>Type of Disorder</InputLabel>
             <FormControl>
               <Select
-                autoWidth="true"
-                sx={{ width: "540px" }}
+                sx={{ width: "740px" }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value="disorder"
+                placeholder=" which of the following topic match with your problem"
+                required
+                onChange={(e) => {
+                  setDisorder(e.target.value);
+                }}
               >
                 <MenuItem value="Depression">Depression</MenuItem>
                 <MenuItem value="OCD">
@@ -106,11 +158,15 @@ const HelpHomePage = () => {
           <Grid item xs={12} sm={6}>
             <InputLabel>Describe the problem</InputLabel>
             <TextField
+              sx={{ width: "740px" }}
               required
               id="description"
               name="description"
-              fullWidth
+              placeholder=" Describe your problem here"
               multiline
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
             />
           </Grid>
           {/* <Grid item xs={12}>
@@ -133,7 +189,7 @@ const HelpHomePage = () => {
             xs={12}
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
-            <Button>POST</Button>
+            <Button onClick={sendData}>POST</Button>
           </Grid>
         </Grid>
       </Container>

@@ -46,46 +46,54 @@ const EditPost = () => {
               required
               id="name"
               name="name"
+              placeholder="Enter your name"
               // label="Title"
-              fullWidth
+              sx={{ width: "340px" }}
               multiline
             />
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
           <Grid item xs={12} sm={6}>
+            <InputLabel>Gender</InputLabel>
             <FormControl>
-              <InputLabel>Gender</InputLabel>
               <Select
+                sx={{ width: "340px" }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value="gender"
+                placeholder="Gender"
+                required
               >
-                <MenuItem value="male">male</MenuItem>
-                <MenuItem value="female">female</MenuItem>
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
           <Grid item xs={12} sm={6}>
             <InputLabel>Age</InputLabel>
-            <TextField required id="age" name="age" fullWidth multiline />
+            <TextField
+              required
+              id="age"
+              name="age"
+              placeholder="How old are you?"
+              sx={{ width: "340px" }}
+              multiline
+            />
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
           <Grid item xs={12} sm={6}>
+            <InputLabel>Type of Disorder</InputLabel>
             <FormControl>
-              <InputLabel>
-                which of the following topic match with your problem
-              </InputLabel>
               <Select
+                sx={{ width: "740px" }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value="disorder"
+                placeholder=" which of the following topic match with your problem"
+                required
               >
                 <MenuItem value="Depression">Depression</MenuItem>
-                <MenuItem value="nxiety disorder">
-                  generalized anxiety disorders social anxiety disorders panic
-                  disorders, and phobias.
-                </MenuItem>
                 <MenuItem value="OCD">
                   Obsessive-compulsive disorder (OCD)
                 </MenuItem>
@@ -101,10 +109,11 @@ const EditPost = () => {
           <Grid item xs={12} sm={6}>
             <InputLabel>Describe the problem</InputLabel>
             <TextField
+              sx={{ width: "740px" }}
               required
               id="description"
               name="description"
-              fullWidth
+              placeholder=" Describe your problem here"
               multiline
             />
           </Grid>
