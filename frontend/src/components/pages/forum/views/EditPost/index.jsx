@@ -11,6 +11,7 @@ import { ImageUploadButton, StyledLink, WarningButton } from "../../styles";
 import { Stack } from "@mui/material";
 import ForumPostAPI from "../../../../../core/services/ForumPostAPI";
 import { useParams } from "react-router-dom";
+import EditSnackBar from "../components/EditSnackBar";
 
 const EditPost = () => {
   const [files, setFiles] = React.useState();
@@ -22,10 +23,14 @@ const EditPost = () => {
   const { title, description, image } = postsData;
   const params = useParams();
   const postId = params.id;
+  const [open, setOpen] = React.useState(false);
   async function fetchData() {
     const response = await ForumPostAPI.getOne(postId);
     setPostsData(response.data.data);
   }
+  const onClickSave = () => {
+  setOpen(true);
+};
   React.useEffect(() => {
     fetchData();
   }, []);
@@ -45,6 +50,7 @@ const EditPost = () => {
             display: { xs: "none", md: "flex" },
           }}
         >
+          <EditSnackBar open={open} setOpen={setOpen} />
           <Typography variant="PageHeader" gutterBottom>
             Update your post
           </Typography>
@@ -102,7 +108,7 @@ const EditPost = () => {
               spacing={1}
               sx={{ display: "flex", justifyContent: "flex-end" }}
             >
-              <Button>save</Button>
+              <Button onClick={onClickSave}>save</Button>
               <StyledLink to={"/primepsyche/forum/"}>
                 <WarningButton>Cancel</WarningButton>
               </StyledLink>

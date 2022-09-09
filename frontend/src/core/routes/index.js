@@ -16,9 +16,16 @@ function AppRoutes() {
   React.useEffect(() => {
     setIsLoggedIn(true);
   }, []);
-  //
 
-  return <>{isLoggedIn ? <PrivateRoutes /> : <AuthRoutes />}</>;
+  return (
+    <>
+      {isLoggedIn ? (
+        <PrivateRoutes />
+      ) : (
+        <AuthRoutes setIsLoggedIn={setIsLoggedIn} />
+      )}
+    </>
+  );
 }
 
 /**
@@ -32,7 +39,7 @@ const PrivateRoutes = () => {
       element: <Logout />,
       exact: true,
     },
-    { path: "", element: <Navigate to="primepsyche" /> },
+    { path: "", element: <Navigate to="primepsyche/forum" /> },
     {
       path: "/primepsyche",
       element: <DefaultLayout />,
