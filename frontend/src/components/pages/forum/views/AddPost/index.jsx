@@ -8,6 +8,7 @@ import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
 import { ImageUploadButton } from "../../styles";
+import AddSnackBar from "../components/AddSnackBar";
 // import AddPostAlerts from "../ForumAlerts/AddPostAlerts";
 
 const AddPost = () => {
@@ -17,6 +18,10 @@ const AddPost = () => {
   //   alertTitle: "",
   //   alertMessage: "",
   // });
+  const [open, setOpen] = React.useState(false);
+  const onClickShare = () => {
+    setOpen(true);
+  };
   function handleChange(e) {
     console.log(e.target.files);
     setFiles(URL.createObjectURL(e.target.files[0]));
@@ -37,6 +42,7 @@ const AddPost = () => {
             alertTitle={"ERROR"}
             alertMessage={"Woops this is an error !"}
           /> */}
+          <AddSnackBar open={open} setOpen={setOpen} />
           <Typography variant="PageHeader" gutterBottom>
             Share Your Experience
           </Typography>
@@ -84,7 +90,7 @@ const AddPost = () => {
             xs={12}
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
-            <Button>SHARE</Button>
+            <Button onClick={onClickShare}>SHARE</Button>
           </Grid>
         </Grid>
       </Container>

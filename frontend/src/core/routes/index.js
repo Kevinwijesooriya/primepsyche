@@ -12,13 +12,20 @@ import PsychiatristRoutes from "../../components/pages/psychiatrist/routes";
 
 function AppRoutes() {
   //TODO implement authentication validation
-  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
-  React.useEffect(() => {
-    setIsLoggedIn(true);
-  }, []);
-  //
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  // React.useEffect(() => {
+  //   setIsLoggedIn(true);
+  // }, []);
 
-  return <>{isLoggedIn ? <PrivateRoutes /> : <AuthRoutes />}</>;
+  return (
+    <>
+      {isLoggedIn ? (
+        <PrivateRoutes />
+      ) : (
+        <AuthRoutes setIsLoggedIn={setIsLoggedIn} />
+      )}
+    </>
+  );
 }
 
 /**
@@ -32,7 +39,7 @@ const PrivateRoutes = () => {
       element: <Logout />,
       exact: true,
     },
-    { path: "", element: <Navigate to="primepsyche" /> },
+    { path: "", element: <Navigate to="primepsyche/forum" /> },
     {
       path: "/primepsyche",
       element: <DefaultLayout />,
