@@ -8,9 +8,12 @@ import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import InputLabel from "@mui/material/InputLabel";
-import LogoWOName from "../../../../assets/logos/LogoWOName.svg";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import RegisterBackground from "./components/RegisterBackground";
+import { Paper } from "@mui/material";
+import RegisterSnackBar from "./components/SnackBars/RegisterSnackBar";
 
 function Copyright(props) {
   return (
@@ -30,6 +33,8 @@ function Copyright(props) {
   );
 }
 const AuthRegister = () => {
+  const [isPsychiatrist, setIsPsychiatrist] = React.useState("false");
+  const [open, setOpen] = React.useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -38,109 +43,145 @@ const AuthRegister = () => {
       password: data.get("password"),
     });
   };
+  const handleRoleChange = (event) => {
+    setIsPsychiatrist(event.target.value);
+  };
+  const onClickRegister = () => {
+    setOpen(true);
+  };
   return (
     <>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+      <Grid container component="main" sx={{ height: "100vh" }}>
+        <Grid item xs={false} sm={4} md={7}>
+          <RegisterBackground />
+        </Grid>
+
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <CssBaseline />
           <Box
-            component="img"
             sx={{
-              height: 233,
-              width: 350,
-              maxHeight: { xs: 233, md: 167 },
-              maxWidth: { xs: 350, md: 250 },
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              px: 3,
             }}
-            alt="Logo"
-            src={LogoWOName}
-          />
-          <Typography component="h1" variant="h5">
-            SIGN UP
-          </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
           >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <InputLabel>First Name</InputLabel>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <InputLabel>Last Name</InputLabel>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <InputLabel>Email Address</InputLabel>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <InputLabel>Password</InputLabel>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+            <RegisterSnackBar open={open} setOpen={setOpen} />
+            <Typography component="h1" variant="h5">
+              SIGN UP
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 3 }}
             >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <InputLabel>First Name</InputLabel>
+                  <TextField
+                    autoComplete="given-name"
+                    name="firstName"
+                    required
+                    fullWidth
+                    id="firstName"
+                    autoFocus
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <InputLabel>Last Name</InputLabel>
+                  <TextField
+                    required
+                    fullWidth
+                    id="lastName"
+                    name="lastName"
+                    autoComplete="family-name"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <InputLabel>Register as a Psychiatrist</InputLabel>
+                  <RadioGroup
+                    row
+                    name="row-radio-buttons-group"
+                    value={isPsychiatrist}
+                    onChange={handleRoleChange}
+                  >
+                    <FormControlLabel
+                      value={true}
+                      control={<Radio />}
+                      label="Yes"
+                    />
+                    <FormControlLabel
+                      value={false}
+                      control={<Radio />}
+                      label="No"
+                    />
+                  </RadioGroup>
+                </Grid>
+                {isPsychiatrist === "true" && (
+                  <Grid item xs={12}>
+                    <InputLabel>Doctor License Number</InputLabel>
+                    <TextField
+                      required
+                      fullWidth
+                      id="email"
+                      name="email"
+                      autoComplete="email"
+                    />
+                  </Grid>
+                )}
+                <Grid item xs={12}>
+                  <InputLabel>Email Address</InputLabel>
+                  <TextField
+                    required
+                    fullWidth
+                    id="email"
+                    name="email"
+                    autoComplete="email"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <InputLabel>Password</InputLabel>
+                  <TextField
+                    required
+                    fullWidth
+                    name="password"
+                    type="password"
+                    id="password"
+                    autoComplete="new-password"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox value="allowExtraEmails" color="primary" />
+                    }
+                    label="I want to receive inspiration, marketing promotions and updates via email."
+                  />
+                </Grid>
               </Grid>
-            </Grid>
+              <Button
+                // type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={onClickRegister}
+              >
+                Sign Up
+              </Button>
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <Link href="login" variant="body2">
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
+          {isPsychiatrist === "false" && <Copyright sx={{ mt: 5 }} />}
+        </Grid>
+      </Grid>
     </>
   );
 };

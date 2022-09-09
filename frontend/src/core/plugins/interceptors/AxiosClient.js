@@ -4,6 +4,7 @@ import {} from "dotenv/config";
 const config = {
   baseURL: " http://localhost:5000/",
   timeout: process.env.TIMEOUT,
+  // headers: { "Content-Type": "application/json" },
   // withCredentials: true,
 };
 

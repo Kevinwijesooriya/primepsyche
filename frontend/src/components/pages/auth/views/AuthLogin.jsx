@@ -10,9 +10,13 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
 import Paper from "@mui/material/Paper";
-import LogoWOName from "../../../../assets/logos/LogoWOName.svg";
+import LogoWName from "../../../../assets/logos/LogoWName.svg";
+import LoginBackground from "./components/LoginBackground";
+import LoginSnackBar from "./components/SnackBars/LoginSnackBar";
 
-function AuthLogin() {
+function AuthLogin(props) {
+  const { setIsLoggedIn } = props;
+  const [open, setOpen] = React.useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -21,31 +25,21 @@ function AuthLogin() {
       password: data.get("password"),
     });
   };
+  const onClickLogin = () => {
+    setOpen(true);
+  };
   return (
     <>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
+        <Grid item xs={false} sm={4} md={7}>
+          <LoginBackground />
+        </Grid>
+
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -53,14 +47,16 @@ function AuthLogin() {
           >
             <Box
               component="img"
-              sx={{
-                height: 233,
-                width: 350,
-                maxHeight: { xs: 233, md: 167 },
-                maxWidth: { xs: 350, md: 250 },
-              }}
               alt="Logo"
-              src={LogoWOName}
+              src={LogoWName}
+              sx={{
+                p: 8,
+              }}
+            />
+            <LoginSnackBar
+              open={open}
+              setOpen={setOpen}
+              setIsLoggedIn={setIsLoggedIn}
             />
             <Typography component="h1" variant="h5">
               SIGN IN
@@ -100,6 +96,7 @@ function AuthLogin() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onClick={onClickLogin}
               >
                 Sign In
               </Button>
