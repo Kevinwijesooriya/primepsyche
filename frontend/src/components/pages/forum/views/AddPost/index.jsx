@@ -13,19 +13,40 @@ import AddSnackBar from "../components/AddSnackBar";
 
 const AddPost = () => {
   const [files, setFiles] = React.useState();
-  // const [errors, setErrors] = React.useState({
-  //   alertType: "",
-  //   alertTitle: "",
-  //   alertMessage: "",
-  // });
+  const [error, setError] = React.useState({ message: "" });
+  const [title, setTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
   const [open, setOpen] = React.useState(false);
+
   const onClickShare = () => {
-    setOpen(true);
+    {
+      isValid() && setOpen(true);
+    }
+  };
+  const isValid = () => {
+    if (description === "") {
+      setError({ field: "description", message: "Please fill me" });
+      return false;
+    }
+    if (title === "") {
+      setError({ field: "title", message: "Please fill me" });
+      return false;
+    }
+    return true;
   };
   function handleChange(e) {
     console.log(e.target.files);
     setFiles(URL.createObjectURL(e.target.files[0]));
   }
+  const onChangeInput = (e) => {
+    if (e.target.name === "description") {
+      setDescription(e.target.value);
+    }
+    if (e.target.name === "title") {
+      setTitle(e.target.value);
+    }
+    setError({ message: "" });
+  };
   return (
     <>
       <Container>
@@ -57,6 +78,9 @@ const AddPost = () => {
               // label="Title"
               fullWidth
               multiline
+              error={error.field === "title"}
+              helperText={error.message}
+              onChange={(e) => onChangeInput(e)}
             />
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
@@ -68,6 +92,9 @@ const AddPost = () => {
               name="description"
               fullWidth
               multiline
+              error={error.field === "description"}
+              helperText={error.message}
+              onChange={(e) => onChangeInput(e)}
             />
           </Grid>
           <Grid item xs={12}>

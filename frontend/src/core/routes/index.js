@@ -12,10 +12,10 @@ import PsychiatristRoutes from "../../components/pages/psychiatrist/routes";
 
 function AppRoutes() {
   //TODO implement authentication validation
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  // React.useEffect(() => {
-  //   setIsLoggedIn(true);
-  // }, []);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
+  React.useEffect(() => {
+    setIsLoggedIn(true);
+  }, []);
 
   return (
     <>
