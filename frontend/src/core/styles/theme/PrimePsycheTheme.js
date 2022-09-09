@@ -189,21 +189,14 @@ const PrimePsycheTheme = createTheme({
     MuiButton: {
       variants: [
         {
-          props: { variant: "socialBtn" },
+          props: { variant: "footer" },
           style: {
-            minHeight: "40px",
-            lineHeight: "40px",
-            fontSize: "1.2rem",
-            fontWeight: 400,
-            textTransform: "none",
-            border: `1px solid ${Colors.prime_psyche_charcoal}`,
-            padding: "0px 0px",
-            background: "#fff",
-            color: `${Colors.prime_psyche_darker_green2}`,
-            "&:hover": {
-              background: "#fff",
-              color: `${Colors.prime_psyche_darker_green2}`,
-            },
+            // border: `1px solid ${Colors.prime_psyche_charcoal}`,
+            background: `${Colors.prime_psyche_darker_green2}`,
+            // "&:hover": {
+            //   background: "#fff",
+            //   color: `${Colors.prime_psyche_darker_green2}`,
+            // },
           },
         },
 
@@ -324,64 +317,12 @@ const PrimePsycheTheme = createTheme({
       },
     },
 
-    MuiSnackbar: {
-      styleOverrides: {
-        root: {
-          zIndex: 3000,
-          borderRadius: "6px",
-        },
-      },
-    },
-
-    MuiModal: {
-      styleOverrides: {
-        root: {
-          zIndex: 3000,
-        },
-      },
-    },
-
     MuiInputBase: {
       styleOverrides: {
         root: {
-          "&:hover, &:active": {
-            background: Colors.prime_psyche_light,
-          },
-          "fieldset.MuiOutlinedInput-notchedOutline": {
-            transition: ".2s ease",
-            border: `thin solid ${Colors.prime_psyche_charcoal4}`,
-            boxSizing: "border-box",
-          },
-          "&.MuiOutlinedInput-root": {
-            // minHeight: "48px",
-            // lineHeight: "48px",
-            padding: "0px 24px",
-          },
-          "&.Mui-focused fieldset.MuiOutlinedInput-notchedOutline": {
-            border: `2px solid ${Colors.primary}`,
-          },
-          "&.Mui-disabled": {
-            background: Colors.prime_psyche_light_grey3,
-          },
-          fontSize: "1.6rem",
+          fontSize: "1.2rem",
           fontWeight: 400,
-          minHeight: "48px",
-          background: Colors.prime_psyche_light_grey5,
-        },
-        colorSuccess: {
-          "fieldset.MuiOutlinedInput-notchedOutline": {
-            transition: ".2s ease",
-            border: `thin solid ${Colors.prime_psyche_green}`,
-            boxSizing: "border-box",
-          },
-          "&.Mui-focused fieldset.MuiOutlinedInput-notchedOutline": {
-            border: `2px solid ${Colors.prime_psyche_green}`,
-          },
-        },
-      },
-      input: {
-        styleOverrides: {
-          padding: `${Gutter.spacing}px ${Gutter.spacing * 2}px`,
+          background: Colors.prime_psyche_light_green5,
         },
       },
     },
@@ -435,13 +376,6 @@ const PrimePsycheTheme = createTheme({
     },
     //Mui icon button
     MuiIconButton: {
-      styleOverrides: {
-        root: {
-          padding: "12px",
-          borderRadius: 0,
-          textTransform: "uppercase",
-        },
-      },
       variants: [
         {
           props: { variant: "drawerButton" },
