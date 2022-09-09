@@ -58,15 +58,17 @@ const HelpHomePage = () => {
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
           <Grid item xs={12} sm={6}>
+            <InputLabel>Gender</InputLabel>
             <FormControl>
-              <InputLabel>Gender</InputLabel>
               <Select
+                autoWidth="true"
+                sx={{ width: "540px" }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value="gender"
               >
-                <MenuItem value="male">male</MenuItem>
-                <MenuItem value="female">female</MenuItem>
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -77,21 +79,18 @@ const HelpHomePage = () => {
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
           <Grid item xs={12} sm={6}>
+            <InputLabel>
+              which of the following topic match with your problem
+            </InputLabel>
             <FormControl>
-              <InputLabel>
-                which of the following topic match with your problem
-              </InputLabel>
               <Select
-                sx={{ with: "100px" }}
+                autoWidth="true"
+                sx={{ width: "540px" }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value="disorder"
               >
                 <MenuItem value="Depression">Depression</MenuItem>
-                <MenuItem value="nxiety disorder">
-                  generalized anxiety disorders social anxiety disorders panic
-                  disorders, and phobias.
-                </MenuItem>
                 <MenuItem value="OCD">
                   Obsessive-compulsive disorder (OCD)
                 </MenuItem>

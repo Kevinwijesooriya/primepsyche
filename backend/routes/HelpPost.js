@@ -1,6 +1,6 @@
 import { Router } from "express";
 const HelpPostRoute = Router();
-import HelpPostController from "../controllers/HelpPost";
+import HelpPostController from "../controllers/HelpPost.js";
 
 HelpPostRoute.get("/api/HelpPost/get/:id", HelpPostController.getOneHelpPost);
 HelpPostRoute.get("/api/HelpPost/getAll", HelpPostController.getHelpPosts);

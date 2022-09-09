@@ -43,7 +43,7 @@ app.listen(port, () => {
 import ForumPostRoute from "./routes/forumPost.js";
 
 //Help route imports
-import HelpPostRoute from "./routes/HelpPost";
+import HelpPostRoute from "./routes/HelpPost.js";
 
 //routes
 app.use(ForumPostRoute);

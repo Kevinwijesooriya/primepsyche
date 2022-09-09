@@ -1,4 +1,4 @@
-import HelpPost from "../models/HelpPost";
+import HelpPost from "../models/HelpPost.js";
 
 const HelpPostController = {
   getOneHelpPost: async (req, res) => {
