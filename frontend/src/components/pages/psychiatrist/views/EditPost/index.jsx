@@ -7,14 +7,17 @@ import Container from "@mui/material/Container";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
+import { ImageUploadButton, StyledLink, WarningButton } from "../../styles";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
-import { ImageUploadButton, WarningButton } from "../../styles";
 import { Stack } from "@mui/material";
+import { useState } from "react";
 
 const EditPost = () => {
   const [files, setFiles] = React.useState();
+  const [gender, setGender] = useState("");
+  const [disorder, setDisorder] = useState("");
+
   function handleChange(e) {
     console.log(e.target.files);
     setFiles(URL.createObjectURL(e.target.files[0]));
@@ -46,6 +49,7 @@ const EditPost = () => {
               required
               id="name"
               name="name"
+              defaultValue={"Kevin Dilshan Wijesooriya"}
               placeholder="Enter your name"
               // label="Title"
               sx={{ width: "340px" }}
@@ -60,11 +64,16 @@ const EditPost = () => {
                 sx={{ width: "340px" }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value="gender"
-                placeholder="Gender"
+                value={gender}
                 required
+                displayEmpty
+                onChange={(e) => {
+                  setGender(e.target.value);
+                }}
               >
-                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="">
+                  <em>Male</em>
+                </MenuItem>
                 <MenuItem value="female">Female</MenuItem>
               </Select>
             </FormControl>
@@ -76,7 +85,7 @@ const EditPost = () => {
               required
               id="age"
               name="age"
-              placeholder="How old are you?"
+              defaultValue={20}
               sx={{ width: "340px" }}
               multiline
             />
@@ -89,11 +98,16 @@ const EditPost = () => {
                 sx={{ width: "740px" }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value="disorder"
-                placeholder=" which of the following topic match with your problem"
+                value={disorder}
                 required
+                displayEmpty
+                onChange={(e) => {
+                  setDisorder(e.target.value);
+                }}
               >
-                <MenuItem value="Depression">Depression</MenuItem>
+                <MenuItem value="">
+                  <em>Depression</em>
+                </MenuItem>
                 <MenuItem value="OCD">
                   Obsessive-compulsive disorder (OCD)
                 </MenuItem>
@@ -113,7 +127,9 @@ const EditPost = () => {
               required
               id="description"
               name="description"
-              placeholder=" Describe your problem here"
+              defaultValue={
+                "Initially I had this problem. So I used to do this. Then I realized this. So I stated doing this. Thats how I overcome this. You also do this"
+              }
               multiline
             />
           </Grid>
@@ -137,8 +153,10 @@ const EditPost = () => {
             xs={12}
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
-            <Button>POST</Button>
-            <WarningButton>Cancel</WarningButton>
+            <StyledLink to={"/primepsyche/help/view"}>
+              <Button>POST</Button>
+              <WarningButton>Cancel</WarningButton>
+            </StyledLink>
           </Grid>
         </Grid>
       </Container>

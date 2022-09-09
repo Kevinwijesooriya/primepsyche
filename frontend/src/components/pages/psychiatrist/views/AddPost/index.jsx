@@ -12,6 +12,7 @@ import Box from "@mui/material/Box";
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import AddSnackBar from "../components/AddSnackBar";
 
 // import AddPostAlerts from "../ForumAlerts/AddPostAlerts";
 
@@ -23,11 +24,13 @@ const HelpHomePage = () => {
   //   alertTitle: "",
   //   alertMessage: "",
   // });
+  const [open, setOpen] = React.useState(false);
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const [disorder, setDisorder] = useState("");
   const [description, setDescription] = useState("");
+  const [error, setError] = React.useState({ message: "", field: "" });
 
   function sendData(e) {
     e.preventDefault();
@@ -39,22 +42,24 @@ const HelpHomePage = () => {
       disorder,
       description,
     };
-
-    axios
-      .post("http://localhost:5000/api/HelpPost/create", newPost)
-      .then((res) => {
-        console.log(res);
-        alert(res.data.message);
-        navigate("/primepsyche/help/view");
-        setName("");
-        setGender("");
-        setAge("");
-        setDisorder("");
-        setDescription("");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (name === "") {
+      setError({ field: "name", message: "Please fill me" });
+    } else {
+      axios
+        .post("http://localhost:5000/api/HelpPost/create", newPost)
+        .then((res) => {
+          console.log(res);
+          setOpen(true);
+          setName("");
+          setGender("");
+          setAge("");
+          setDisorder("");
+          setDescription("");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
   return (
     <>
@@ -72,6 +77,7 @@ const HelpHomePage = () => {
             alertTitle={"ERROR"}
             alertMessage={"Woops this is an error !"}
           /> */}
+          <AddSnackBar open={open} setOpen={setOpen} />
           <Typography variant="PageHeader" gutterBottom>
             Professional Help/request
           </Typography>
@@ -90,6 +96,8 @@ const HelpHomePage = () => {
               onChange={(e) => {
                 setName(e.target.value);
               }}
+              error={error.field === "name"}
+              helperText={error.message}
             />
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
@@ -97,16 +105,20 @@ const HelpHomePage = () => {
             <InputLabel>Gender</InputLabel>
             <FormControl>
               <Select
+                displayEmpty
                 sx={{ width: "340px" }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value="gender"
+                value={gender}
                 placeholder="Gender"
                 required
                 onChange={(e) => {
                   setGender(e.target.value);
                 }}
               >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
                 <MenuItem value="male">Male</MenuItem>
                 <MenuItem value="female">Female</MenuItem>
               </Select>
@@ -132,16 +144,20 @@ const HelpHomePage = () => {
             <InputLabel>Type of Disorder</InputLabel>
             <FormControl>
               <Select
+                displayEmpty
                 sx={{ width: "740px" }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value="disorder"
+                value={disorder}
                 placeholder=" which of the following topic match with your problem"
                 required
                 onChange={(e) => {
                   setDisorder(e.target.value);
                 }}
               >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
                 <MenuItem value="Depression">Depression</MenuItem>
                 <MenuItem value="OCD">
                   Obsessive-compulsive disorder (OCD)
