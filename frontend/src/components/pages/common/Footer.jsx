@@ -81,7 +81,11 @@ export default function Footer() {
                 to={page.path}
                 key={`link${page.label}`}
               >
-                <Button key={page.label} sx={{ my: 2, display: "block" }}>
+                <Button
+                  variant="footer"
+                  key={page.label}
+                  sx={{ my: 2, display: "block" }}
+                >
                   {page.label}
                 </Button>
               </Link>
