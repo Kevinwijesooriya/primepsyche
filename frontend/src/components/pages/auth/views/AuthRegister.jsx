@@ -81,23 +81,16 @@ const AuthRegister = () => {
                 <Grid item xs={12} sm={6}>
                   <InputLabel>First Name</InputLabel>
                   <TextField
-                    autoComplete="given-name"
                     name="firstName"
                     required
                     fullWidth
-                    id="firstName"
+                    // id="firstName"
                     autoFocus
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <InputLabel>Last Name</InputLabel>
-                  <TextField
-                    required
-                    fullWidth
-                    id="lastName"
-                    name="lastName"
-                    autoComplete="family-name"
-                  />
+                  <TextField required fullWidth id="lastName" name="lastName" />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <InputLabel>Register as a Psychiatrist</InputLabel>
@@ -122,24 +115,12 @@ const AuthRegister = () => {
                 {isPsychiatrist === "true" && (
                   <Grid item xs={12}>
                     <InputLabel>Doctor License Number</InputLabel>
-                    <TextField
-                      required
-                      fullWidth
-                      id="email"
-                      name="email"
-                      autoComplete="email"
-                    />
+                    <TextField required fullWidth id="email" name="email" />
                   </Grid>
                 )}
                 <Grid item xs={12}>
                   <InputLabel>Email Address</InputLabel>
-                  <TextField
-                    required
-                    fullWidth
-                    id="email"
-                    name="email"
-                    autoComplete="email"
-                  />
+                  <TextField required fullWidth id="email" name="email" />
                 </Grid>
                 <Grid item xs={12}>
                   <InputLabel>Password</InputLabel>
@@ -148,8 +129,6 @@ const AuthRegister = () => {
                     fullWidth
                     name="password"
                     type="password"
-                    id="password"
-                    autoComplete="new-password"
                   />
                 </Grid>
                 <Grid item xs={12}>
