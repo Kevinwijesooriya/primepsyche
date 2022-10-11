@@ -6,65 +6,36 @@ import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { Box, Button, Divider } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
 import { PostContainer, StyledLink, WarningButtonOutlined } from "../../styles";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import CommentIcon from "@mui/icons-material/Comment";
 import Stack from "@mui/material/Stack";
 import { Colors } from "../../../../../core/styles/theme/PrimePsycheTheme";
 import BasicPagination from "../components/Pagination";
 import AlertDialog from "../DeleteConfirmation/index";
+import EventAPI from "../../../../../core/services/EventAPI";
 
 const EventHomePage = () => {
     const [open, setOpen] = React.useState(false);
+    const [eventsList, setEventsList] = React.useState([]);
+    const [deleteId, setDeleteId] = React.useState("");
 
-    const onClickDelete = () => {
-        setOpen(true);
+    const fetchData = async ()=> {
+        const response = await EventAPI.getAll();
+        setEventsList(response.data.data);
+    }
+    React.useEffect(() => {
+        fetchData();
+    }, []);
+
+    // React.useEffect(() => {
+    //     fetchData();
+    // }, [open]);
+
+    const onClickDelete = (id) => {
+        setDeleteId(id);
+        // setOpen(true);
     };
-    const PostList = [
-        {
-            title: "The light programme - Mental health awareness session",
-            date: "08/09/2022",
-            time: "08:00 PM",
-            conducted: "Dr. Pushpakumara",
-            image:
-                "https://www.pngitem.com/pimgs/m/506-5066994_problem-png-transparent-png.png",
-        },
-        {
-            title: "The light programme - Mental health awareness session",
-            date: "09/10/2022",
-            time: "09:00 PM",
-            conducted: "Dr. Pushpakumara",
-            image:
-                "https://www.pngitem.com/pimgs/m/506-5066994_problem-png-transparent-png.png",
-        },
-        {
-            title: "The light programme - Mental health awareness session",
-            date: "11/12/2022",
-            time: "09:30 PM",
-            conducted: "Dr. Pushpakumara",
-            image:
-                "https://www.pngitem.com/pimgs/m/506-5066994_problem-png-transparent-png.png",
-        },
-        {
-            title: "The light programme - Mental health awareness session",
-            date: "12/12/2022",
-            time: "08:30 PM",
-            conducted: "Dr. Pushpakumara",
-            image:
-                "https://www.pngitem.com/pimgs/m/506-5066994_problem-png-transparent-png.png",
-        },
-        {
-            title: "The light programme - Mental health awareness session",
-            date: "Aug 12, 2022",
-            time: "09:00 PM",
-            conducted: "Dr. Pushpakumara",
-            image:
-                "https://www.pngitem.com/pimgs/m/506-5066994_problem-png-transparent-png.png",
-        },
-    ];
 
     return (
         <>
@@ -85,30 +56,30 @@ const EventHomePage = () => {
                     <Button>ADD NEW EVENT</Button>
                 </StyledLink>
             </Box>
-            {PostList &&
-                PostList.map((post) => (
+            {eventsList &&
+                eventsList.map((event) => (
                     <PostContainer item xs={12} md={6}>
                         <CardActionArea component="a" href="#">
                             <Card sx={{ display: "flex" }}>
                                 <CardContent sx={{ flex: 1, p: 2 }}>
                                     <Typography component="h2" variant="h6">
-                                        Title : <Typography display="inline" >{post.title}</Typography>
+                                        Title : <Typography display="inline" >{event.title}</Typography>
                                     </Typography>
                                     <Typography component="h2" variant="h6">
-                                        Date : <Typography display="inline"> {post.date}  </Typography>
+                                        Date : <Typography display="inline"> {event.date}  </Typography>
                                     </Typography>
                                     <Typography component="h2" variant="h6">
-                                        Time : <Typography display="inline"> {post.time}  </Typography>
+                                        Time : <Typography display="inline"> {event.time}  </Typography>
                                     </Typography>
                                     <Typography component="h2" variant="h6">
-                                        Conducted By : <Typography display="inline"> {post.conducted}  </Typography>                      
+                                        Conducted By : <Typography display="inline"> {event.conducted_by}  </Typography>                      
                                     </Typography>
                                 </CardContent>
                                 <CardMedia
                                     component="img"
                                     sx={{ width: 160, display: { xs: "none", sm: "block" } }}
                                     alt="image"
-                                    image={post.image}
+                                    image={event.image}
                                 />
                             </Card>
                             <Divider></Divider>
@@ -133,14 +104,14 @@ const EventHomePage = () => {
                                         spacing={1}
                                         sx={{ display: "flex", justifyContent: "flex-end" }}
                                     >
-                                        <StyledLink to="/primepsyche/events/edit">
+                                        <StyledLink to={`/primepsyche/events/edit/${event._id}`}>
                                             <Button variant="outlined" startIcon={<EditIcon />}>
                                                 Edit
                                             </Button>
                                         </StyledLink>
                                         <WarningButtonOutlined
                                             startIcon={<DeleteIcon />}
-                                            onClick={onClickDelete}
+                                            onClick={() => onClickDelete(event._id)}
                                         >
                                             Delete
                                         </WarningButtonOutlined>
@@ -153,7 +124,7 @@ const EventHomePage = () => {
             <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>
                 <BasicPagination count={10} />
             </Box>
-            <AlertDialog open={open} setOpen={setOpen} />
+            <AlertDialog open={open} setOpen={setOpen} deleteId={deleteId} />
         </>
     );
 };

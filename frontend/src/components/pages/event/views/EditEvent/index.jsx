@@ -12,10 +12,15 @@ import { Stack } from "@mui/material";
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import moment from "moment";
+import EditSnackBar from "../components/EditSnackBar";
 
 const EditEvent = () => {
     const [value, setValue] = React.useState(moment('2014-08-18T21:11:54'));
-    const [files, setFiles] = React.useState();
+    const [files, setFiles] = React.useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7AfPcJcDM3HsTHJevFnRVDDSMcLPnVbX16A&usqp=CAU");
+    const [open, setOpen] = React.useState(false);
+    const [error, setError] = React.useState({ message: "" });
+    const [title, setTitle] = React.useState("");
+    const [description, setDescription] = React.useState("");
     function handleChange(e) {
         console.log(e);
         setFiles(URL.createObjectURL(e.target.files[0]));
@@ -30,6 +35,31 @@ const EditEvent = () => {
         setValue(newValue);
     };
 
+    const onClickShare = () =>  {
+        isValid() && setOpen(true);
+    };
+    
+    const isValid = () => {
+        if (description === "") {
+            setError({ field: "description", message: "Please fill me" });
+            return false;
+        }
+        if (title === "") {
+            setError({ field: "title", message: "Please fill me" });
+            return false;
+        }
+        return true;
+    };
+    const onChangeInput = (e) => {
+        if (e.target.name === "description") {
+            setDescription(e.target.value);
+        }
+        if (e.target.name === "title") {
+            setTitle(e.target.value);
+        }
+        setError({ message: "" });
+    };
+
     return (
         <>
             <Container>
@@ -41,6 +71,7 @@ const EditEvent = () => {
                         display: { xs: "none", md: "flex" },
                     }}
                 >
+                    <EditSnackBar open={open} setOpen={setOpen} />
                     <Typography variant="PageHeader" gutterBottom>
                         Edit Event
                     </Typography>
@@ -48,7 +79,8 @@ const EditEvent = () => {
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
                         <InputLabel>Title</InputLabel>
-                        <TextField required id="title" name="title" fullWidth multiline />
+                        <TextField defaultValue={"The length programme - Mental health awareness session "} required id="title" name="title" fullWidth multiline helperText={error.message}
+                            onChange={(e) => onChangeInput(e)} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <InputLabel>Date</InputLabel>
@@ -67,7 +99,7 @@ const EditEvent = () => {
                         /> </Grid>
                     <Grid item xs={12} sm={6}>
                         <InputLabel>Conducted By</InputLabel>
-                        <TextField
+                        <TextField defaultValue={"Dr.Pushpakumara"}
                             required
                             id="description"
                             name="description"
@@ -78,22 +110,25 @@ const EditEvent = () => {
                     <Grid item xs={12} sm={6}>
                         <InputLabel>Description</InputLabel>
                         <TextField
+                            defaultValue={"It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout..."}
                             required
                             id="description"
                             name="description"
                             fullWidth
                             multiline
+                            helperText={error.message}
+                            onChange={(e) => onChangeInput(e)}
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <InputLabel>Enhance your post with an image!</InputLabel>
+                        <InputLabel>Image</InputLabel>
                         <ImageUploadButton component="label">
                             <input type="file" hidden onChange={handleChange} />
                             {files ? (
                                 <img
                                     alt="forum_post"
                                     src={files}
-                                    style={{ minHeight: 600, minWidth: 600 }}
+                                    style={{ height: 600, maxWidth: 600 }}
                                 />
                             ) : (
                                 <ImageOutlinedIcon sx={{ minHeight: 600, minWidth: 600 }} />
@@ -106,7 +141,7 @@ const EditEvent = () => {
                             spacing={1}
                             sx={{ display: "flex", justifyContent: "flex-end" }}
                         >
-                            <Button>save</Button>
+                            <Button onClick={onClickShare}>save</Button>
                             <WarningButton>Cancel</WarningButton>
                         </Stack>
                     </Grid>

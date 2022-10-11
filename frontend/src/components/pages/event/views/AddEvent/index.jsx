@@ -11,19 +11,55 @@ import { ImageUploadButton } from "../../styles";
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import moment from "moment";
+import AddSnackBar from "../components/AddSnackBar";
+
 
 
 const AddEvent = () => {
     const [value, setValue] = React.useState(moment('2014-08-18T21:11:54'));
+    const [open, setOpen] = React.useState(false);
+    const [error, setError] = React.useState({ message: "" });
+    const [title, setTitle] = React.useState("");
+    const [description, setDescription] = React.useState("");
+
 
     const [files, setFiles] = React.useState();
     function handleChange(e) {
         console.log(e.target.files);
         setFiles(URL.createObjectURL(e.target.files[0]));
-    }
+    };
+    const onClickShare = () => {
+        {
+            isValid() && setOpen(true);
+        }
+    };
+    const isValid = () => {
+        if (description === "") {
+            setError({ field: "description", message: "Please fill me" });
+            return false;
+        }
+        if (title === "") {
+            setError({ field: "title", message: "Please fill me" });
+            return false;
+        }
+        return true;
+    };
+    const onChangeInput = (e) => {
+        if (e.target.name === "description") {
+            setDescription(e.target.value);
+        }
+        if (e.target.name === "title") {
+            setTitle(e.target.value);
+        }
+        setError({ message: "" });
+    };
 
 
     const handleChangeDate = (newValue) => {
+        setValue(newValue);
+    };
+
+    const handleChangeTime = (newValue) => {
         setValue(newValue);
     };
     return (
@@ -37,6 +73,7 @@ const AddEvent = () => {
                         display: { xs: "none", md: "flex" },
                     }}
                 >
+                    <AddSnackBar open={open} setOpen={setOpen} />
                     <Typography variant="PageHeader" gutterBottom>
                         Add Event
                     </Typography>
@@ -51,6 +88,8 @@ const AddEvent = () => {
                             // label="Title"
                             fullWidth
                             multiline
+                            helperText={error.message}
+                            onChange={(e) => onChangeInput(e)}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}></Grid>
@@ -67,7 +106,7 @@ const AddEvent = () => {
                         <InputLabel>Time</InputLabel>
                         <TimePicker
                         value={value}
-                        onChange={handleChange}
+                        onChange={handleChangeTime}
                         renderInput={(params) => <TextField {...params} />}
                     /> </Grid>
                     <Grid item xs={12} sm={6}></Grid> 
@@ -90,11 +129,13 @@ const AddEvent = () => {
                             name="description"
                             fullWidth
                             multiline
+                            helperText={error.message}
+                            onChange={(e) => onChangeInput(e)}
                         />
                     </Grid>
                     
                     <Grid item xs={12}>
-                        <InputLabel>Enhance your post with an image!</InputLabel>
+                        <InputLabel>Image</InputLabel>
                         <ImageUploadButton component="label">
                             <input type="file" hidden onChange={handleChange} />
                             {files ? (
@@ -113,7 +154,7 @@ const AddEvent = () => {
                         xs={12}
                         sx={{ display: "flex", justifyContent: "flex-end" }}
                     >
-                        <Button>ADD</Button>
+                        <Button onClick={onClickShare}>ADD</Button>
                     </Grid>
                 </Grid>
             </Container>
