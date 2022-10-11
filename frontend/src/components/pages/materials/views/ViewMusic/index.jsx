@@ -18,6 +18,9 @@ import BasicPagination from "../components/Pagination";
 import AlertDialog from "../../../forum/views/DeleteConfirmation";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
+
+
 
 const ViewMusic = () => {
   const [open, setOpen] = React.useState(false);
@@ -39,16 +42,15 @@ const ViewMusic = () => {
       genre: "Modern Classical",
       album: "NaturesEye",
       image:
-        "https://pixabay.com/illustrations/eye-waterfall-city-the-shade-moon-462267/",
+        "https://lmg-labmanager.s3.amazonaws.com/assets/articleNo/28124/aImg/50895/deep-ocean-warming-as-climate-changes-l.jpg",
     },
     {
       _id: "uef-12345s",
-      title: "Deep in the Ocean",
-      artist: "Clair de Lune",
+      title: "Melody of Nature",
+      artist: "Chet Baker",
       genre: "Modern Classical",
-      album: "NaturesEye",
-      image:
-        "https://www.pngitem.com/pimgs/m/506-5066994_problem-png-transparent-png.png",
+      album: "Nature",
+      image: "https://mereinkling.files.wordpress.com/2012/07/naturemusic.jpg",
     },
   ];
 
@@ -65,6 +67,15 @@ const ViewMusic = () => {
         <Typography variant="PageHeader" gutterBottom>
           Music Library
         </Typography>
+        <StyledLink to="/primepsyche/materials/viewReadable">
+          <Button
+            sx={{ position: "absolute", right: "12%" }}
+            variant="outlined"
+            startIcon={<CollectionsBookmarkIcon />}
+          >
+            Explore Readable Section
+          </Button>
+        </StyledLink>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", py: 2 }}>
         <StyledLink to="/primepsyche/materials/addMusic">
