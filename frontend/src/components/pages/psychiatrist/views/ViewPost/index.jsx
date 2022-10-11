@@ -40,30 +40,6 @@ const ViewPosts = () => {
       description:
         "Initially I had this problem. So I used to do this. Then I realized this. So I stated doing this. Thats how I overcome this. You also do this",
     },
-    {
-      name: "Kevin Dilshan Wijesooriyaa",
-      gender: "Male",
-      age: "20",
-      disorder: "Depression",
-      description:
-        "Initially I had this problem. So I used to do this. Then I realized this. So I stated doing this. Thats how I overcome this. You also do this",
-    },
-    {
-      name: "Kevin Dilshan Wijesooriya",
-      gender: "Male",
-      age: "20",
-      disorder: "Depression",
-      description:
-        "Initially I had this problem. So I used to do this. Then I realized this. So I stated doing this. Thats how I overcome this. You also do this",
-    },
-    {
-      name: "Kevin Dilshan Wijesooriya",
-      gender: "Male",
-      age: "20",
-      disorder: "Depression",
-      description:
-        "Initially I had this problem. So I used to do this. Then I realized this. So I stated doing this. Thats how I overcome this. You also do this",
-    },
   ];
 
   return (
