@@ -74,10 +74,10 @@ function AuthLogin(props) {
                 fullWidth
                 id="email"
                 name="email"
-                autoComplete="email"
+
                 // autoFocus
               />
-              <InputLabel>Email Address</InputLabel>
+              <InputLabel>Password</InputLabel>
               <TextField
                 margin="normal"
                 required
@@ -85,7 +85,6 @@ function AuthLogin(props) {
                 name="password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}

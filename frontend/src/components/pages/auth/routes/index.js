@@ -23,6 +23,11 @@ function AuthRoutes(props) {
           element={<AuthLogin setIsLoggedIn={setIsLoggedIn} />}
         />
         <Route path="/register" element={<AuthRegister />} />
+        <Route path="/primepsyche/register" element={<AuthRegister />} />
+        <Route
+          path="/primepsyche/login"
+          element={<AuthLogin setIsLoggedIn={setIsLoggedIn} />}
+        />
       </Routes>
     </>
   );
