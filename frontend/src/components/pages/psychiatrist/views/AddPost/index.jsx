@@ -17,8 +17,6 @@ import AddSnackBar from "../components/AddSnackBar";
 // import AddPostAlerts from "../ForumAlerts/AddPostAlerts";
 
 const HelpHomePage = () => {
-  const [files, setFiles] = React.useState();
-  const navigate = useNavigate();
   // const [errors, setErrors] = React.useState({
   //   alertType: "",
   //   alertTitle: "",

@@ -7,10 +7,9 @@ import Container from "@mui/material/Container";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { ImageUploadButton, StyledLink, WarningButton } from "../../styles";
+import { StyledLink, WarningButton } from "../../styles";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
-import { Stack } from "@mui/material";
 import { useState } from "react";
 
 const EditPost = () => {
