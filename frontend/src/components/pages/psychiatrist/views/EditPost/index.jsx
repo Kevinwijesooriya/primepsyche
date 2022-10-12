@@ -16,6 +16,11 @@ const EditPost = () => {
   const [files, setFiles] = React.useState();
   const [gender, setGender] = useState("");
   const [disorder, setDisorder] = useState("");
+  const [payload, setPayload] = React.useState({
+    title: "",
+    description: "",
+    image: "",
+  });
 
   function handleChange(e) {
     console.log(e.target.files);

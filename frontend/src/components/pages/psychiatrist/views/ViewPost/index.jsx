@@ -16,6 +16,7 @@ import AlertDialog from "../DeleteConfirmation";
 import BasicPagination from "../components/Pagination";
 import { red } from "@mui/material/colors";
 import HelpPostAPI from "../../../../../core/services/HelpPostAPI";
+import { Link } from "react-router-dom";
 
 const ViewPosts = () => {
   const [open, setOpen] = React.useState(false);
@@ -65,11 +66,36 @@ const ViewPosts = () => {
       </Box>
       {PostList &&
         PostList.map((post) => (
-          <PostContainer item xs={12} md={6}>
-            <CardActionArea component="a" href="#">
-              <Card sx={{ display: "flex" }}>
+          <PostContainer
+            item
+            xs={12}
+            md={6}
+            key={`postList${post._id}`}
+            sx={{
+              background: (theme) =>
+                theme.palette.prime_psycheColors.prime_psyche_light_green5,
+            }}
+          >
+            <CardActionArea
+              component={Link}
+              to={`/primepsyche/help/view/${post._id}`}
+              sx={{
+                background: (theme) =>
+                  theme.palette.prime_psycheColors.prime_psyche_light_green4,
+              }}
+            >
+              <Card
+                sx={{
+                  display: "flex",
+                  background: (theme) =>
+                    theme.palette.prime_psycheColors.prime_psyche_light_green4,
+                }}
+              >
                 <CardContent sx={{ flex: 1, p: 2 }}>
                   <Typography component="h2" variant="h5"></Typography>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    {getDate(post.updatedAt)} by {post.name}
+                  </Typography>
                   <Typography variant="subtitle1" color="text.secondary">
                     Age : {post.age}
                   </Typography>
@@ -93,7 +119,7 @@ const ViewPosts = () => {
                     spacing={1}
                     sx={{ display: "flex", justifyContent: "flex-end" }}
                   >
-                    <StyledLink to="/primepsyche/help/edit">
+                    <StyledLink to={`/primepsyche/help/edit/${post._id}`}>
                       <IconButton>
                         <EditIcon />
                       </IconButton>

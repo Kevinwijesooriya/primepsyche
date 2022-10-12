@@ -5,6 +5,7 @@ import AddPost from "../views/AddPost";
 import view from "../views";
 import PsychaiatristBreadcrumbs from "../views/components/Breadcrumbs";
 import EditPost from "../views/EditPost";
+import ViewOne from "../views/ViewPost/viewOne";
 
 const PsychiatristRoutes = [
   {
@@ -17,6 +18,7 @@ const PsychiatristRoutes = [
       { path: "view", element: <HelpHomePage /> },
       { path: "add", element: <AddPost /> },
       { path: "edit", element: <EditPost /> },
+      { path: "view/:id", element: <ViewOne /> },
     ],
   },
 ];
