@@ -41,6 +41,8 @@ app.listen(port, () => {
 
 //route imports
 import ForumPostRoute from "./routes/forumPost.js";
+import ReadableMaterialsRoute from "./routes/readableMaterials.js";
 
 //routes
 app.use(ForumPostRoute);
+app.use(ReadableMaterialsRoute);

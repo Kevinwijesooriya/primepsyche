@@ -7,7 +7,7 @@ import Container from "@mui/material/Container";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
-import { ImageUploadButton, WarningButton } from "../../styles";
+import { ImageUploadButton, StyledLink, WarningButton } from "../../styles";
 import { Stack } from "@mui/material";
 
 const EditMusic = () => {
@@ -35,17 +35,38 @@ const EditMusic = () => {
           <Grid item xs={12} sm={6}>
             <Grid item xs={12}>
               <InputLabel>Title</InputLabel>
-              <TextField required id="title" name="title" fullWidth multiline />
+              <TextField
+                required
+                id="title"
+                name="title"
+                defaultValue={"Deep in the Ocean"}
+                fullWidth
+                multiline
+              />
             </Grid>
 
             <Grid item xs={12}>
               <InputLabel>Genre</InputLabel>
-              <TextField required id="genre" name="genre" fullWidth multiline />
+              <TextField
+                required
+                id="genre"
+                name="genre"
+                defaultValue={"Modern Classical"}
+                fullWidth
+                multiline
+              />
             </Grid>
 
             <Grid item xs={12}>
               <InputLabel>Album</InputLabel>
-              <TextField required id="album" name="album" fullWidth multiline />
+              <TextField
+                required
+                id="album"
+                name="album"
+                defaultValue={"NaturesEye"}
+                fullWidth
+                multiline
+              />
             </Grid>
 
             <Grid item xs={12}>
@@ -54,6 +75,7 @@ const EditMusic = () => {
                 required
                 id="artist"
                 name="artist"
+                defaultValue={"Clair de Lune"}
                 fullWidth
                 multiline
               />
@@ -61,11 +83,27 @@ const EditMusic = () => {
 
             <Grid item xs={12}>
               <InputLabel>Audio File</InputLabel>
-              <Stack></Stack>
-              <Button component="label">
-                <input type="file" hidden onChange={handleChange} />
-                BROWSE
-              </Button>
+              <Stack
+                direction="row"
+                spacing={2}
+                sx={{
+                  display: "flex",
+
+                  flexDirection: "row",
+
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Typography>
+                    Select a music file from your computer
+                  </Typography>
+                </Box>
+                <Button component="label">
+                  <input type="file" hidden onChange={handleChange} />
+                  BROWSE
+                </Button>
+              </Stack>
             </Grid>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -94,7 +132,9 @@ const EditMusic = () => {
                 spacing={1}
                 sx={{ display: "flex", justifyContent: "flex-end" }}
               >
-                <Button>save</Button>
+                <StyledLink to="/primepsyche/materials/viewMusic">
+                  <Button>save</Button>
+                </StyledLink>
                 <WarningButton>Cancel</WarningButton>
               </Stack>
             </Grid>
