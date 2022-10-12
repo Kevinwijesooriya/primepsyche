@@ -4,6 +4,7 @@ import ForumHomePage from "../views";
 import AddPost from "../views/AddPost";
 import ForumBreadcrumbs from "../views/components/Breadcrumbs";
 import EditPost from "../views/EditPost";
+import ViewOne from "../views/ViewPosts/ViewOne";
 
 const ForumRoutes = [
   {
@@ -14,6 +15,7 @@ const ForumRoutes = [
       { path: "view", element: <ForumHomePage /> },
       { path: "add", element: <AddPost /> },
       { path: "edit/:id", element: <EditPost /> },
+      { path: "view/:id", element: <ViewOne /> },
     ],
   },
   // { path: "forum", element: <ForumHomePage /> },

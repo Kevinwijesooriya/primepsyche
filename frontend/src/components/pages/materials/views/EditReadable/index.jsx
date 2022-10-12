@@ -7,7 +7,7 @@ import Container from "@mui/material/Container";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
-import { ImageUploadButton, WarningButton } from "../../styles";
+import { ImageUploadButton, StyledLink, WarningButton } from "../../styles";
 import { Stack } from "@mui/material";
 
 const EditReadable = () => {
@@ -35,7 +35,14 @@ const EditReadable = () => {
           <Grid item xs={12} sm={6}>
             <Grid item xs={12}>
               <InputLabel>Title</InputLabel>
-              <TextField required id="title" name="title" fullWidth multiline />
+              <TextField
+                required
+                id="title"
+                name="title"
+                defaultValue={"Mindfulness"}
+                fullWidth
+                multiline
+              />
             </Grid>
 
             <Grid item xs={12}>
@@ -44,17 +51,7 @@ const EditReadable = () => {
                 required
                 id="author"
                 name="author"
-                fullWidth
-                multiline
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <InputLabel>References</InputLabel>
-              <TextField
-                required
-                id="references"
-                name="references"
+                defaultValue={"Joseph Goldstein"}
                 fullWidth
                 multiline
               />
@@ -62,11 +59,27 @@ const EditReadable = () => {
 
             <Grid item xs={12}>
               <InputLabel>Readable File</InputLabel>
-              <Stack></Stack>
-              <Button component="label">
-                <input type="file" hidden onChange={handleChange} />
-                BROWSE
-              </Button>
+              <Stack
+                direction="row"
+                spacing={2}
+                sx={{
+                  display: "flex",
+
+                  flexDirection: "row",
+
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Typography>
+                    Select a music file from your computer
+                  </Typography>
+                </Box>
+                <Button component="label">
+                  <input type="file" hidden onChange={handleChange} />
+                  BROWSE
+                </Button>
+              </Stack>
             </Grid>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -95,7 +108,9 @@ const EditReadable = () => {
                 spacing={1}
                 sx={{ display: "flex", justifyContent: "flex-end" }}
               >
-                <Button>save</Button>
+                <StyledLink to="/primepsyche/materials/viewReadable">
+                  <Button>save</Button>
+                </StyledLink>
                 <WarningButton>Cancel</WarningButton>
               </Stack>
             </Grid>

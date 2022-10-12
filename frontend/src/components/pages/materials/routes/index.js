@@ -7,6 +7,7 @@ import EditMusic from "../views/EditMusic";
 import EditReadable from "../views/EditReadable";
 import MaterialHomePage from "../views";
 import ViewMusic from "../views/ViewMusic";
+import ViewReadable from "../views/ViewReadable";
 
 
 const MaterialRoutes = [
@@ -17,6 +18,7 @@ const MaterialRoutes = [
     children: [
       { path: "", element: <Navigate to="viewMusic" /> },
       { path: "viewMusic", element: <ViewMusic /> },
+      { path: "viewReadable", element: <ViewReadable /> },
       { path: "addMusic", element: <AddMusic /> },
       { path: "addReadable", element: <AddReadable /> },
       { path: "editMusic", element: <EditMusic /> },
