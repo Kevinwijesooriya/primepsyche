@@ -38,10 +38,10 @@ class ForumPostAPI {
     }
   };
 
-  static update = async ({ id, payload }) => {
+  static update = async ({ postId, payload }) => {
     try {
       const response = await axiosClient().put(
-        `/api/forumPost/update/${id}`,
+        `/api/forumPost/update/${postId}`,
         payload
       );
       console.log("API ~ Forum Post ~ update ", response);

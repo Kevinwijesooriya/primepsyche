@@ -4,7 +4,7 @@ import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 
 const EditSnackBar = (props) => {
-  const { open, setOpen } = props;
+  const { open, setOpen, success } = props;
   const navigate = useNavigate();
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -24,8 +24,15 @@ const EditSnackBar = (props) => {
         autoHideDuration={3000}
         onClose={handleClose}
       >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Update Success!
+        <Alert
+          onClose={handleClose}
+          severity={success ? "success" : "error"}
+          sx={{ width: "100%" }}
+          variant="filled"
+        >
+          {success
+            ? "You Updated Your Post Successfully "
+            : "Ops! Something went wrong!"}
         </Alert>
       </Snackbar>
     </>

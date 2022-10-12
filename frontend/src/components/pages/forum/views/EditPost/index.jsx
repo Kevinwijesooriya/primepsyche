@@ -15,30 +15,60 @@ import EditSnackBar from "../components/EditSnackBar";
 
 const EditPost = () => {
   const [files, setFiles] = React.useState();
-  const [postsData, setPostsData] = React.useState({
+  const [payload, setPayload] = React.useState({
     title: "",
     description: "",
     image: "",
   });
-  const { title, description, image } = postsData;
+  const [error, setError] = React.useState({ field: "", message: "" });
+  const { title, description, image } = payload;
   const params = useParams();
   const postId = params.id;
   const [open, setOpen] = React.useState(false);
+  const [updateSuccess, setUpdateSuccess] = React.useState(false);
   async function fetchData() {
     const response = await ForumPostAPI.getOne(postId);
-    setPostsData(response.data.data);
+    setPayload(response.data.data);
   }
-  const onClickSave = () => {
-  setOpen(true);
-};
+  const onClickSave = async (e) => {
+    e.preventDefault();
+    {
+      isValid() && setOpen(true);
+    }
+    const response = await ForumPostAPI.update({ postId, payload });
+    console.log("~ onClickShare ~ response", response);
+    if (response.status === 200) {
+      setUpdateSuccess(true);
+    } else {
+      setUpdateSuccess(false);
+    }
+  };
   React.useEffect(() => {
     fetchData();
   }, []);
   function handleChange(e) {
     console.log(e.target.files);
-    console.log("postsData", postsData);
+    console.log("payload", payload);
     setFiles(URL.createObjectURL(e.target.files[0]));
   }
+  const onChangeInput = (e) => {
+    setError({ field: "", message: "" });
+    setPayload({
+      ...payload,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const isValid = () => {
+    if (payload.description === "") {
+      setError({ field: "description", message: "Please fill me" });
+      return false;
+    }
+    if (payload.title === "") {
+      setError({ field: "title", message: "Please fill me" });
+      return false;
+    }
+    return true;
+  };
   return (
     <>
       <Container>
@@ -50,7 +80,7 @@ const EditPost = () => {
             display: { xs: "none", md: "flex" },
           }}
         >
-          <EditSnackBar open={open} setOpen={setOpen} />
+          <EditSnackBar open={open} setOpen={setOpen} success={updateSuccess} />
           <Typography variant="PageHeader" gutterBottom>
             Update your post
           </Typography>
@@ -65,6 +95,9 @@ const EditPost = () => {
               fullWidth
               multiline
               defaultValue={title || ""}
+              onChange={(e) => onChangeInput(e)}
+              error={error.field === "title"}
+              helperText={!payload.title && error.message}
             />
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
@@ -77,6 +110,9 @@ const EditPost = () => {
               fullWidth
               multiline
               defaultValue={description || ""}
+              onChange={(e) => onChangeInput(e)}
+              error={error.field === "description"}
+              helperText={!payload.description && error.message}
             />
           </Grid>
           <Grid item xs={12}>
