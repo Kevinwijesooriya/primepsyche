@@ -10,22 +10,63 @@ import Select from "@mui/material/Select";
 import { StyledLink, WarningButton } from "../../styles";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
-import { useState } from "react";
+import { useParams } from "react-router-dom";
+import EditSnackBar from "../components/EditSnackBar";
+import HelpPostAPI from "../../../../../core/services/HelpPostAPI";
 
 const EditPost = () => {
   const [files, setFiles] = React.useState();
-  const [gender, setGender] = useState("");
-  const [disorder, setDisorder] = useState("");
   const [payload, setPayload] = React.useState({
-    title: "",
+    name: "",
+    age: "",
+    gender: "",
+    disorder: "",
     description: "",
-    image: "",
   });
-
-  function handleChange(e) {
-    console.log(e.target.files);
-    setFiles(URL.createObjectURL(e.target.files[0]));
+  const [error, setError] = React.useState({ field: "", message: "" });
+  const { name, age, gender, disorder, description } = payload;
+  const params = useParams();
+  const postId = params.id;
+  const [open, setOpen] = React.useState(false);
+  const [updateSuccess, setUpdateSuccess] = React.useState(false);
+  async function fetchData() {
+    const response = await HelpPostAPI.getOne(postId);
+    setPayload(response.data.data);
   }
+  const onClickSave = async (e) => {
+    e.preventDefault();
+    {
+      isValid() && setOpen(true);
+    }
+    const response = await HelpPostAPI.update({ postId, payload });
+    console.log("~ onClickShare ~ response", response);
+    if (response.status === 200) {
+      setUpdateSuccess(true);
+    } else {
+      setUpdateSuccess(false);
+    }
+  };
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+  const onChangeInput = (e) => {
+    setError({ field: "", message: "" });
+    setPayload({
+      ...payload,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const isValid = () => {
+    if (payload.description === "") {
+      setError({ field: "description", message: "Please fill me" });
+      return false;
+    }
+    if (payload.disorder === "") {
+      setError({ field: "disorder", message: "Please fill me" });
+      return false;
+    }
+    return true;
+  };
   return (
     <>
       <Container>
@@ -37,11 +78,7 @@ const EditPost = () => {
             display: { xs: "none", md: "flex" },
           }}
         >
-          {/* <AddPostAlerts
-            alertType={"error"}
-            alertTitle={"ERROR"}
-            alertMessage={"Woops this is an error !"}
-          /> */}
+          <EditSnackBar open={open} setOpen={setOpen} success={updateSuccess} />
           <Typography variant="PageHeader" gutterBottom>
             Professional Help/request
           </Typography>
@@ -53,11 +90,12 @@ const EditPost = () => {
               required
               id="name"
               name="name"
-              defaultValue={"Kevin Dilshan Wijesooriya"}
-              placeholder="Enter your name"
-              // label="Title"
+              defaultValue={name || ""}
               sx={{ width: "340px" }}
+              onChange={(e) => onChangeInput(e)}
               multiline
+              error={error.field === "name"}
+              helperText={!payload.name && error.message}
             />
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
@@ -67,13 +105,14 @@ const EditPost = () => {
               <Select
                 sx={{ width: "340px" }}
                 labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={gender}
                 required
+                id="gender"
+                name="gender"
+                defaultValue={gender || ""}
                 displayEmpty
-                onChange={(e) => {
-                  setGender(e.target.value);
-                }}
+                onChange={(e) => onChangeInput(e)}
+                error={error.field === "gender"}
+                helperText={!payload.gender && error.message}
               >
                 <MenuItem value="">
                   <em>Male</em>
@@ -89,9 +128,12 @@ const EditPost = () => {
               required
               id="age"
               name="age"
-              defaultValue={20}
               sx={{ width: "340px" }}
               multiline
+              defaultValue={age || ""}
+              onChange={(e) => onChangeInput(e)}
+              error={error.field === "age"}
+              helperText={!payload.age && error.message}
             />
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
@@ -101,13 +143,14 @@ const EditPost = () => {
               <Select
                 sx={{ width: "740px" }}
                 labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={disorder}
+                id="dissorder"
+                name="disorder"
                 required
                 displayEmpty
-                onChange={(e) => {
-                  setDisorder(e.target.value);
-                }}
+                defaultValue={disorder || ""}
+                onChange={(e) => onChangeInput(e)}
+                error={error.field === "disorder"}
+                helperText={!payload.disorder && error.message}
               >
                 <MenuItem value="">
                   <em>Depression</em>
@@ -131,34 +174,22 @@ const EditPost = () => {
               required
               id="description"
               name="description"
-              defaultValue={
-                "Initially I had this problem. So I used to do this. Then I realized this. So I stated doing this. Thats how I overcome this. You also do this"
-              }
               multiline
+              defaultValue={description || ""}
+              onChange={(e) => onChangeInput(e)}
+              error={error.field === "description"}
+              helperText={!payload.description && error.message}
             />
           </Grid>
-          {/* <Grid item xs={12}>
-            <InputLabel>Enhance your post with an image!</InputLabel>
-            <ImageUploadButton component="label">
-              <input type="file" hidden onChange={handleChange} />
-              {files ? (
-                <img
-                  alt="forum_post"
-                  src={files}
-                  style={{ minHeight: 600, minWidth: 600 }}
-                />
-              ) : (
-                <ImageOutlinedIcon sx={{ minHeight: 600, minWidth: 600 }} />
-              )}
-            </ImageUploadButton>
-          </Grid> */}
           <Grid
             item
             xs={12}
+            direction="row"
+            spacing={1}
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
             <StyledLink to={"/primepsyche/help/view"}>
-              <Button>POST</Button>
+              <Button onClick={onClickSave}>POST</Button>
               <WarningButton>Cancel</WarningButton>
             </StyledLink>
           </Grid>
@@ -167,5 +198,4 @@ const EditPost = () => {
     </>
   );
 };
-
 export default EditPost;

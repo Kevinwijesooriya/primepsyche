@@ -97,6 +97,9 @@ const ViewPosts = () => {
                     {getDate(post.updatedAt)} by {post.name}
                   </Typography>
                   <Typography variant="subtitle1" color="text.secondary">
+                    Gender : {post.gender}
+                  </Typography>
+                  <Typography variant="subtitle1" color="text.secondary">
                     Age : {post.age}
                   </Typography>
                   <Typography variant="subtitle1" color="text.secondary">
@@ -108,29 +111,29 @@ const ViewPosts = () => {
                   </Typography>
                 </CardContent>
               </Card>
-              <Divider></Divider>
-              <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
-                  <Stack direction="row" spacing={1}></Stack>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Stack
-                    direction="row"
-                    spacing={1}
-                    sx={{ display: "flex", justifyContent: "flex-end" }}
-                  >
-                    <StyledLink to={`/primepsyche/help/edit/${post._id}`}>
-                      <IconButton>
-                        <EditIcon />
-                      </IconButton>
-                    </StyledLink>
-                    <IconButton onClick={() => onClickDelete(post._id)}>
-                      <DeleteIcon sx={{ color: red[900] }} />
-                    </IconButton>
-                  </Stack>
-                </Grid>
-              </Grid>
             </CardActionArea>
+            <Divider></Divider>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6}>
+                <Stack direction="row" spacing={1}></Stack>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{ display: "flex", justifyContent: "flex-end" }}
+                >
+                  <StyledLink to={`/primepsyche/help/edit/${post._id}`}>
+                    <IconButton>
+                      <EditIcon />
+                    </IconButton>
+                  </StyledLink>
+                  <IconButton onClick={() => onClickDelete(post._id)}>
+                    <DeleteIcon sx={{ color: red[900] }} />
+                  </IconButton>
+                </Stack>
+              </Grid>
+            </Grid>
           </PostContainer>
         ))}
       <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>
