@@ -17,7 +17,7 @@ const PsychiatristRoutes = [
       { path: "", element: <Navigate to="view" /> },
       { path: "view", element: <HelpHomePage /> },
       { path: "add", element: <AddPost /> },
-      { path: "edit", element: <EditPost /> },
+      { path: "edit/:id", element: <EditPost /> },
       { path: "view/:id", element: <ViewOne /> },
     ],
   },

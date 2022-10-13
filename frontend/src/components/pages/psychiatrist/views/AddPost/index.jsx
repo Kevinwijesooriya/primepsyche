@@ -11,17 +11,9 @@ import Box from "@mui/material/Box";
 
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import AddSnackBar from "../components/AddSnackBar";
 
-// import AddPostAlerts from "../ForumAlerts/AddPostAlerts";
-
 const HelpHomePage = () => {
-  // const [errors, setErrors] = React.useState({
-  //   alertType: "",
-  //   alertTitle: "",
-  //   alertMessage: "",
-  // });
   const [open, setOpen] = React.useState(false);
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
@@ -40,7 +32,7 @@ const HelpHomePage = () => {
       disorder,
       description,
     };
-    if (name === "") {
+    if (name === "" && age === "") {
       setError({ field: "name", message: "Please fill me" });
     } else {
       axios
@@ -106,13 +98,16 @@ const HelpHomePage = () => {
                 displayEmpty
                 sx={{ width: "340px" }}
                 labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                id="gender"
+                name="gender"
                 value={gender}
                 placeholder="Gender"
                 required
                 onChange={(e) => {
                   setGender(e.target.value);
                 }}
+                error={error.field === "gender"}
+                helperText={error.message}
               >
                 <MenuItem value="">
                   <em>None</em>
