@@ -14,60 +14,42 @@ import Stack from "@mui/material/Stack";
 import { Colors } from "../../../../../core/styles/theme/PrimePsycheTheme";
 import AlertDialog from "../DeleteConfirmation";
 import BasicPagination from "../components/Pagination";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import EventAPI from "../../../../../core/services/EventAPI";
+import { Link } from "react-router-dom";
+import moment from "moment";
+import ESnackBar from "../components/ESnackBar";
+import { useSelector } from "react-redux";
+// import Comments from "./comments/Comments";
 import { red } from "@mui/material/colors";
+import Comments from "../ViewEvent/comments/Comments";
 
 
 
 const CusViewEvents = () => {
     const [open, setOpen] = React.useState(false);
-
-    const onClickDelete = () => {
-        setOpen(true);
+    const { user } = useSelector((state) => state.auth);
+    const [eventsList, setEventsList] = React.useState([]);
+    const [deleteId, setDeleteId] = React.useState("");
+    const [comment, setComment] = React.useState("");
+    const [commentsVisible, setCommentsVisible] = React.useState(false);
+    const [snack, setSnack] = React.useState({
+        open: false,
+        severity: "",
+        message: "",
+    });
+    const fetchData = async () => {
+        const response = await EventAPI.getAll(user._id);
+        if (response.status === 200) {
+            setEventsList(response.data.data);
+        }
+    }
+    React.useEffect(() => {
+        fetchData();
+    }, []);
+    const onClickComment = (id) => {
+        setComment(id);
+        setCommentsVisible(!commentsVisible);
     };
-    const PostList = [
-        {
-            title: "The light programme - Mental health awareness session",
-            date: "08/09/2022",
-            time: "08:00 PM",
-            conducted: "Dr. Pushpakumara",
-            image:
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7AfPcJcDM3HsTHJevFnRVDDSMcLPnVbX16A&usqp=CAU",
-        },
-        {
-            title: "The light programme - Mental health awareness session",
-            date: "09/10/2022",
-            time: "09:00 PM",
-            conducted: "Dr. Pushpakumara",
-            image:
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7AfPcJcDM3HsTHJevFnRVDDSMcLPnVbX16A&usqp=CAU",
-        },
-        {
-            title: "The light programme - Mental health awareness session",
-            date: "11/12/2022",
-            time: "09:30 PM",
-            conducted: "Dr. Pushpakumara",
-            image:
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7AfPcJcDM3HsTHJevFnRVDDSMcLPnVbX16A&usqp=CAU",
-        },
-        {
-            title: "The light programme - Mental health awareness session",
-            date: "12/12/2022",
-            time: "08:30 PM",
-            conducted: "Dr. Pushpakumara",
-            image:
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7AfPcJcDM3HsTHJevFnRVDDSMcLPnVbX16A&usqp=CAU",
-        },
-        {
-            title: "The light programme - Mental health awareness session",
-            date: "Aug 12, 2022",
-            time: "09:00 PM",
-            conducted: "Dr. Pushpakumara",
-            image:
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7AfPcJcDM3HsTHJevFnRVDDSMcLPnVbX16A&usqp=CAU",
-        },
-    ];
 
     return (
         <>
@@ -80,34 +62,34 @@ const CusViewEvents = () => {
                 }}
             >
                 <Typography variant="PageHeader" gutterBottom>
-                    Events
+                   All Events
                 </Typography>
             </Box>
             
-            {PostList &&
-                PostList.map((post) => (
+            {eventsList &&
+                eventsList.map((event) => (
                     <PostContainer item xs={12} md={6}>
                         <CardActionArea component="a" href="#">
-                            <Card sx={{ display: "flex" }}>
+                            <Card component={Link} to={`/primepsyche/events/view/${event._id}`} sx={{ display: "flex", textDecoration: "none" }}>
                                 <CardContent sx={{ flex: 1, p: 2 }}>
                                     <Typography component="h2" variant="h6">
-                                        Title : <Typography display="inline" >{post.title}</Typography>
+                                        Title : <Typography display="inline" >{event.title}</Typography>
                                     </Typography>
                                     <Typography component="h2" variant="h6">
-                                        Date : <Typography display="inline"> {post.date}  </Typography>
+                                        Date : <Typography display="inline"> {moment(event.date).format("MMM Do YYYY")}  </Typography>
                                     </Typography>
                                     <Typography component="h2" variant="h6">
-                                        Time : <Typography display="inline"> {post.time}  </Typography>
+                                        Time : <Typography display="inline"> {moment(event.time).format("h:mm a")}  </Typography>
                                     </Typography>
                                     <Typography component="h2" variant="h6">
-                                        Conducted By : <Typography display="inline"> {post.conducted}  </Typography>
+                                        Conducted By : <Typography display="inline"> {event.conducted_by}  </Typography>
                                     </Typography>
                                 </CardContent>
                                 <CardMedia
                                     component="img"
                                     sx={{ width: 160, display: { xs: "none", sm: "block" } }}
                                     alt="image"
-                                    image={post.image}
+                                    image={event.image}
                                 />
                             </Card>
                             <Divider></Divider>
@@ -122,7 +104,7 @@ const CusViewEvents = () => {
                                             <FavoriteIcon sx={{ color: red[900] }} />
                                         </IconButton>
                                         <IconButton>
-                                            <CommentIcon />
+                                            <CommentIcon onClick={() => onClickComment(event._id)} />
                                         </IconButton>
                                     </Stack>
                                 </Grid>
@@ -136,13 +118,29 @@ const CusViewEvents = () => {
                                     </Stack>
                                 </Grid>
                             </Grid>
+                            {commentsVisible && comment === event._id && (
+                                <Comments event={event} />
+                            )}
                         </CardActionArea>
                     </PostContainer>
                 ))}
             <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>
                 <BasicPagination count={10} />
             </Box>
-            <AlertDialog open={open} setOpen={setOpen} />
+            <AlertDialog
+                open={open}
+                setOpen={setOpen}
+                deleteId={deleteId}
+                snack={snack}
+                setSnack={setSnack}
+            />
+            <ESnackBar
+                open={snack.open}
+                snack={snack}
+                setOpen={setSnack}
+                severity={snack.severity}
+                message={snack.message}
+            />
         </>
     );
 };

@@ -17,9 +17,11 @@ import EventAPI from "../../../../../core/services/EventAPI";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import ESnackBar from "../components/ESnackBar";
+import { useSelector } from "react-redux";
 
 const EventHomePage = () => {
     const [open, setOpen] = React.useState(false);
+    const { user } = useSelector((state) => state.auth);
     const [eventsList, setEventsList] = React.useState([]);
     const [deleteId, setDeleteId] = React.useState("");
     const [snack, setSnack] = React.useState({
@@ -29,7 +31,7 @@ const EventHomePage = () => {
     });
 
     const fetchData = async ()=> {
-        const response = await EventAPI.getAll();
+        const response = await EventAPI.getMyEvents(user._id);
         if (response.status === 200) {
         setEventsList(response.data.data);
         }
@@ -109,6 +111,7 @@ const EventHomePage = () => {
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
+                                    {user._id === event.userId && (
                                     <Stack
                                         direction="row"
                                         spacing={1}
@@ -126,6 +129,7 @@ const EventHomePage = () => {
                                             Delete
                                         </WarningButtonOutlined>
                                     </Stack>
+                                    )}
                                 </Grid>
                             </Grid>
                         </CardActionArea>

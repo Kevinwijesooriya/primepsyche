@@ -214,7 +214,7 @@ const EditEvent = () => {
                             sx={{ display: "flex", justifyContent: "flex-end" }}
                         >
                             <Button onClick={onClickSave}>save</Button>
-                            <StyledLink to={"/primepsyche/event/"}>
+                            <StyledLink to={"/primepsyche/events/"}>
                                 <WarningButton>Cancel</WarningButton>
                             </StyledLink>
                         </Stack>

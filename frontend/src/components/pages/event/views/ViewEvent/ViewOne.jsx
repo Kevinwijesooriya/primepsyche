@@ -19,8 +19,10 @@ import { red } from "@mui/material/colors";
 import EventAPI from "../../../../../core/services/EventAPI";
 import { useParams } from "react-router-dom";
 import Comments from "./comments/Comments";
+import { useSelector } from "react-redux";
 
 function ViewOne() {
+    const { user } = useSelector((state) => state.auth);
     const params = useParams();
     const eventId = params.id;
     const [open, setOpen] = React.useState(false);
@@ -112,6 +114,7 @@ function ViewOne() {
                         </Stack>
                     </Grid>
                     <Grid item xs={12} sm={6}>
+                        {user._id === event.userId && (
                         <Stack
                             direction="row"
                             spacing={1}
@@ -126,6 +129,7 @@ function ViewOne() {
                                 <DeleteIcon sx={{ color: red[900] }} />
                             </IconButton>
                         </Stack>
+                        )}
                     </Grid>
                 </Grid>
                 {commentsVisible && comment === event._id && (

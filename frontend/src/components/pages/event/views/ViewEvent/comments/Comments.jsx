@@ -11,13 +11,15 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import EventCommentAPI from "../../../../../../core/services/EventCommentAPI";
 import ESnackBar from "../../components/ESnackBar";
+import { useSelector } from "react-redux";
 
 const Comments = (props) => {
     const { event } = props;
+    const { user } = useSelector((state) => state.auth);
     const [payload, setPayload] = React.useState({
         eventId: event._id,
-        userId: "-------------",
-        userName: "Unknown",
+        userId: "",
+        userName: "",
         comment: "",
     });
     const [snack, setSnack] = React.useState({
@@ -50,6 +52,8 @@ const Comments = (props) => {
         setPayload({
             ...payload,
             comment: e.target.value,
+            userId: user._id,
+            userName: user.userName,
         });
     };
     return (
@@ -66,6 +70,7 @@ const Comments = (props) => {
                         <ListItem
                             key={`commentList-${i}`}
                             secondaryAction={
+                                user._id === comment.userId && (
                                 <>
                                     <EditComment
                                         data={comment}
@@ -80,6 +85,7 @@ const Comments = (props) => {
                                         setSnack={setSnack}
                                     />
                                 </>
+                                )
                             }
                         >
                             <ListItemAvatar>

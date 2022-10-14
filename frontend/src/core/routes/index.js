@@ -30,7 +30,7 @@ function AppRoutes() {
   return (
     <>
       {isLoggedIn ? (
-        <PrivateRoutes />
+        <PrivateRoutes user={user}/>
       ) : (
         <AuthRoutes setIsLoggedIn={setIsLoggedIn} />
       )}
@@ -42,7 +42,8 @@ function AppRoutes() {
  * manage private routes
  * @returns Router
  */
-const PrivateRoutes = () => {
+const PrivateRoutes = (props) => {
+  const { user } = props;
   const routes = [
     {
       path: "/logout",
@@ -54,7 +55,7 @@ const PrivateRoutes = () => {
       path: "/primepsyche",
       element: <DefaultLayout />,
       children: [
-        ...EventRoutes,
+        ...EventRoutes(user.role),
         ...ForumRoutes,
         ...MaterialRoutes,
         ...PsychiatristRoutes,
