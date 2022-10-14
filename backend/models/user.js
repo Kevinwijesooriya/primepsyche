@@ -1,48 +1,40 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
-const HelpPostSchema = new Schema(
+const userSchema = new Schema(
   {
-    userID: {
+    firstName: {
       type: String,
       required: true,
       trim: true,
     },
-    name: {
+    lastName: {
       type: String,
       required: true,
       trim: true,
     },
-    gender: {
+    userName: {
       type: String,
       required: true,
       trim: true,
     },
-    age: {
+    role: {
       type: String,
       required: true,
       trim: true,
     },
-    disorder: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    description: {
+    email: {
       type: String,
       required: true,
     },
-    suggests: [
-      {
-        suggest: { type: String },
-        userId: { type: String },
-        userName: { type: String },
-      },
-    ],
+    password: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-export default model("HelpPost", HelpPostSchema);
+export default model("User", userSchema);

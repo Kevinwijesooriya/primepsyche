@@ -1,19 +1,24 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
+import { Paper } from "@mui/material";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import CssBaseline from "@mui/material/CssBaseline";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
 import InputLabel from "@mui/material/InputLabel";
+import Link from "@mui/material/Link";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { register, reset } from "../../../../features/auth/authSlice";
 import RegisterBackground from "./components/RegisterBackground";
-import { Paper } from "@mui/material";
 import RegisterSnackBar from "./components/SnackBars/RegisterSnackBar";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function Copyright(props) {
   return (
@@ -33,22 +38,108 @@ function Copyright(props) {
   );
 }
 const AuthRegister = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isPsychiatrist, setIsPsychiatrist] = React.useState("false");
   const [open, setOpen] = React.useState(false);
-  const handleSubmit = (event) => {
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [error, setError] = React.useState({ field: "", message: "" });
+  const [payload, setPayload] = React.useState({
+    firstName: "",
+    lastName: "",
+    userName: "",
+    role: "user",
+    email: "",
+    password: "",
+  });
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+  React.useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
+  if (isLoading) {
+    return (
+      <Box sx={{ display: "flex" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  const { firstName, lastName, userName, role, email, password } = payload;
+  const onClickRegister = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    if (isValid()) {
+      dispatch(register(payload));
+    }
   };
   const handleRoleChange = (event) => {
+    setError({ field: "", message: "" });
     setIsPsychiatrist(event.target.value);
+    if (event.target.value) {
+      setPayload({ ...payload, role: "psychiatrist" });
+    } else {
+      setPayload({ ...payload, role: "user" });
+    }
   };
-  const onClickRegister = () => {
-    setOpen(true);
+  const onChangeInput = (e) => {
+    setError({ field: "", message: "" });
+    setPayload({
+      ...payload,
+      [e.target.name]: e.target.value,
+      userName: firstName.concat(" ", lastName),
+    });
   };
+  const onChangeConfirmPassword = (e) => {
+    setError({ field: "", message: "" });
+    setConfirmPassword(e.target.value);
+  };
+  const isValid = () => {
+    if (payload.password !== confirmPassword) {
+      setError({
+        field: "confirmPassword",
+        message: "Please fill me",
+      });
+      return false;
+    } else {
+      if (payload.firstName === "") {
+        setError({ field: "firstName", message: "Please fill me" });
+        return false;
+      }
+      if (payload.lastName === "") {
+        setError({ field: "lastName", message: "Please fill me" });
+        return false;
+      }
+      if (payload.role === "") {
+        setError({ field: "role", message: "Please fill me" });
+        return false;
+      }
+      if (payload.email === "") {
+        setError({ field: "email", message: "Please fill me" });
+        return false;
+      }
+      if (payload.password === "") {
+        setError({ field: "password", message: "Please fill me" });
+        return false;
+      }
+      if (confirmPassword === "") {
+        setError({ field: "confirmPassword", message: "Please fill me" });
+        return false;
+      }
+    }
+    return true;
+  };
+  // const onClickRegister = () => {
+  //   setOpen(true);
+  // };
   return (
     <>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -71,12 +162,7 @@ const AuthRegister = () => {
             <Typography component="h1" variant="h5">
               SIGN UP
             </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 3 }}
-            >
+            <Box component="form" noValidate sx={{ mt: 3 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <InputLabel>First Name</InputLabel>
@@ -84,13 +170,25 @@ const AuthRegister = () => {
                     name="firstName"
                     required
                     fullWidth
-                    // id="firstName"
+                    value={firstName}
                     autoFocus
+                    onChange={(e) => onChangeInput(e)}
+                    error={error.field === "firstName"}
+                    helperText={!payload.firstName && error.message}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <InputLabel>Last Name</InputLabel>
-                  <TextField required fullWidth id="lastName" name="lastName" />
+                  <TextField
+                    required
+                    fullWidth
+                    id="lastName"
+                    name="lastName"
+                    value={lastName}
+                    onChange={(e) => onChangeInput(e)}
+                    error={error.field === "lastName"}
+                    helperText={!payload.lastName && error.message}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <InputLabel>Register as a Psychiatrist</InputLabel>
@@ -98,7 +196,7 @@ const AuthRegister = () => {
                     row
                     name="row-radio-buttons-group"
                     value={isPsychiatrist}
-                    onChange={handleRoleChange}
+                    onChange={(e) => handleRoleChange(e)}
                   >
                     <FormControlLabel
                       value={true}
@@ -120,7 +218,16 @@ const AuthRegister = () => {
                 )}
                 <Grid item xs={12}>
                   <InputLabel>Email Address</InputLabel>
-                  <TextField required fullWidth id="email" name="email" />
+                  <TextField
+                    required
+                    fullWidth
+                    id="email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => onChangeInput(e)}
+                    error={error.field === "email"}
+                    helperText={!payload.email && error.message}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <InputLabel>Password</InputLabel>
@@ -129,6 +236,26 @@ const AuthRegister = () => {
                     fullWidth
                     name="password"
                     type="password"
+                    value={password}
+                    onChange={(e) => onChangeInput(e)}
+                    error={error.field === "password"}
+                    helperText={!payload.password && error.message}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <InputLabel>Confirm Password</InputLabel>
+                  <TextField
+                    required
+                    fullWidth
+                    name="confirmPassword"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => onChangeConfirmPassword(e)}
+                    error={error.field === "confirmPassword"}
+                    helperText={
+                      error.field === "confirmPassword" &&
+                      "Password does not match"
+                    }
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -141,11 +268,11 @@ const AuthRegister = () => {
                 </Grid>
               </Grid>
               <Button
-                // type="submit"
+                type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={onClickRegister}
+                onClick={(e) => onClickRegister(e)}
               >
                 Sign Up
               </Button>

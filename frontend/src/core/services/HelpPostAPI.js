@@ -38,10 +38,10 @@ class HelpPostAPI {
     }
   };
 
-  static update = async ({ id, payload }) => {
+  static update = async ({ postId, payload }) => {
     try {
       const response = await axiosClient().put(
-        `/api/HelpPost/update/${id}`,
+        `/api/HelpPost/update/${postId}`,
         payload
       );
       console.log("API ~ Help Post ~ update ", response);
