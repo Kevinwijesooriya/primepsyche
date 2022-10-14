@@ -36,6 +36,13 @@ const audioMaterialsSchema = new Schema(
       type: String,
       required: true,
     },
+    approve: {
+      type: Boolean,
+
+      required: true,
+
+      default: false,
+    },
   },
   {
     timestamps: true,

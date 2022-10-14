@@ -5,7 +5,7 @@ const audioMaterialsController = {
     const id = req.params.id;
     try {
       const material = await AudioMaterials.findOne({ _id: id });
-      res.json({ message: "Audio Material fetch success", data: material });
+      res.json({ message: "Audio file fetch success", data: material });
     } catch (err) {
       return res.status(500).json({ message: err.message });
     }
@@ -13,7 +13,7 @@ const audioMaterialsController = {
   getAudioMaterials: async (req, res) => {
     try {
       const materials = await AudioMaterials.find();
-      res.json({ message: "Audio Material fetch success", data: materials });
+      res.json({ message: "Audio file fetch success", data: materials });
     } catch (err) {
       return res.status(500).json({ message: err.message });
     }
@@ -25,10 +25,18 @@ const audioMaterialsController = {
       const ExistingMaterial = await AudioMaterials.findOne({ title });
       if (ExistingMaterial)
         return res.status(400).json({
-          message: "This Audio Material already exists.",
+          message: "This Audio file already exists.",
         });
 
-      if (!title || !genre || !album || !artist || !audioFile || !image || !userId)
+      if (
+        !title ||
+        !genre ||
+        !album ||
+        !artist ||
+        !audioFile ||
+        !image ||
+        !userId
+      )
         return res.status(400).json({
           msg: "Please fill in all fields.",
         });
@@ -44,7 +52,7 @@ const audioMaterialsController = {
       });
       await newAudioMaterials.save();
       res.json({
-        message: "Audio Material create success",
+        message: "Audio file create success",
         data: newAudioMaterials,
       });
     } catch (err) {
@@ -61,7 +69,7 @@ const audioMaterialsController = {
         { title, genre, album, artist, audioFile, image }
       );
       res.json({
-        message: "Audio Material update success",
+        message: "Audio file update success",
         data: { title, genre, album, artist, audioFile, image },
       });
     } catch (err) {
@@ -75,6 +83,49 @@ const audioMaterialsController = {
 
       await AudioMaterials.findByIdAndDelete({ _id: id });
       res.json({ message: "delete success !" });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+  approveAudioMaterial: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const { title, genre, album, artist, audioFile, image, approve } = req.body;
+
+      await AudioMaterials.findOneAndUpdate(
+        { _id: id },
+        { title, genre, album, artist, audioFile, image, approve }
+      );
+      if (approve == true) {
+        res.json({
+          message: "Audio file approved",
+          data: { title, genre, album, artist, audioFile, image, approve },
+        });
+      } else {
+        res.json({
+          message: "Audio file not approved",
+          data: { title, genre, album, artist, audioFile, image, approve },
+        });
+      }
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+  getApproveAudioMaterial: async (req, res) => {
+    try {
+      const { approve } = req.body;
+      const materials = await AudioMaterials.find({ approve: approve });
+      if (approve == true) {
+        res.json({
+          message: "Approve Audio file",
+          data: materials,
+        });
+      } else {
+        res.json({
+          message: " Not approve Audio file",
+          data: materials,
+        });
+      }
     } catch (err) {
       return res.status(500).json({ message: err.message });
     }

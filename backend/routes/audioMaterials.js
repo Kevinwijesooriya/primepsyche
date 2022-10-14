@@ -22,6 +22,14 @@ audioMaterialsRoute.delete(
   "/api/audioMaterials/delete/:id",
   audioMaterialsController.deleteAudioMaterial
 );
+audioMaterialsRoute.put(
+  "/api/audioMaterials/approveAudioMaterial/:id",
+  audioMaterialsController.approveAudioMaterial
+);
+audioMaterialsRoute.get(
+  "/api/audioMaterials/getApproveAudioMaterial",
+  audioMaterialsController.getApproveAudioMaterial
+);
 
 export default audioMaterialsRoute;
 
