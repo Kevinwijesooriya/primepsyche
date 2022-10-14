@@ -41,11 +41,13 @@ app.listen(port, () => {
 
 //route imports
 import ForumPostRoute from "./routes/forumPost.js";
+import eventRoute from "./routes/event.js";
 import ReadableMaterialsRoute from "./routes/readableMaterials.js";
 import forumCommentRoute from "./routes/forumComment.js";
 import audioMaterialsRoute from "./routes/audioMaterials.js";
 //import AudioMaterialsRoute from "./routes/audioMaterials.js";
 import userRoute from "./routes/user.js";
+import eventCommentRoute from "./routes/eventComment.js";
 
 //Help route imports
 import HelpPostRoute from "./routes/HelpPost.js";
@@ -58,3 +60,5 @@ app.use(forumCommentRoute);
 app.use(audioMaterialsRoute);
 //app.use(AudioMaterialsRoute);
 app.use(userRoute);
+app.use(eventRoute);
+app.use(eventCommentRoute);

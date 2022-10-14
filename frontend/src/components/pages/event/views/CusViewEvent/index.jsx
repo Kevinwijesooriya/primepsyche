@@ -16,6 +16,7 @@ import AlertDialog from "../DeleteConfirmation";
 import BasicPagination from "../components/Pagination";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { red } from "@mui/material/colors";
 
 
 
@@ -32,7 +33,7 @@ const CusViewEvents = () => {
             time: "08:00 PM",
             conducted: "Dr. Pushpakumara",
             image:
-                "https://www.pngitem.com/pimgs/m/506-5066994_problem-png-transparent-png.png",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7AfPcJcDM3HsTHJevFnRVDDSMcLPnVbX16A&usqp=CAU",
         },
         {
             title: "The light programme - Mental health awareness session",
@@ -40,7 +41,7 @@ const CusViewEvents = () => {
             time: "09:00 PM",
             conducted: "Dr. Pushpakumara",
             image:
-                "https://www.pngitem.com/pimgs/m/506-5066994_problem-png-transparent-png.png",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7AfPcJcDM3HsTHJevFnRVDDSMcLPnVbX16A&usqp=CAU",
         },
         {
             title: "The light programme - Mental health awareness session",
@@ -48,7 +49,7 @@ const CusViewEvents = () => {
             time: "09:30 PM",
             conducted: "Dr. Pushpakumara",
             image:
-                "https://www.pngitem.com/pimgs/m/506-5066994_problem-png-transparent-png.png",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7AfPcJcDM3HsTHJevFnRVDDSMcLPnVbX16A&usqp=CAU",
         },
         {
             title: "The light programme - Mental health awareness session",
@@ -56,7 +57,7 @@ const CusViewEvents = () => {
             time: "08:30 PM",
             conducted: "Dr. Pushpakumara",
             image:
-                "https://www.pngitem.com/pimgs/m/506-5066994_problem-png-transparent-png.png",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7AfPcJcDM3HsTHJevFnRVDDSMcLPnVbX16A&usqp=CAU",
         },
         {
             title: "The light programme - Mental health awareness session",
@@ -64,7 +65,7 @@ const CusViewEvents = () => {
             time: "09:00 PM",
             conducted: "Dr. Pushpakumara",
             image:
-                "https://www.pngitem.com/pimgs/m/506-5066994_problem-png-transparent-png.png",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7AfPcJcDM3HsTHJevFnRVDDSMcLPnVbX16A&usqp=CAU",
         },
     ];
 
@@ -118,7 +119,7 @@ const CusViewEvents = () => {
                                 <Grid item xs={12} sm={6}>
                                     <Stack direction="row" spacing={1}>
                                         <IconButton>
-                                            <FavoriteIcon />
+                                            <FavoriteIcon sx={{ color: red[900] }} />
                                         </IconButton>
                                         <IconButton>
                                             <CommentIcon />
