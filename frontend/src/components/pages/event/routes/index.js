@@ -16,7 +16,7 @@ const EventRoutes = [
       { path: "", element: <Navigate to="view" /> },
       { path: "view", element: <ViewComponent /> },
       { path: "add", element: <AddEvent /> },
-      { path: "edit", element: <EditEvent /> },
+      { path: "edit/:id", element: <EditEvent /> },
       { path: "CusView", element: <CusViewEvents /> },
       { path: "view/:id", element: <ViewOne /> },
     ],

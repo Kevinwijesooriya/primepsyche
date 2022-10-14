@@ -38,10 +38,10 @@ class EventAPI {
         }
     };
 
-    static update = async ({ id, payload }) => {
+    static update = async ({ eventId, payload }) => {
         try {
             const response = await axiosClient().put(
-                `/api/event/update/${id}`,
+                `/api/event/update/${eventId}`,
                 payload
             );
             console.log("API ~ Event ~ update ", response);
