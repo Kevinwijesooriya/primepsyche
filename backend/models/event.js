@@ -3,6 +3,16 @@ const { Schema, model } = mongoose;
 
 const eventSchema = new Schema(
     {
+        userId: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        userName: {
+            type: String,
+            required: true,
+            trim: true,
+        },
         title: {
             type: String,
             required: true,

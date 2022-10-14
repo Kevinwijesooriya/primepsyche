@@ -20,5 +20,9 @@ eventRoute.delete(
     "/api/event/delete/:id",
     eventController.deleteEvent
 );
+eventRoute.get(
+    "/api/event/getMy/:id",
+    eventController.getMyEvents
+);
 
 export default eventRoute;

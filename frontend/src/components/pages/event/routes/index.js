@@ -8,13 +8,14 @@ import EventBreadcrumbs from "../views/components/Breadcrumbs";
 import CusViewEvents from "../views/CusViewEvent";
 import ViewOne from "../views/ViewEvent/ViewOne";
 
-const EventRoutes = [
+
+const EventRoutes =(role)=> [
   {
     path: "events",
     element: <EventBreadcrumbs />,
     children: [
       { path: "", element: <Navigate to="view" /> },
-      { path: "view", element: <ViewComponent /> },
+      { path: "view", element: (role === "user" ?< CusViewEvents /> :<ViewComponent />) },
       { path: "add", element: <AddEvent /> },
       { path: "edit/:id", element: <EditEvent /> },
       { path: "CusView", element: <CusViewEvents /> },

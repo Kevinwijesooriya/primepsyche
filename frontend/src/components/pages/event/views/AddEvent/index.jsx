@@ -13,17 +13,20 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import moment from "moment";
 import AddSnackBar from "../components/AddSnackBar";
 import EventAPI from "../../../../../core/services/EventAPI";
-
+import { useSelector } from "react-redux";
 
 
 const AddEvent = () => {
     const [value, setValue] = React.useState(moment('2014-08-18T21:11:54'));
     const [open, setOpen] = React.useState(false);
+    const { user } = useSelector((state) => state.auth);
     const [error, setError] = React.useState({ message: "" });
     const [title, setTitle] = React.useState("");
     const [description, setDescription] = React.useState("");
     const [createSuccess, setCreateSuccess] = React.useState(false);
     const [postPayload, setPostPayload] = React.useState({
+        userId: "",
+        userName: "",
         title: "",
         date: "",
         time: "",
@@ -67,6 +70,8 @@ const AddEvent = () => {
         setPostPayload({
             ...postPayload,
             [e.target.name]: e.target.value,
+            userId: user._id,
+            userName: user.userName,
         });
         console.log("postPayload",postPayload)
     };
