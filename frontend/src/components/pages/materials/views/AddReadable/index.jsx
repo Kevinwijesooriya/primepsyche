@@ -10,6 +10,8 @@ import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import Box from "@mui/material/Box";
 import { ImageUploadButton } from "../../styles";
 import AddSnackBar from "../components/AddSnackBar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import { ToastContainer, toast } from "react-toastify";
 
 const AddReadable = () => {
@@ -21,12 +23,12 @@ const AddReadable = () => {
   const [author, setAuthor] = useState();
   console.log("🚀 ~ file: index.jsx ~ line 27 ~ AddReadable ~ author", author);
   const [files, setFiles] = useState("123456");
-  const [readableFile, setReadableFile] = useState();
+  const [readableFile, setReadableFile] = useState(false);
   console.log(
     "🚀 ~ file: index.jsx ~ line 30 ~ AddReadable ~ readableFile",
     readableFile
   );
-  const [image, setImage] = useState("test image url");
+  const [image, setImage] = useState(false);
   console.log("🚀 ~ file: index.jsx ~ line 28 ~ AddReadable ~ image", image);
 
   // const onClickShare = () => {
@@ -52,12 +54,81 @@ const AddReadable = () => {
       setAuthor(e.target.value);
     } else setError({ message: "" });
   };
-  function handleChange(e) {
-    console.log(e.target.files);
-    setImage(URL.createObjectURL(e.target.files[0]));
-    console.log(e.target.readableFile);
-    setReadableFile(URL.createObjectURL(e.target.files[0]));
-  }
+  // function handleChange(e) {
+  //   console.log(e.target.files);
+  //   setImage(URL.createObjectURL(e.target.files[0]));
+  //   console.log(e.target.readableFile);
+  //   setReadableFile(URL.createObjectURL(e.target.files[0]));
+  // }
+  const handleChange = async (e) => {
+    e.preventDefault();
+    try {
+      const file = e.target.files[0];
+      if (!file) return alert("File not exist.");
+      if (file.size > 1024 * 1024)
+        // 1mb
+        return alert("Size too large!");
+      if (file.type !== "image/jpeg" && file.type !== "image/png")
+        // 1mb
+        return alert("File format is incorrect.");
+      let formData = new FormData();
+      formData.append("file", file);
+      
+      const res = await axios.post(
+        "http://localhost:5000/api/imageUpload",
+        formData,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      );
+      setImage(res.data.url);
+    } catch (err) {
+      toast.error(err.response.data.msg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+  const handleFileChange = async (e) => {
+    e.preventDefault();
+    try {
+      const file = e.target.files[0];
+      if (!file) return alert("File not exist.");
+      
+      let formData = new FormData();
+      formData.append("file", file);
+
+      const res = await axios.post(
+        "http://localhost:5000/api/fileUpload",
+        formData,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      );
+      setReadableFile(res.data.url);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response.data.msg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
   const onClickShare = async (e) => {
     {
       isValid() && setOpen(true);
@@ -100,6 +171,7 @@ const AddReadable = () => {
 
   return (
     <>
+      <ToastContainer/>
       <Container>
         <Box
           sx={{
@@ -166,7 +238,7 @@ const AddReadable = () => {
                     id="readableFile"
                     name="readableFile"
                     hidden
-                    onChange={handleChange}
+                    onChange={handleFileChange}
                   />
                   BROWSE
                 </Button>

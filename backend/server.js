@@ -25,7 +25,14 @@ connect(
 
 const app = express();
 app.use(json());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: true,
+  })
+);
+app.use(express.urlencoded({ extended: true }));
+app.set("trust proxy", 1);
 app.use(
   fileUpload({
     useTempFiles: true,
@@ -44,7 +51,8 @@ import ForumPostRoute from "./routes/forumPost.js";
 import ReadableMaterialsRoute from "./routes/readableMaterials.js";
 import forumCommentRoute from "./routes/forumComment.js";
 import audioMaterialsRoute from "./routes/audioMaterials.js";
-//import AudioMaterialsRoute from "./routes/audioMaterials.js";
+import imageUploadRoute from "./routes/imageUploadRoute.js";
+import fileUploadRoute from "./routes/fileUploadRoute.js";
 
 //Help route imports
 import HelpPostRoute from "./routes/HelpPost.js";
@@ -55,4 +63,5 @@ app.use(HelpPostRoute);
 app.use(ReadableMaterialsRoute);
 app.use(forumCommentRoute);
 app.use(audioMaterialsRoute);
-//app.use(AudioMaterialsRoute);
+app.use("/api", imageUploadRoute);
+app.use("/api", fileUploadRoute);
