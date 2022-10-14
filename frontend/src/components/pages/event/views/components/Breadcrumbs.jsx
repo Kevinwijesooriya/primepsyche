@@ -27,7 +27,7 @@ export default function EventBreadcrumbs() {
                 )}
                 {location.pathname === "/primepsyche/events/add" && (
                     <Breadcrumbs aria-label="breadcrumb">
-                        <Link
+                        <Link 
                             style={{
                                 display: "flex",
                                 alignItems: "center",
