@@ -21,8 +21,8 @@ const MaterialRoutes = [
       { path: "viewReadable", element: <ViewReadable /> },
       { path: "addMusic", element: <AddMusic /> },
       { path: "addReadable", element: <AddReadable /> },
-      { path: "editMusic", element: <EditMusic /> },
-      { path: "editReadable", element: <EditReadable /> },
+      { path: "editMusic/:id", element: <EditMusic /> },
+      { path: "editReadable/:id", element: <EditReadable /> },
     ],
   },
 ];

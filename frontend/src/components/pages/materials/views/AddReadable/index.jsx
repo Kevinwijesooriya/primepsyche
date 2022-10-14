@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { InputLabel, TextField, Stack } from "@mui/material";
@@ -10,26 +10,30 @@ import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import Box from "@mui/material/Box";
 import { ImageUploadButton } from "../../styles";
 import AddSnackBar from "../components/AddSnackBar";
-
+// import { ToastContainer, toast } from "react-toastify";
 
 const AddReadable = () => {
-  
   const [open, setOpen] = useState(false);
   const [error, setError] = useState({ message: "" });
-  const [userId, setUserId] = useState();
-  const [title, setTitle] = useState("");
+  const [userId, setUserId] = useState("123456");
+  const [title, setTitle] = useState();
+  console.log("🚀 ~ file: index.jsx ~ line 25 ~ AddReadable ~ title", title);
   const [author, setAuthor] = useState();
-  const [files, setFiles] = useState();
-  // const [files, setFiles] = useState();
+  console.log("🚀 ~ file: index.jsx ~ line 27 ~ AddReadable ~ author", author);
+  const [files, setFiles] = useState("123456");
+  const [readableFile, setReadableFile] = useState();
+  console.log(
+    "🚀 ~ file: index.jsx ~ line 30 ~ AddReadable ~ readableFile",
+    readableFile
+  );
+  const [image, setImage] = useState("test image url");
+  console.log("🚀 ~ file: index.jsx ~ line 28 ~ AddReadable ~ image", image);
 
-  // userId, title, author, readableFile, image;
-  
-
-  const onClickShare = () => {
-    {
-      isValid() && setOpen(true);
-    }
-  };
+  // const onClickShare = () => {
+  //   {
+  //     isValid() && setOpen(true);
+  //   }
+  // };
   const isValid = () => {
     if (title === "") {
       setError({ field: "title", message: "Please fill me" });
@@ -37,16 +41,62 @@ const AddReadable = () => {
     }
     return true;
   };
+
   const onChangeInput = (e) => {
     if (e.target.name === "title") {
       setTitle(e.target.value);
+    } else {
+      setError({ message: "" });
     }
-    setError({ message: "" });
+    if (e.target.name === "author") {
+      setAuthor(e.target.value);
+    } else setError({ message: "" });
   };
   function handleChange(e) {
     console.log(e.target.files);
-    setFiles(URL.createObjectURL(e.target.files[0]));
+    setImage(URL.createObjectURL(e.target.files[0]));
+    console.log(e.target.readableFile);
+    setReadableFile(URL.createObjectURL(e.target.files[0]));
   }
+  const onClickShare = async (e) => {
+    {
+      isValid() && setOpen(true);
+    }
+    e.preventDefault();
+    if (title === "" || author === "") {
+      alert("Fill all the fields");
+    } else {
+      try {
+        const res = await axios.post(
+          "http://localhost:5000/api/readableMaterials/create",
+          { userId, title, author, readableFile, image }
+        );
+        console.log(res);
+        // alert(res.data)
+        // toast.success(res.data.msg, {
+        //     position: "top-right",
+        //     autoClose: 5000,
+        //     hideProgressBar: false,
+        //     closeOnClick: true,
+        //     pauseOnHover: true,
+        //     draggable: true,
+        //     progress: undefined,
+        //   });
+        //  window.location.href = '/pharmacist'
+      } catch (err) {
+        console.log(err);
+        // toast.error(err.response.data.msg, {
+        //   position: "top-right",
+        //   autoClose: 5000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        // });
+      }
+    }
+  };
 
   return (
     <>
@@ -88,6 +138,7 @@ const AddReadable = () => {
                 name="author"
                 fullWidth
                 multiline
+                onChange={(e) => onChangeInput(e)}
               />
             </Grid>
 
@@ -110,7 +161,13 @@ const AddReadable = () => {
                   </Typography>
                 </Box>
                 <Button component="label">
-                  <input type="file" hidden onChange={handleChange} />
+                  <input
+                    type="file"
+                    id="readableFile"
+                    name="readableFile"
+                    hidden
+                    onChange={handleChange}
+                  />
                   BROWSE
                 </Button>
               </Stack>
@@ -120,10 +177,10 @@ const AddReadable = () => {
             <InputLabel>Preview Image</InputLabel>
             <ImageUploadButton component="label">
               <input type="file" hidden onChange={handleChange} />
-              {files ? (
+              {image ? (
                 <img
                   alt="forum_post"
-                  src={files}
+                  src={image}
                   style={{ minHeight: 400, minWidth: 400 }}
                 />
               ) : (
