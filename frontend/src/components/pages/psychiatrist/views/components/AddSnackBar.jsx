@@ -4,13 +4,13 @@ import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 
 const AddSnackBar = (props) => {
-  const { open, setOpen, success } = props;
+  const { open, setOpen } = props;
   const navigate = useNavigate();
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-    navigate("/primepsyche/forum/view");
+    navigate("/primepsyche/help/view");
     setOpen(false);
   };
   return (
@@ -24,15 +24,8 @@ const AddSnackBar = (props) => {
         autoHideDuration={3000}
         onClose={handleClose}
       >
-        <Alert
-          onClose={handleClose}
-          severity={success ? "success" : "error"}
-          sx={{ width: "100%" }}
-          variant="filled"
-        >
-          {success
-            ? "You added a Post successfully "
-            : "Ops! Something went wrong!"}
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Posted!
         </Alert>
       </Snackbar>
     </>

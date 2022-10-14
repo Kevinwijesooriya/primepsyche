@@ -168,7 +168,7 @@ const PrimePsycheTheme = createTheme({
     MuiSelect: {
       styleOverrides: {
         root: {
-          maxHeight: 2,
+          // maxHeight: 2,
         },
       },
     },

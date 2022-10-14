@@ -1,25 +1,25 @@
 /* eslint-disable no-console */
 import { axiosClient } from "../plugins/interceptors/AxiosClient";
 
-class ForumPostAPI {
+class HelpPostAPI {
   static getOne = async (id) => {
     try {
-      const response = await axiosClient().get(`/api/forumPost/get/${id}`);
-      console.log("API ~ ForUm Post ~ getOne ", response);
+      const response = await axiosClient().get(`/api/HelpPost/get/${id}`);
+      console.log("API ~ Help Post ~ getOne ", response);
       return response;
     } catch (error) {
-      console.log("ERROR-API ~ Forum Post ~ getOne ", error);
+      console.log("ERROR-API ~ Help Post ~ getOne ", error);
       return error;
     }
   };
 
   static getAll = async () => {
     try {
-      const response = await axiosClient().get("/api/forumPost/getAll");
-      console.log("API ~ Forum Post ~ getAll ", response);
+      const response = await axiosClient().get("/api/HelpPost/getAll");
+      console.log("API ~ Help Post ~ getAll ", response);
       return response;
     } catch (error) {
-      console.log("ERROR-API ~ Forum Post ~ getAll ", error);
+      console.log("ERROR-API ~ Help Post ~ getAll ", error);
       return error;
     }
   };
@@ -27,7 +27,7 @@ class ForumPostAPI {
   static create = async (payload) => {
     try {
       const response = await axiosClient().post(
-        "/api/forumPost/create",
+        "/api/HelpPost/create",
         payload
       );
       console.log("API ~ Forum Post ~ create ", response);
@@ -38,16 +38,16 @@ class ForumPostAPI {
     }
   };
 
-  static update = async ({ postId, payload }) => {
+  static update = async ({ id, payload }) => {
     try {
       const response = await axiosClient().put(
-        `/api/forumPost/update/${postId}`,
+        `/api/HelpPost/update/${id}`,
         payload
       );
-      console.log("API ~ Forum Post ~ update ", response);
+      console.log("API ~ Help Post ~ update ", response);
       return response;
     } catch (error) {
-      console.log("ERROR-API ~ Forum Post ~ update ", error);
+      console.log("ERROR-API ~ Help Post ~ update ", error);
       return error;
     }
   };
@@ -55,14 +55,14 @@ class ForumPostAPI {
   static delete = async (emailId) => {
     try {
       const response = await axiosClient().delete(
-        `/api/forumPost/delete/${emailId}`
+        `/api/HelpPost/delete/${emailId}`
       );
-      console.log("API ~ Forum Post ~ delete ", response);
+      console.log("API ~ Help Post ~ delete ", response);
       return response;
     } catch (error) {
-      console.log("ERROR-API ~ Forum Post ~ delete ", error);
+      console.log("ERROR-API ~ Help Post ~ delete ", error);
       return error;
     }
   };
 }
-export default ForumPostAPI;
+export default HelpPostAPI;

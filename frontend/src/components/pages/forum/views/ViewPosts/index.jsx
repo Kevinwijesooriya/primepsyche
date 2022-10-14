@@ -18,15 +18,21 @@ import BasicPagination from "../components/Pagination";
 import moment from "moment";
 import { red } from "@mui/material/colors";
 import ForumPostAPI from "../../../../../core/services/ForumPostAPI";
+import { Link } from "react-router-dom";
+import Comments from "./comments/Comments";
 
 const ViewPosts = () => {
   const [open, setOpen] = React.useState(false);
   const [postsList, setPostsList] = React.useState([]);
   const [deleteId, setDeleteId] = React.useState("");
+  const [comment, setComment] = React.useState("");
+  const [commentsVisible, setCommentsVisible] = React.useState(false);
 
   async function fetchData() {
     const response = await ForumPostAPI.getAll();
-    setPostsList(response.data.data);
+    if (response.status === 200) {
+      setPostsList(response.data.data);
+    }
   }
   React.useEffect(() => {
     fetchData();
@@ -39,6 +45,10 @@ const ViewPosts = () => {
   const onClickDelete = (id) => {
     setDeleteId(id);
     setOpen(true);
+  };
+  const onClickComment = (id) => {
+    setComment(id);
+    setCommentsVisible(!commentsVisible);
   };
 
   const getDate = (date) => {
@@ -66,11 +76,34 @@ const ViewPosts = () => {
       </Box>
       {postsList &&
         postsList.map((post) => (
-          <PostContainer item xs={12} md={6} key={`postList${post._id}`}>
-            <CardActionArea>
-              <Card sx={{ display: "flex" }}>
+          <PostContainer
+            item
+            xs={12}
+            md={6}
+            key={`postList${post._id}`}
+            sx={{
+              background: (theme) =>
+                theme.palette.prime_psycheColors.prime_psyche_light_green5,
+            }}
+          >
+            <CardActionArea
+              component={Link}
+              to={`/primepsyche/forum/view/${post._id}`}
+              sx={{
+                borderRadius: 5,
+                background: (theme) =>
+                  theme.palette.prime_psycheColors.prime_psyche_mid_green3,
+              }}
+            >
+              <Card
+                sx={{
+                  display: "flex",
+                  background: (theme) =>
+                    theme.palette.prime_psycheColors.prime_psyche_mid_green3,
+                }}
+              >
                 <CardContent sx={{ flex: 1, p: 2 }}>
-                  <Typography component="h2" variant="h5">
+                  <Typography component="h2" variant="button">
                     {post.title}
                   </Typography>
                   <Typography variant="subtitle1" color="text.secondary">
@@ -95,7 +128,7 @@ const ViewPosts = () => {
                     <FavoriteIcon sx={{ color: red[900] }} />
                   </IconButton>
                   <IconButton>
-                    <CommentIcon />
+                    <CommentIcon onClick={() => onClickComment(post._id)} />
                   </IconButton>
                 </Stack>
               </Grid>
@@ -116,6 +149,7 @@ const ViewPosts = () => {
                 </Stack>
               </Grid>
             </Grid>
+            {commentsVisible && comment === post._id && <Comments />}
           </PostContainer>
         ))}
       <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>

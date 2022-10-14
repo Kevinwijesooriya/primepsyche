@@ -3,14 +3,14 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 
-const AddSnackBar = (props) => {
+const EditSnackBar = (props) => {
   const { open, setOpen, success } = props;
   const navigate = useNavigate();
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-    navigate("/primepsyche/forum/view");
+    navigate("/primepsyche/help/");
     setOpen(false);
   };
   return (
@@ -31,7 +31,7 @@ const AddSnackBar = (props) => {
           variant="filled"
         >
           {success
-            ? "You added a Post successfully "
+            ? "You Updated Your Post Successfully "
             : "Ops! Something went wrong!"}
         </Alert>
       </Snackbar>
@@ -39,4 +39,4 @@ const AddSnackBar = (props) => {
   );
 };
 
-export default AddSnackBar;
+export default EditSnackBar;

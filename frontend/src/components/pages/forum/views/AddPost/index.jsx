@@ -9,26 +9,41 @@ import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
 import { ImageUploadButton } from "../../styles";
 import AddSnackBar from "../components/AddSnackBar";
+import ForumPostAPI from "../../../../../core/services/ForumPostAPI";
 // import AddPostAlerts from "../ForumAlerts/AddPostAlerts";
 
 const AddPost = () => {
   const [files, setFiles] = React.useState();
-  const [error, setError] = React.useState({ message: "" });
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
+  const [error, setError] = React.useState({ field: "", message: "" });
   const [open, setOpen] = React.useState(false);
+  const [createSuccess, setCreateSuccess] = React.useState(false);
+  const [postPayload, setPostPayload] = React.useState({
+    userId: "US2002189",
+    userName: "Adam Jester",
+    title: "",
+    description: "",
+    image: "",
+  });
 
-  const onClickShare = () => {
+  const onClickShare = async (e) => {
+    e.preventDefault();
     {
       isValid() && setOpen(true);
     }
+    const response = await ForumPostAPI.create(postPayload);
+    console.log("~ onClickShare ~ response", response);
+    if (response.status === 200) {
+      setCreateSuccess(true);
+    } else {
+      setCreateSuccess(false);
+    }
   };
   const isValid = () => {
-    if (description === "") {
+    if (postPayload.description === "") {
       setError({ field: "description", message: "Please fill me" });
       return false;
     }
-    if (title === "") {
+    if (postPayload.title === "") {
       setError({ field: "title", message: "Please fill me" });
       return false;
     }
@@ -37,15 +52,17 @@ const AddPost = () => {
   function handleChange(e) {
     console.log(e.target.files);
     setFiles(URL.createObjectURL(e.target.files[0]));
+    setPostPayload({
+      ...postPayload,
+      image: URL.createObjectURL(e.target.files[0]),
+    });
   }
   const onChangeInput = (e) => {
-    if (e.target.name === "description") {
-      setDescription(e.target.value);
-    }
-    if (e.target.name === "title") {
-      setTitle(e.target.value);
-    }
-    setError({ message: "" });
+    setError({ field: "", message: "" });
+    setPostPayload({
+      ...postPayload,
+      [e.target.name]: e.target.value,
+    });
   };
   return (
     <>
@@ -63,7 +80,7 @@ const AddPost = () => {
             alertTitle={"ERROR"}
             alertMessage={"Woops this is an error !"}
           /> */}
-          <AddSnackBar open={open} setOpen={setOpen} />
+          <AddSnackBar open={open} setOpen={setOpen} success={createSuccess} />
           <Typography variant="PageHeader" gutterBottom>
             Share Your Experience
           </Typography>
@@ -79,7 +96,7 @@ const AddPost = () => {
               fullWidth
               multiline
               error={error.field === "title"}
-              helperText={error.message}
+              helperText={!postPayload.title && error.message}
               onChange={(e) => onChangeInput(e)}
             />
           </Grid>
@@ -93,7 +110,7 @@ const AddPost = () => {
               fullWidth
               multiline
               error={error.field === "description"}
-              helperText={error.message}
+              helperText={!postPayload.description && error.message}
               onChange={(e) => onChangeInput(e)}
             />
           </Grid>
@@ -117,7 +134,7 @@ const AddPost = () => {
             xs={12}
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
-            <Button onClick={onClickShare}>SHARE</Button>
+            <Button onClick={(e) => onClickShare(e)}>SHARE</Button>
           </Grid>
         </Grid>
       </Container>
