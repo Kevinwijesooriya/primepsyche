@@ -18,6 +18,7 @@ import BasicPagination from "../components/Pagination";
 import moment from "moment";
 import { red } from "@mui/material/colors";
 import ForumPostAPI from "../../../../../core/services/ForumPostAPI";
+import { Link } from "react-router-dom";
 
 const ViewPosts = () => {
   const [open, setOpen] = React.useState(false);
@@ -26,7 +27,9 @@ const ViewPosts = () => {
 
   async function fetchData() {
     const response = await ForumPostAPI.getAll();
-    setPostsList(response.data.data);
+    if (response.status === 200) {
+      setPostsList(response.data.data);
+    }
   }
   React.useEffect(() => {
     fetchData();
@@ -66,9 +69,31 @@ const ViewPosts = () => {
       </Box>
       {postsList &&
         postsList.map((post) => (
-          <PostContainer item xs={12} md={6} key={`postList${post._id}`}>
-            <CardActionArea>
-              <Card sx={{ display: "flex" }}>
+          <PostContainer
+            item
+            xs={12}
+            md={6}
+            key={`postList${post._id}`}
+            sx={{
+              background: (theme) =>
+                theme.palette.prime_psycheColors.prime_psyche_light_green5,
+            }}
+          >
+            <CardActionArea
+              component={Link}
+              to={`/primepsyche/forum/view/${post._id}`}
+              sx={{
+                background: (theme) =>
+                  theme.palette.prime_psycheColors.prime_psyche_light_green4,
+              }}
+            >
+              <Card
+                sx={{
+                  display: "flex",
+                  background: (theme) =>
+                    theme.palette.prime_psycheColors.prime_psyche_light_green4,
+                }}
+              >
                 <CardContent sx={{ flex: 1, p: 2 }}>
                   <Typography component="h2" variant="h5">
                     {post.title}

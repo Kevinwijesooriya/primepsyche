@@ -14,6 +14,8 @@ import { Colors } from "../../../../../core/styles/theme/PrimePsycheTheme";
 import BasicPagination from "../components/Pagination";
 import AlertDialog from "../DeleteConfirmation/index";
 import EventAPI from "../../../../../core/services/EventAPI";
+import { Link } from "react-router-dom";
+import moment from "moment";
 
 const EventHomePage = () => {
     const [open, setOpen] = React.useState(false);
@@ -22,7 +24,9 @@ const EventHomePage = () => {
 
     const fetchData = async ()=> {
         const response = await EventAPI.getAll();
+        if (response.status === 200) {
         setEventsList(response.data.data);
+        }
     }
     React.useEffect(() => {
         fetchData();
@@ -34,7 +38,7 @@ const EventHomePage = () => {
 
     const onClickDelete = (id) => {
         setDeleteId(id);
-        // setOpen(true);
+        setOpen(true);
     };
 
     return (
@@ -60,19 +64,19 @@ const EventHomePage = () => {
                 eventsList.map((event) => (
                     <PostContainer item xs={12} md={6}>
                         <CardActionArea component="a" href="#">
-                            <Card sx={{ display: "flex" }}>
+                            <Card component={Link} to={`/primepsyche/events/view/${event._id}`} sx={{ display: "flex",textDecoration:"none" }}>
                                 <CardContent sx={{ flex: 1, p: 2 }}>
                                     <Typography component="h2" variant="h6">
-                                        Title : <Typography display="inline" >{event.title}</Typography>
+                                        TITLE : <Typography display="inline" >{event.title}</Typography>
+                                        </Typography>
+                                    <Typography component="h2" variant="h6">
+                                        DATE : <Typography display="inline"> {moment(event.date).format("MMM Do YY")}  </Typography>
                                     </Typography>
                                     <Typography component="h2" variant="h6">
-                                        Date : <Typography display="inline"> {event.date}  </Typography>
+                                        TIME : <Typography display="inline"> {moment(event.time).format("h:mm a")}  </Typography>
                                     </Typography>
                                     <Typography component="h2" variant="h6">
-                                        Time : <Typography display="inline"> {event.time}  </Typography>
-                                    </Typography>
-                                    <Typography component="h2" variant="h6">
-                                        Conducted By : <Typography display="inline"> {event.conducted_by}  </Typography>                      
+                                        CONDUCTED BY : <Typography display="inline"> {event.conducted_by}  </Typography>                      
                                     </Typography>
                                 </CardContent>
                                 <CardMedia

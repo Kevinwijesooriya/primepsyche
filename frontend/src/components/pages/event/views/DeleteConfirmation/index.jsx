@@ -5,12 +5,27 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { WarningButton, WarningButtonOutlined } from "../../styles";
+import EventAPI from "../../../../../core/services/EventAPI";
+import { Alert } from "@mui/material";
 
 export default function AlertDialog(props) {
-    const { open, setOpen } = props;
+    const { open, setOpen,deleteId } = props;
+    const [error, setError] = React.useState(false);
+    const [content, setContent] = React.useState(true);
 
     const handleClose = () => {
         setOpen(false);
+    };
+    const handleDelete = async () => {
+        try {
+            const response = await EventAPI.delete(deleteId);
+            console.log("🚀 ~ response", response);
+            setContent(false);
+            setError(false);
+        } catch (error) {
+            setContent(false);
+            setError(true);
+        }
     };
 
     return (
@@ -21,6 +36,15 @@ export default function AlertDialog(props) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
+                {!content && error && (
+                    <Alert severity="error">Failed to delete the event!</Alert>
+                )}
+                {!content && !error && (
+                    <Alert severity="success">Successfully deleted the event!</Alert>
+                )}
+                {content && (
+                    <>
+
                 <DialogTitle id="alert-dialog-title">{"Delete Event?"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
@@ -31,10 +55,12 @@ export default function AlertDialog(props) {
                     <WarningButtonOutlined onClick={handleClose}>
                         no
                     </WarningButtonOutlined>
-                    <WarningButton onClick={handleClose} autoFocus>
+                    <WarningButton onClick={handleDelete} autoFocus>
                         Yes
                     </WarningButton>
                 </DialogActions>
+                </>
+                )}
             </Dialog>
         </div>
     );

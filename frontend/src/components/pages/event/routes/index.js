@@ -6,6 +6,7 @@ import EditEvent from "../views/EditEvent";
 import AddEvent from "../views/AddEvent";
 import EventBreadcrumbs from "../views/components/Breadcrumbs";
 import CusViewEvents from "../views/CusViewEvent";
+import ViewOne from "../views/ViewEvent/ViewOne";
 
 const EventRoutes = [
   {
@@ -17,6 +18,7 @@ const EventRoutes = [
       { path: "add", element: <AddEvent /> },
       { path: "edit", element: <EditEvent /> },
       { path: "CusView", element: <CusViewEvents /> },
+      { path: "view/:id", element: <ViewOne /> },
     ],
   },
 ];
