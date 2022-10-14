@@ -11,20 +11,87 @@ import { ImageUploadButton } from "../../styles";
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import moment from "moment";
+import AddSnackBar from "../components/AddSnackBar";
+import EventAPI from "../../../../../core/services/EventAPI";
+
 
 
 const AddEvent = () => {
     const [value, setValue] = React.useState(moment('2014-08-18T21:11:54'));
+    const [open, setOpen] = React.useState(false);
+    const [error, setError] = React.useState({ message: "" });
+    const [title, setTitle] = React.useState("");
+    const [description, setDescription] = React.useState("");
+    const [createSuccess, setCreateSuccess] = React.useState(false);
+    const [postPayload, setPostPayload] = React.useState({
+        title: "",
+        date: "",
+        time: "",
+        conducted_by: "",
+        description: "",
+        image: "",
+    });
+
 
     const [files, setFiles] = React.useState();
     function handleChange(e) {
         console.log(e.target.files);
         setFiles(URL.createObjectURL(e.target.files[0]));
+    };
+    const onClickAdd = async(e) => {
+        e.preventDefault();
+        {
+            isValid() && setOpen(true);
+        }
+        const response = await EventAPI.create(postPayload);
+        console.log("~ onClickAdd ~ response", response);
+        if (response.status === 200) {
+            setCreateSuccess(true);
+        } else {
+            setCreateSuccess(false);
+        }
+    };
+    const isValid = () => {
+        if (postPayload.description === "") {
+            setError({ field: "description", message: "Please fill me" });
+            return false;
+        }
+        if (postPayload.title === "") {
+            setError({ field: "title", message: "Please fill me" });
+            return false;
+        }
+        return true;
+    };
+    const onChangeInput = (e) => {
+        setError({ field: "", message: "" });
+        setPostPayload({
+            ...postPayload,
+            [e.target.name]: e.target.value,
+        });
+        console.log("postPayload",postPayload)
+    };
+    function handleChange(e) {
+        console.log(e.target.files);
+        setFiles(URL.createObjectURL(e.target.files[0]));
+        setPostPayload({
+            ...postPayload,
+            image: URL.createObjectURL(e.target.files[0]),
+        });
     }
 
 
     const handleChangeDate = (newValue) => {
-        setValue(newValue);
+        setPostPayload({
+            ...postPayload,
+            date: newValue,
+        });
+    };
+
+    const handleChangeTime = (newValue) => {
+        setPostPayload({
+            ...postPayload,
+            time: newValue,
+        });
     };
     return (
         <>
@@ -37,6 +104,7 @@ const AddEvent = () => {
                         display: { xs: "none", md: "flex" },
                     }}
                 >
+                    <AddSnackBar open={open} setOpen={setOpen} success={createSuccess} />
                     <Typography variant="PageHeader" gutterBottom>
                         Add Event
                     </Typography>
@@ -51,6 +119,9 @@ const AddEvent = () => {
                             // label="Title"
                             fullWidth
                             multiline
+                            error={error.field === "title"}
+                            helperText={!postPayload.title && error.message}
+                            onChange={(e) => onChangeInput(e)}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}></Grid>
@@ -58,7 +129,7 @@ const AddEvent = () => {
                         <InputLabel>Date</InputLabel>
                         <DesktopDatePicker
                             inputFormat="MM/DD/YYYY"
-                            value={value}
+                            value={postPayload.date}
                             onChange={handleChangeDate}
                             renderInput={(params) => <TextField {...params} />}
                         /></Grid>
@@ -66,8 +137,8 @@ const AddEvent = () => {
                     <Grid item xs={12} sm={6}>
                         <InputLabel>Time</InputLabel>
                         <TimePicker
-                        value={value}
-                        onChange={handleChange}
+                            value={postPayload.time}
+                        onChange={handleChangeTime}
                         renderInput={(params) => <TextField {...params} />}
                     /> </Grid>
                     <Grid item xs={12} sm={6}></Grid> 
@@ -75,10 +146,13 @@ const AddEvent = () => {
                         <InputLabel>Conducted By</InputLabel>
                         <TextField
                             required
-                            id="description"
-                            name="description"
+                            id="conducted_by"
+                            name="conducted_by"
                             fullWidth
                             multiline
+                            error={error.field === "conducted_by"}
+                            helperText={!postPayload.conducted_by && error.message}
+                            onChange={(e) => onChangeInput(e)}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}></Grid>
@@ -90,11 +164,14 @@ const AddEvent = () => {
                             name="description"
                             fullWidth
                             multiline
+                            error={error.field === "description"}
+                            helperText={!postPayload.description && error.message}
+                            onChange={(e) => onChangeInput(e)}
                         />
                     </Grid>
                     
                     <Grid item xs={12}>
-                        <InputLabel>Enhance your post with an image!</InputLabel>
+                        <InputLabel>Image</InputLabel>
                         <ImageUploadButton component="label">
                             <input type="file" hidden onChange={handleChange} />
                             {files ? (
@@ -113,7 +190,7 @@ const AddEvent = () => {
                         xs={12}
                         sx={{ display: "flex", justifyContent: "flex-end" }}
                     >
-                        <Button>ADD</Button>
+                        <Button onClick={(e) => onClickAdd(e)}>ADD</Button>
                     </Grid>
                 </Grid>
             </Container>
