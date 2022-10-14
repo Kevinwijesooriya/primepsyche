@@ -43,6 +43,7 @@ app.listen(port, () => {
 import ForumPostRoute from "./routes/forumPost.js";
 import ReadableMaterialsRoute from "./routes/readableMaterials.js";
 import forumCommentRoute from "./routes/forumComment.js";
+import userRoute from "./routes/user.js";
 
 //Help route imports
 import HelpPostRoute from "./routes/HelpPost.js";
@@ -52,3 +53,4 @@ app.use(ForumPostRoute);
 app.use(HelpPostRoute);
 app.use(ReadableMaterialsRoute);
 app.use(forumCommentRoute);
+app.use(userRoute);
