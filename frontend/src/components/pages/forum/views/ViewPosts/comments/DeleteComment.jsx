@@ -5,16 +5,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { WarningButton, WarningButtonOutlined } from "../../../styles";
-import { Alert } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ForumPostAPI from "../../../../../../core/services/ForumPostAPI";
+import ForumCommentAPI from "../../../../../../core/services/ForumCommentAPI";
 
 export default function DeleteComment(props) {
-  const { deleteId } = props;
+  const { data, postId, snack, setSnack } = props;
   const [open, setOpen] = React.useState(false);
-  const [error, setError] = React.useState(false);
-  const [content, setContent] = React.useState(true);
+  const payload = {
+    postId: postId,
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -24,13 +24,26 @@ export default function DeleteComment(props) {
   };
   const handleDelete = async () => {
     try {
-      const response = await ForumPostAPI.delete(deleteId);
+      const response = await ForumCommentAPI.delete({
+        deleteId: data._id,
+        payload,
+      });
       console.log("🚀 ~ response", response);
-      setContent(false);
-      setError(false);
+      setSnack({
+        ...snack,
+        open: true,
+        severity: "success",
+        message: "delete success !",
+      });
+      setOpen(false);
     } catch (error) {
-      setContent(false);
-      setError(true);
+      setOpen(false);
+      setSnack({
+        ...snack,
+        open: true,
+        severity: "error",
+        message: "Failed to delete comment ! please try again",
+      });
     }
   };
 
@@ -45,32 +58,22 @@ export default function DeleteComment(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        {!content && error && (
-          <Alert severity="error">Failed to delete the comment!</Alert>
-        )}
-        {!content && !error && (
-          <Alert severity="success">Successfully deleted the comment!</Alert>
-        )}
-        {content && (
-          <>
-            <DialogTitle id="alert-dialog-title">
-              {"Delete comment?"}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                Are you sure you want to delete this comment?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <WarningButtonOutlined onClick={handleClose}>
-                no
-              </WarningButtonOutlined>
-              <WarningButton onClick={handleDelete} autoFocus>
-                Yes
-              </WarningButton>
-            </DialogActions>
-          </>
-        )}
+        <>
+          <DialogTitle id="alert-dialog-title">{"Delete comment?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete this comment?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <WarningButtonOutlined onClick={handleClose}>
+              no
+            </WarningButtonOutlined>
+            <WarningButton onClick={handleDelete} autoFocus>
+              Yes
+            </WarningButton>
+          </DialogActions>
+        </>
       </Dialog>
     </>
   );
