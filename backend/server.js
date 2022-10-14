@@ -46,9 +46,11 @@ import forumCommentRoute from "./routes/forumComment.js";
 
 //Help route imports
 import HelpPostRoute from "./routes/HelpPost.js";
+import HelpCommentRoute from "./routes/HelpComment.js";
 
 //routes
 app.use(ForumPostRoute);
 app.use(HelpPostRoute);
 app.use(ReadableMaterialsRoute);
 app.use(forumCommentRoute);
+app.use(HelpCommentRoute);

@@ -27,6 +27,11 @@ const HelpPostSchema = new Schema(
       type: String,
       required: true,
     },
+    response: [
+      {
+        comment: { type: String },
+      },
+    ],
   },
   {
     timestamps: true,
