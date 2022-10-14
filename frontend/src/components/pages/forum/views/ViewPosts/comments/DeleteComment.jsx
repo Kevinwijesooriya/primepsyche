@@ -4,39 +4,54 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { WarningButton, WarningButtonOutlined } from "../../styles";
-import ForumPostAPI from "../../../../../core/services/ForumPostAPI";
+import { WarningButton, WarningButtonOutlined } from "../../../styles";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ForumCommentAPI from "../../../../../../core/services/ForumCommentAPI";
 
-export default function AlertDialog(props) {
-  const { open, setOpen, deleteId, snack, setSnack } = props;
+export default function DeleteComment(props) {
+  const { data, postId, snack, setSnack } = props;
+  const [open, setOpen] = React.useState(false);
+  const payload = {
+    postId: postId,
+  };
 
   const handleClose = () => {
     setOpen(false);
   };
+  const handleOpen = () => {
+    setOpen(true);
+  };
   const handleDelete = async () => {
     try {
-      const response = await ForumPostAPI.delete(deleteId);
+      const response = await ForumCommentAPI.delete({
+        deleteId: data._id,
+        payload,
+      });
       console.log("🚀 ~ response", response);
-      setOpen(false);
       setSnack({
         ...snack,
         open: true,
         severity: "success",
         message: "delete success !",
       });
+      setOpen(false);
     } catch (error) {
       setOpen(false);
       setSnack({
         ...snack,
         open: true,
         severity: "error",
-        message: "Failed to delete post ! please try again",
+        message: "Failed to delete comment ! please try again",
       });
     }
   };
 
   return (
-    <div>
+    <>
+      <IconButton edge="end" aria-label="delete" onClick={handleOpen}>
+        <DeleteIcon />
+      </IconButton>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -44,10 +59,10 @@ export default function AlertDialog(props) {
         aria-describedby="alert-dialog-description"
       >
         <>
-          <DialogTitle id="alert-dialog-title">{"Delete Post?"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Delete comment?"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Are you sure you want to delete this post?
+              Are you sure you want to delete this comment?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -60,6 +75,6 @@ export default function AlertDialog(props) {
           </DialogActions>
         </>
       </Dialog>
-    </div>
+    </>
   );
 }

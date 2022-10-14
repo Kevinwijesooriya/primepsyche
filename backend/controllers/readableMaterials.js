@@ -1,10 +1,19 @@
 import ReadableMaterials from "../models/readableMaterials.js";
 
 const readableMaterialsController = {
+  getOneReadableMaterial: async (req, res) => {
+    const id = req.params.id;
+    try {
+      const material = await ReadableMaterials.findOne({ _id: id });
+      res.json({ message: "Readable file fetch success", data: material });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
   getReadableMaterials: async (req, res) => {
     try {
-      const posts = await ReadableMaterials.find();
-      res.json({ message: "Readable file fetch success", data: posts });
+      const materials = await ReadableMaterials.find();
+      res.json({ message: "Readable file fetch success", data: materials });
     } catch (err) {
       return res.status(500).json({ message: err.message });
     }
@@ -12,8 +21,8 @@ const readableMaterialsController = {
   createReadableMaterials: async (req, res) => {
     try {
       const { userId, title, author, readableFile, image } = req.body;
-      const ExistingPost = await ReadableMaterials.findOne({ title });
-      if (ExistingPost)
+      const ExistingMaterial = await ReadableMaterials.findOne({ title });
+      if (ExistingMaterial)
         return res.status(400).json({
           message: "This Readable File already exists.",
         });
@@ -35,6 +44,34 @@ const readableMaterialsController = {
         message: "Readable Material create success",
         data: newReadableMaterials,
       });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+  updateReadableMaterial: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const { title, author, readableFile, image } = req.body;
+
+      await ReadableMaterials.findOneAndUpdate(
+        { _id: id },
+        { title, author, readableFile, image }
+      );
+      res.json({
+        message: "Readable Material update success",
+        data: { title, author, readableFile, image },
+      });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+
+  deleteReadableMaterial: async (req, res) => {
+    try {
+      const id = req.params.id;
+
+      await ReadableMaterials.findByIdAndDelete({ _id: id });
+      res.json({ message: "delete success !" });
     } catch (err) {
       return res.status(500).json({ message: err.message });
     }

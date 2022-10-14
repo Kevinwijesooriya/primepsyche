@@ -1,19 +1,24 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
-const forumPostSchema = new Schema(
+const HelpPostSchema = new Schema(
   {
-    userId: {
+    name: {
       type: String,
       required: true,
       trim: true,
     },
-    userName: {
+    gender: {
       type: String,
       required: true,
       trim: true,
     },
-    title: {
+    age: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    disorder: {
       type: String,
       required: true,
       trim: true,
@@ -22,21 +27,10 @@ const forumPostSchema = new Schema(
       type: String,
       required: true,
     },
-    image: {
-      type: Object,
-      required: true,
-    },
-    comments: [
-      {
-        comment: { type: String },
-        userId: { type: String },
-        userName: { type: String },
-      },
-    ],
   },
   {
     timestamps: true,
   }
 );
 
-export default model("ForumPost", forumPostSchema);
+export default model("HelpPost", HelpPostSchema);
