@@ -26,7 +26,7 @@ readableMaterialsRoute.put(
   "/api/readableMaterials/approveReadableMaterial/:id",
   readableMaterialsController.approveReadableMaterial
 );
-readableMaterialsRoute.get(
+readableMaterialsRoute.post(
   "/api/readableMaterials/getApproveReadableMaterial",
   readableMaterialsController.getApproveReadableMaterial
 );

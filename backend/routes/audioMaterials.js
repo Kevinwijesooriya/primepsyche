@@ -26,7 +26,7 @@ audioMaterialsRoute.put(
   "/api/audioMaterials/approveAudioMaterial/:id",
   audioMaterialsController.approveAudioMaterial
 );
-audioMaterialsRoute.get(
+audioMaterialsRoute.post(
   "/api/audioMaterials/getApproveAudioMaterial",
   audioMaterialsController.getApproveAudioMaterial
 );
