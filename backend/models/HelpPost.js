@@ -3,6 +3,11 @@ const { Schema, model } = mongoose;
 
 const HelpPostSchema = new Schema(
   {
+    userID: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     name: {
       type: String,
       required: true,
@@ -27,6 +32,13 @@ const HelpPostSchema = new Schema(
       type: String,
       required: true,
     },
+    suggests: [
+      {
+        suggest: { type: String },
+        userId: { type: String },
+        userName: { type: String },
+      },
+    ],
   },
   {
     timestamps: true,

@@ -30,7 +30,9 @@ const ViewPosts = () => {
 
   async function fetchData() {
     const response = await HelpPostAPI.getAll();
-    setPostList(response.data.data);
+    if (response.status === 200) {
+      setPostList(response.data.data);
+    }
   }
 
   React.useEffect(() => {
