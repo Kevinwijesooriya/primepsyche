@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 import { InputLabel, TextField, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -9,24 +11,31 @@ import Box from "@mui/material/Box";
 import { ImageUploadButton } from "../../styles";
 import AddSnackBar from "../components/AddSnackBar";
 
-const AddReadable = () => {
-  const [files, setFiles] = React.useState();
-  const [open, setOpen] = React.useState(false);
-   const [error, setError] = React.useState({ message: "" });
-   const [title, setTitle] = React.useState("");
-   
 
-    const onClickShare = () => {
-      {
-        isValid() && setOpen(true);
-      }
-    };
-    const isValid = () => {
-      if (title === "") {
-        setError({ field: "title", message: "Please fill me" });
-        return false;
-      }
-      return true;
+const AddReadable = () => {
+  
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState({ message: "" });
+  const [userId, setUserId] = useState();
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState();
+  const [files, setFiles] = useState();
+  // const [files, setFiles] = useState();
+
+  // userId, title, author, readableFile, image;
+  
+
+  const onClickShare = () => {
+    {
+      isValid() && setOpen(true);
+    }
+  };
+  const isValid = () => {
+    if (title === "") {
+      setError({ field: "title", message: "Please fill me" });
+      return false;
+    }
+    return true;
   };
   const onChangeInput = (e) => {
     if (e.target.name === "title") {
@@ -38,7 +47,7 @@ const AddReadable = () => {
     console.log(e.target.files);
     setFiles(URL.createObjectURL(e.target.files[0]));
   }
-  
+
   return (
     <>
       <Container>
@@ -81,8 +90,6 @@ const AddReadable = () => {
                 multiline
               />
             </Grid>
-
-            
 
             <Grid item xs={12}>
               <InputLabel>Readable File</InputLabel>
