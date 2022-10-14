@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
-const readableMaterialsSchema = new Schema(
+const audioMaterialsSchema = new Schema(
   {
     userId: {
       type: String,
@@ -13,12 +13,22 @@ const readableMaterialsSchema = new Schema(
       required: true,
       trim: true,
     },
-    author: {
+    genre: {
       type: String,
       required: true,
       trim: true,
     },
-    readableFile: {
+    album: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    artist: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    audioFile: {
       type: String,
       required: true,
     },
@@ -39,4 +49,4 @@ const readableMaterialsSchema = new Schema(
   }
 );
 
-export default model("ReadableMaterials", readableMaterialsSchema);
+export default model("AudioMaterials", audioMaterialsSchema);
