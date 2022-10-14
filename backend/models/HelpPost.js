@@ -3,6 +3,11 @@ const { Schema, model } = mongoose;
 
 const HelpPostSchema = new Schema(
   {
+    userID: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     name: {
       type: String,
       required: true,

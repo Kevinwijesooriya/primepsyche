@@ -21,11 +21,12 @@ const HelpPostController = {
   },
   createHelpPost: async (req, res) => {
     try {
-      const { name, age, gender, disorder, description } = req.body;
-      if (!name || !age || !gender || !disorder)
+      const { userID, name, age, gender, disorder, description } = req.body;
+      if (!userID || !name || !age || !gender || !disorder)
         return res.status(400).json({ msg: "Please fill in all fields." });
 
       const newHelpPost = new HelpPost({
+        userID,
         name,
         age,
         gender,
@@ -63,6 +64,15 @@ const HelpPostController = {
 
       await HelpPost.findByIdAndDelete({ _id: id });
       res.json({ message: "delete success !" });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+  getMyHelpPosts: async (req, res) => {
+    const userID = req.params.id;
+    try {
+      const posts = await HelpPost.findOne({ userID: userID });
+      res.json({ message: "Help posts fetch success", data: posts });
     } catch (err) {
       return res.status(500).json({ message: err.message });
     }
