@@ -22,7 +22,6 @@ const EditEvent = () => {
     const eventId = params.id;
     const [error, setError] = React.useState({ message: "" });
     const [updateSuccess, setUpdateSuccess] = React.useState(false);
-    const { title, date, time, conducted_by, description, image } = payload;
     const [payload, setPayload] = React.useState({
         title: "",
         date:"",
@@ -31,9 +30,12 @@ const EditEvent = () => {
         description: "",
         image: "",
     });
+    const { title, date, time, conducted_by, description, image } = payload;
     async function fetchData() {
         const response = await EventAPI.getOne(eventId);
-        setPayload(response.data.data);
+        if (response.status === 200) {
+            setPayload(response.data.data);            
+        }
     }
     const onClickSave = async (e) => {
         e.preventDefault();
@@ -41,7 +43,7 @@ const EditEvent = () => {
             isValid() && setOpen(true);
         }
         const response = await EventAPI.update({ eventId, payload });
-        console.log("~ onClickAdd ~ response", response);
+        console.log("~ onClickAdd ~ response,eventId", response, eventId);
         if (response.status === 200) {
             setUpdateSuccess(true);
         } else {
@@ -160,28 +162,27 @@ const EditEvent = () => {
                         /> </Grid>
                     <Grid item xs={12} sm={6}>
                         <InputLabel>Conducted By</InputLabel>
-                        <TextField 
-                            required
-                            id="description"
-                            name="description"
+                        <TextField required
+                            id="conducted_by"
+                            name="conducted_by"
                             fullWidth
                             multiline
-                            helperText={error.message}
-                            onChange={(e) => onChangeInput(e)}
-                        />
+                            defaultValue={conducted_by || ""}
+                            helperText={!payload.conducted_by && error.message}
+                            error={error.field === "conducted_by"}
+                            onChange={(e) => onChangeInput(e)} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <InputLabel>Description</InputLabel>
-                        <TextField
-                            defaultValue={"It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout..."}
-                            required
+                        <TextField required
                             id="description"
                             name="description"
                             fullWidth
                             multiline
-                            helperText={error.message}
-                            onChange={(e) => onChangeInput(e)}
-                        />
+                            defaultValue={description || ""}
+                            helperText={!payload.description && error.message}
+                            error={error.field === "description"}
+                            onChange={(e) => onChangeInput(e)} />
                     </Grid>
                     <Grid item xs={12}>
                         <InputLabel>Image</InputLabel>
@@ -189,7 +190,7 @@ const EditEvent = () => {
                             <input type="file" hidden onChange={handleChange} />
                             {files && (
                                 <img
-                                    alt="forum_post"
+                                    alt="event"
                                     src={files}
                                     style={{ minHeight: 600, minWidth: 600 }}
                                 />
@@ -199,7 +200,7 @@ const EditEvent = () => {
                             )}
                             {image && (
                                 <img
-                                    alt="forum_post"
+                                    alt="event"
                                     src={image}
                                     style={{ minHeight: 600, minWidth: 600 }}
                                 />

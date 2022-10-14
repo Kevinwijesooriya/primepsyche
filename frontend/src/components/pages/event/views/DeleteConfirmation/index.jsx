@@ -6,12 +6,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { WarningButton, WarningButtonOutlined } from "../../styles";
 import EventAPI from "../../../../../core/services/EventAPI";
-import { Alert } from "@mui/material";
 
 export default function AlertDialog(props) {
-    const { open, setOpen,deleteId } = props;
-    const [error, setError] = React.useState(false);
-    const [content, setContent] = React.useState(true);
+    const { open, setOpen, deleteId, snack, setSnack } = props;
 
     const handleClose = () => {
         setOpen(false);
@@ -20,11 +17,21 @@ export default function AlertDialog(props) {
         try {
             const response = await EventAPI.delete(deleteId);
             console.log("🚀 ~ response", response);
-            setContent(false);
-            setError(false);
+            setOpen(false);
+            setSnack({
+                ...snack,
+                open: true,
+                severity: "success",
+                message: "delete success !",
+            });
         } catch (error) {
-            setContent(false);
-            setError(true);
+            setOpen(false);
+            setSnack({
+                ...snack,
+                open: true,
+                severity: "error",
+                message: "Failed to delete event ! please try again",
+            });
         }
     };
 
@@ -36,14 +43,7 @@ export default function AlertDialog(props) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                {!content && error && (
-                    <Alert severity="error">Failed to delete the event!</Alert>
-                )}
-                {!content && !error && (
-                    <Alert severity="success">Successfully deleted the event!</Alert>
-                )}
-                {content && (
-                    <>
+               <>
 
                 <DialogTitle id="alert-dialog-title">{"Delete Event?"}</DialogTitle>
                 <DialogContent>
@@ -60,7 +60,6 @@ export default function AlertDialog(props) {
                     </WarningButton>
                 </DialogActions>
                 </>
-                )}
             </Dialog>
         </div>
     );

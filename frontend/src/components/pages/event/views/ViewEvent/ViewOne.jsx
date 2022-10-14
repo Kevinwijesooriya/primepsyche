@@ -18,17 +18,26 @@ import moment from "moment";
 import { red } from "@mui/material/colors";
 import EventAPI from "../../../../../core/services/EventAPI";
 import { useParams } from "react-router-dom";
+import Comments from "./comments/Comments";
 
 function ViewOne() {
     const params = useParams();
     const eventId = params.id;
     const [open, setOpen] = React.useState(false);
+    const [comment, setComment] = React.useState("");
+    const [commentsVisible, setCommentsVisible] = React.useState(false);
     const [event, setEvent] = React.useState({
         title: "",
         conducted_by: "",
         description: "",
         image: "",
     });
+
+    const onClickComment = (id) => {
+        setComment(id);
+        setCommentsVisible(!commentsVisible);
+    };
+
     // const getDate = (date) => {
     //     return moment(date).format("LL");
     // };
@@ -98,7 +107,7 @@ function ViewOne() {
                                 <FavoriteIcon sx={{ color: red[900] }} />
                             </IconButton>
                             <IconButton>
-                                <CommentIcon />
+                                <CommentIcon onClick={() => onClickComment(event._id)} />
                             </IconButton>
                         </Stack>
                     </Grid>
@@ -108,7 +117,7 @@ function ViewOne() {
                             spacing={1}
                             sx={{ display: "flex", justifyContent: "flex-end" }}
                         >
-                            <StyledLink to={`/primepsyche/event/edit/${event._id}`}>
+                            <StyledLink to={`/primepsyche/events/edit/${event._id}`}>
                                 <IconButton>
                                     <EditIcon />
                                 </IconButton>
@@ -119,6 +128,9 @@ function ViewOne() {
                         </Stack>
                     </Grid>
                 </Grid>
+                {commentsVisible && comment === event._id && (
+                    <Comments event={event} />
+                )}
             </PostContainer>
             <AlertDialog open={open} setOpen={setOpen} deleteId={eventId} />
         </>

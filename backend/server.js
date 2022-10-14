@@ -44,6 +44,7 @@ import ForumPostRoute from "./routes/forumPost.js";
 import eventRoute from "./routes/event.js";
 import ReadableMaterialsRoute from "./routes/readableMaterials.js";
 import forumCommentRoute from "./routes/forumComment.js";
+import eventCommentRoute from "./routes/eventComment.js";
 
 //Help route imports
 import HelpPostRoute from "./routes/HelpPost.js";
@@ -54,3 +55,4 @@ app.use(HelpPostRoute);
 app.use(ReadableMaterialsRoute);
 app.use(forumCommentRoute);
 app.use(eventRoute);
+app.use(eventCommentRoute);

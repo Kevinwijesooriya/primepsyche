@@ -31,6 +31,13 @@ const eventSchema = new Schema(
             type: Object,
             required: true,
         },
+        comments: [
+            {
+                comment: { type: String },
+                userId: { type: String },
+                userName: { type: String },
+            },
+        ],
     },
     {
         timestamps: true,

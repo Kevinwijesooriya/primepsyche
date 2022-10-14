@@ -16,11 +16,17 @@ import AlertDialog from "../DeleteConfirmation/index";
 import EventAPI from "../../../../../core/services/EventAPI";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import ESnackBar from "../components/ESnackBar";
 
 const EventHomePage = () => {
     const [open, setOpen] = React.useState(false);
     const [eventsList, setEventsList] = React.useState([]);
     const [deleteId, setDeleteId] = React.useState("");
+    const [snack, setSnack] = React.useState({
+        open: false,
+        severity: "",
+        message: "",
+    });
 
     const fetchData = async ()=> {
         const response = await EventAPI.getAll();
@@ -70,7 +76,7 @@ const EventHomePage = () => {
                                         TITLE : <Typography display="inline" >{event.title}</Typography>
                                         </Typography>
                                     <Typography component="h2" variant="h6">
-                                        DATE : <Typography display="inline"> {moment(event.date).format("MMM Do YY")}  </Typography>
+                                        DATE : <Typography display="inline"> {moment(event.date).format("MMM Do YYYY")}  </Typography>
                                     </Typography>
                                     <Typography component="h2" variant="h6">
                                         TIME : <Typography display="inline"> {moment(event.time).format("h:mm a")}  </Typography>
@@ -128,7 +134,20 @@ const EventHomePage = () => {
             <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>
                 <BasicPagination count={10} />
             </Box>
-            <AlertDialog open={open} setOpen={setOpen} deleteId={deleteId} />
+            <AlertDialog 
+            open={open} 
+            setOpen={setOpen} 
+            deleteId={deleteId}
+            snack={snack}
+            setSnack={setSnack}
+         />
+            <ESnackBar
+                open={snack.open}
+                snack={snack}
+                setOpen={setSnack}
+                severity={snack.severity}
+                message={snack.message}
+            />
         </>
     );
 };
