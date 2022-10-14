@@ -10,16 +10,17 @@ import Box from "@mui/material/Box";
 import { ImageUploadButton } from "../../styles";
 import AddSnackBar from "../components/AddSnackBar";
 import ForumPostAPI from "../../../../../core/services/ForumPostAPI";
-// import AddPostAlerts from "../ForumAlerts/AddPostAlerts";
+import { useSelector } from "react-redux";
 
 const AddPost = () => {
+  const { user } = useSelector((state) => state.auth);
   const [files, setFiles] = React.useState();
   const [error, setError] = React.useState({ field: "", message: "" });
   const [open, setOpen] = React.useState(false);
   const [createSuccess, setCreateSuccess] = React.useState(false);
   const [postPayload, setPostPayload] = React.useState({
-    userId: "US2002189",
-    userName: "Adam Jester",
+    userId: "",
+    userName: "",
     title: "",
     description: "",
     image: "",
@@ -62,6 +63,8 @@ const AddPost = () => {
     setPostPayload({
       ...postPayload,
       [e.target.name]: e.target.value,
+      userId: user._id,
+      userName: user.userName,
     });
   };
   return (

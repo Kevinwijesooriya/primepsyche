@@ -11,13 +11,15 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import ForumCommentAPI from "../../../../../../core/services/ForumCommentAPI";
 import PSnackBar from "../../components/PSnackBar";
+import { useSelector } from "react-redux";
 
 const Comments = (props) => {
+  const { user } = useSelector((state) => state.auth);
   const { post } = props;
   const [payload, setPayload] = React.useState({
     postId: post._id,
-    userId: "fdsfshfdsh234236",
-    userName: "Kevin Dilshan",
+    userId: "",
+    userName: "",
     comment: "",
   });
   const [snack, setSnack] = React.useState({
@@ -50,6 +52,8 @@ const Comments = (props) => {
     setPayload({
       ...payload,
       comment: e.target.value,
+      userId: user._id,
+      userName: user.userName,
     });
   };
   return (
@@ -66,20 +70,22 @@ const Comments = (props) => {
             <ListItem
               key={`commentList-${i}`}
               secondaryAction={
-                <>
-                  <EditComment
-                    data={comment}
-                    postId={post._id}
-                    snack={snack}
-                    setSnack={setSnack}
-                  />
-                  <DeleteComment
-                    data={comment}
-                    postId={post._id}
-                    snack={snack}
-                    setSnack={setSnack}
-                  />
-                </>
+                user._id === comment.userId && (
+                  <>
+                    <EditComment
+                      data={comment}
+                      postId={post._id}
+                      snack={snack}
+                      setSnack={setSnack}
+                    />
+                    <DeleteComment
+                      data={comment}
+                      postId={post._id}
+                      snack={snack}
+                      setSnack={setSnack}
+                    />
+                  </>
+                )
               }
             >
               <ListItemAvatar>
