@@ -9,13 +9,23 @@ import EventRoutes from "../../components/pages/event/routes";
 import ForumRoutes from "../../components/pages/forum/routes";
 import MaterialRoutes from "../../components/pages/materials/routes";
 import PsychiatristRoutes from "../../components/pages/psychiatrist/routes";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function AppRoutes() {
-  //TODO implement authentication validation
-  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
+  const navigate = useNavigate();
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   React.useEffect(() => {
-    setIsLoggedIn(true);
-  }, []);
+    if (user !== null) {
+      setIsLoggedIn(true);
+      navigate("/");
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [user, isLoading, isError, isSuccess, message]);
 
   return (
     <>
