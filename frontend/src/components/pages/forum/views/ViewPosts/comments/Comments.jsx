@@ -9,25 +9,48 @@ import EditComment from "./EditComment";
 import DeleteComment from "./DeleteComment";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import ForumCommentAPI from "../../../../../../core/services/ForumCommentAPI";
+import PSnackBar from "../../components/PSnackBar";
 
-const Comments = () => {
-  const commentList = [
-    { comment: "Comment", userName: "John Mayer", id: "23g2323g42h2b4gvgvgjj" },
-    {
-      comment: "Comment",
-      userName: "Shawn Mendes",
-      id: "23g2323g42h2b4gvgvyrdj",
-    },
-    {
-      comment: "Comment",
-      userName: "Taylor Swift",
-      id: "23g2323g42h2b4gvgddjj",
-    },
-    { comment: "Comment", userName: "Drake", id: "23g2323g42h2b4gvgssjj" },
-    { comment: "Comment", userName: "Harry Style", id: "sdsfdfsee334gdr657" },
-  ];
-  const onClickEdit = (id) => {
-    console.log("~ onClickEdit ~ id", id);
+const Comments = (props) => {
+  const { post } = props;
+  const [payload, setPayload] = React.useState({
+    postId: post._id,
+    userId: "fdsfshfdsh234236",
+    userName: "Kevin Dilshan",
+    comment: "",
+  });
+  const [snack, setSnack] = React.useState({
+    open: false,
+    severity: "",
+    message: "",
+  });
+  const commentList = post.comments;
+
+  const onClickAdd = async () => {
+    const response = await ForumCommentAPI.create(payload);
+    if (response.status === 200) {
+      setSnack({
+        ...snack,
+        open: true,
+        severity: "success",
+        message: "comment added !",
+      });
+    } else {
+      setSnack({
+        ...snack,
+        open: true,
+        severity: "error",
+        message: "Failed to add comment ! please try again",
+      });
+    }
+  };
+
+  const onChangeComment = (e) => {
+    setPayload({
+      ...payload,
+      comment: e.target.value,
+    });
   };
   return (
     <>
@@ -44,8 +67,18 @@ const Comments = () => {
               key={`commentList-${i}`}
               secondaryAction={
                 <>
-                  <EditComment />
-                  <DeleteComment />
+                  <EditComment
+                    data={comment}
+                    postId={post._id}
+                    snack={snack}
+                    setSnack={setSnack}
+                  />
+                  <DeleteComment
+                    data={comment}
+                    postId={post._id}
+                    snack={snack}
+                    setSnack={setSnack}
+                  />
                 </>
               }
             >
@@ -68,11 +101,21 @@ const Comments = () => {
             placeholder="Add your comment"
             type="text"
             fullWidth
+            onChange={(e) => onChangeComment(e)}
             sx={{ mr: "12px" }}
           />
-          <Button size="large">ADD</Button>
+          <Button size="large" onClick={() => onClickAdd()}>
+            ADD
+          </Button>
         </ListItem>
       </List>
+      <PSnackBar
+        open={snack.open}
+        snack={snack}
+        setOpen={setSnack}
+        severity={snack.severity}
+        message={snack.message}
+      />
     </>
   );
 };
