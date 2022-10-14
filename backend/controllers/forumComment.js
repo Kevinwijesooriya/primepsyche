@@ -1,11 +1,12 @@
 import ForumComment from "../models/forumComment.js";
+import ForumPost from "../models/forumPost.js";
 
 const forumCommentController = {
   getOneForumComment: async (req, res) => {
     const id = req.params.id;
     try {
-      const comment = await ForumComment.findOne({ _id: id });
-      res.json({ message: "Forum comment fetch success", data: comment });
+      const comments = await ForumPost.findOne({ _id: id });
+      res.json({ message: "Forum comment fetch success", data: comments });
     } catch (err) {
       return res.status(500).json({ message: err.message });
     }
@@ -13,28 +14,27 @@ const forumCommentController = {
 
   getForumComments: async (req, res) => {
     try {
-      const comments = await ForumComment.find();
-      res.json({ message: "Forum comments fetch success", data: comments });
+      const response = await ForumPost.findOne({ _id: id });
+      res.json({
+        message: "Forum comments fetch success",
+        data: response.comments,
+      });
     } catch (err) {
       return res.status(500).json({ message: err.message });
     }
   },
   createForumComment: async (req, res) => {
     try {
-      const { userId, userName, comment } = req.body;
+      const { postId, userId, userName, comment } = req.body;
+      const payload = { userId, userName, comment };
 
-      if (!comment || !userId)
-        return res.status(400).json({ msg: "Please fill in all fields." });
-
-      const newForumComment = new ForumComment({
-        userId,
-        userName,
-        comment,
-      });
-      await newForumComment.save();
+      const response = await ForumPost.findOneAndUpdate(
+        { _id: postId },
+        { $push: { comments: payload } }
+      );
       res.json({
-        message: "Forum comment create success",
-        data: newForumComment,
+        message: "Forum comment add success",
+        data: comment,
       });
     } catch (err) {
       return res.status(500).json({ message: err.message });
@@ -44,9 +44,28 @@ const forumCommentController = {
   updateForumComment: async (req, res) => {
     try {
       const id = req.params.id;
-      const { comment } = req.body;
+      console.log(
+        "🚀 ~ file: forumComment.js ~ line 47 ~ updateForumComment: ~ id",
+        id
+      );
+      const { postId, comment } = req.body;
+      console.log(
+        "🚀 ~ file: forumComment.js ~ line 48 ~ updateForumComment: ~ comment",
+        comment
+      );
 
-      await ForumComment.findOneAndUpdate({ _id: id }, { comment });
+      const response = await ForumPost.findOneAndUpdate(
+        { _id: postId, "comments._id": id },
+        {
+          $set: {
+            "comments.$.comment": comment,
+          },
+        }
+      );
+      console.log(
+        "🚀 ~ file: forumComment.js ~ line 54 ~ updateForumComment: ~ response",
+        response
+      );
       res.json({
         message: "Forum comment update success",
         data: { comment },
@@ -58,9 +77,17 @@ const forumCommentController = {
 
   deleteForumComment: async (req, res) => {
     try {
-      const id = req.params.id;
-
-      await ForumComment.findByIdAndDelete({ _id: id });
+      const commentId = req.params.id;
+      const { postId } = req.body;
+      console.log(
+        "🚀 ~ file: DeleteComment.jsx ~ line 24 ~ handleOpen ~ deleteId, postId",
+        commentId,
+        postId
+      );
+      await ForumPost.findOneAndUpdate(
+        { _id: postId },
+        { $pull: { comments: { _id: commentId } } }
+      );
       res.json({ message: "delete success !" });
     } catch (err) {
       return res.status(500).json({ message: err.message });

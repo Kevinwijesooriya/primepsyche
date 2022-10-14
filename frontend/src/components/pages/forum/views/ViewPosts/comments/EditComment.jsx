@@ -9,9 +9,15 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
+import ForumCommentAPI from "../../../../../../core/services/ForumCommentAPI";
 
-export default function EditComment() {
+export default function EditComment(props) {
+  const { data, postId, snack, setSnack } = props;
   const [open, setOpen] = React.useState(false);
+  const [payload, setPayload] = React.useState({
+    postId: postId,
+    comment: data.comment,
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -19,6 +25,41 @@ export default function EditComment() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const onChangeComment = (e) => {
+    setPayload({
+      ...payload,
+      comment: e.target.value,
+    });
+  };
+
+  const onClickSave = async (e) => {
+    e.preventDefault();
+    if (true) {
+      const response = await ForumCommentAPI.update({
+        commentId: data._id,
+        payload,
+      });
+      console.log("~ onClickShare ~ response", response);
+      if (response.status === 200) {
+        setOpen(false);
+        setSnack({
+          ...snack,
+          open: true,
+          severity: "success",
+          message: "changes saved !",
+        });
+      } else {
+        setOpen(false);
+        setSnack({
+          ...snack,
+          open: true,
+          severity: "error",
+          message: "Failed to update comment ! please try again",
+        });
+      }
+    }
   };
 
   return (
@@ -51,13 +92,21 @@ export default function EditComment() {
           <DialogContentText>
             You can make changes to your comment.
           </DialogContentText>
-          <TextField autoFocus margin="dense" id="name" type="text" fullWidth />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            type="text"
+            fullWidth
+            defaultValue={data.comment}
+            onChange={(e) => onChangeComment(e)}
+          />
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={handleClose}>
             Cancel
           </Button>
-          <Button onClick={handleClose}>SAVE CHANGES</Button>
+          <Button onClick={(e) => onClickSave(e)}>SAVE CHANGES</Button>
         </DialogActions>
       </Dialog>
     </>

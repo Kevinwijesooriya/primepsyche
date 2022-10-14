@@ -27,15 +27,15 @@ const AddPost = () => {
 
   const onClickShare = async (e) => {
     e.preventDefault();
-    {
-      isValid() && setOpen(true);
-    }
-    const response = await ForumPostAPI.create(postPayload);
-    console.log("~ onClickShare ~ response", response);
-    if (response.status === 200) {
-      setCreateSuccess(true);
-    } else {
-      setCreateSuccess(false);
+    if (isValid()) {
+      const response = await ForumPostAPI.create(postPayload);
+      console.log("~ onClickShare ~ response", response);
+      if (response.status === 200) {
+        setCreateSuccess(true);
+        setOpen(true);
+      } else {
+        setCreateSuccess(false);
+      }
     }
   };
   const isValid = () => {

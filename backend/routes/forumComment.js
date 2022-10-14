@@ -18,7 +18,7 @@ forumCommentRoute.put(
   "/api/forumComment/update/:id",
   forumCommentController.updateForumComment
 );
-forumCommentRoute.delete(
+forumCommentRoute.put(
   "/api/forumComment/delete/:id",
   forumCommentController.deleteForumComment
 );
