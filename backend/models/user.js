@@ -1,37 +1,35 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
-const readableMaterialsSchema = new Schema(
+const userSchema = new Schema(
   {
-    userId: {
+    firstName: {
       type: String,
       required: true,
       trim: true,
     },
-    title: {
+    lastName: {
       type: String,
       required: true,
       trim: true,
     },
-    author: {
+    userName: {
       type: String,
       required: true,
       trim: true,
     },
-    readableFile: {
+    role: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    email: {
       type: String,
       required: true,
     },
-    image: {
+    password: {
       type: String,
       required: true,
-    },
-    approve: {
-      type: Boolean,
-
-      required: true,
-
-      default: false,
     },
   },
   {
@@ -39,4 +37,4 @@ const readableMaterialsSchema = new Schema(
   }
 );
 
-export default model("ReadableMaterials", readableMaterialsSchema);
+export default model("User", userSchema);

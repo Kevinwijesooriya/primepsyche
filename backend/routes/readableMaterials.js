@@ -22,6 +22,14 @@ readableMaterialsRoute.delete(
   "/api/readableMaterials/delete/:id",
   readableMaterialsController.deleteReadableMaterial
 );
+readableMaterialsRoute.put(
+  "/api/readableMaterials/approveReadableMaterial/:id",
+  readableMaterialsController.approveReadableMaterial
+);
+readableMaterialsRoute.post(
+  "/api/readableMaterials/getApproveReadableMaterial",
+  readableMaterialsController.getApproveReadableMaterial
+);
 
 export default readableMaterialsRoute;
 

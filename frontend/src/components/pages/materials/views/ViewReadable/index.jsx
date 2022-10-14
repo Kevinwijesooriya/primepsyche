@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -18,14 +18,28 @@ import BasicPagination from "../components/Pagination";
 import AlertDialog from "../../../forum/views/DeleteConfirmation";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
-
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ViewReadable = () => {
-  const [open, setOpen] = React.useState(false);
-  const [expand, setExpand] = React.useState(false);
-  const [expandItem, setExpandItem] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [expand, setExpand] = useState(false);
+  const [expandItem, setExpandItem] = useState(false);
+  const navigate = useNavigate();
+  const [readable, setReadable] = useState([]);
+  const [userID, setUserID] = useState();
+  const [approve, setApprove] = useState(true);
 
+  // if (userID==readable.userId) {
+
+  // } else {
+
+  // }
+
+  console.log(
+    "🚀 ~ file: index.jsx ~ line 29 ~ ViewReadable ~ readable",
+    readable
+  );
   const onClickDelete = () => {
     setOpen(true);
   };
@@ -33,29 +47,31 @@ const ViewReadable = () => {
     setExpandItem(id);
     setExpand(!expand);
   };
-  const ReadableList = [
-    {
-      _id: "uef-1234",
-      title: "Mindfulness",
-      author: "Joseph Goldstein",
-      image: "https://m.media-amazon.com/images/I/41v4ounra+L._AC_SY780_.jpg",
-    },
-    {
-      _id: "uef-12345s",
-      title: "How to relax your mind",
-      author: "Jim Ryan & Simon Ralph",
-      image:
-        "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1454016268l/28795314._SY475_.jpg",
-    },
-    {
-      _id: "uef-12346s",
-      title: "Instant Calm",
-      author: "Karen Salmansohn",
-      image:
-        "https://www.notsalmon.com/wp-content/uploads/2019/02/instant-calm-book-cover-01-498x730.png",
-    },
-  ];
+  useEffect(() => {
+    const getAllReadable = async () => {
+      await axios
+        .post(
+          `http://localhost:5000/api/readableMaterials/getApproveReadableMaterial`,
+          { approve: true }
+        )
+        .then((res) => {
+          console.log(res);
+          setReadable(res.data.data);
+        })
+        .catch((err) => {
+          alert(err.massage);
+        });
+    };
 
+    getAllReadable();
+  }, []);
+  const handleEditReadable = (ReadableID) => {
+    console.log(
+      "🚀 ~ file: index.jsx ~ line 63 ~ handleEditReadable ~ ReadableID",
+      ReadableID
+    );
+    navigate(`editReadable/${ReadableID}`);
+  };
   return (
     <>
       <Box
@@ -84,17 +100,17 @@ const ViewReadable = () => {
           <Button>ADD READABLE</Button>
         </StyledLink>
       </Box>
-      {ReadableList &&
-        ReadableList.map((readable) => (
+      {readable &&
+        readable.map((readable) => (
           <PostContainer item xs={12} md={6}>
             <ListItem sx={{ justifyContent: "space-between" }}>
               <Stack direction="row">
-                <CardMedia
+                {/* <CardMedia
                   component="img"
                   sx={{ width: 90, display: { xs: "none", sm: "block" } }}
                   alt="image"
                   image={readable.image}
-                />
+                /> */}
 
                 <Box>
                   <Typography component="h2" variant="h5">
@@ -125,12 +141,12 @@ const ViewReadable = () => {
                         {readable.author}
                       </Typography>
                     </CardContent>
-                    <CardMedia
+                    {/* <CardMedia
                       component="img"
                       sx={{ width: 160, display: { xs: "none", sm: "block" } }}
                       alt="image"
                       image={readable.image}
-                    />
+                    /> */}
                   </Card>
                 </CardActionArea>
                 <Divider></Divider>
@@ -155,7 +171,9 @@ const ViewReadable = () => {
                       spacing={1}
                       sx={{ display: "flex", justifyContent: "flex-end" }}
                     >
-                      <StyledLink to="/primepsyche/materials/editReadable">
+                      <StyledLink
+                        to={`/primepsyche/materials/editReadable/${readable._id}`}
+                      >
                         <Button variant="outlined" startIcon={<EditIcon />}>
                           Edit
                         </Button>
