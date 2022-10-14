@@ -20,6 +20,7 @@ import { red } from "@mui/material/colors";
 import ForumPostAPI from "../../../../../core/services/ForumPostAPI";
 import { Link } from "react-router-dom";
 import Comments from "./comments/Comments";
+import PSnackBar from "../components/PSnackBar";
 
 const ViewPosts = () => {
   const [open, setOpen] = React.useState(false);
@@ -27,6 +28,11 @@ const ViewPosts = () => {
   const [deleteId, setDeleteId] = React.useState("");
   const [comment, setComment] = React.useState("");
   const [commentsVisible, setCommentsVisible] = React.useState(false);
+  const [snack, setSnack] = React.useState({
+    open: false,
+    severity: "",
+    message: "",
+  });
 
   async function fetchData() {
     const response = await ForumPostAPI.getAll();
@@ -149,13 +155,28 @@ const ViewPosts = () => {
                 </Stack>
               </Grid>
             </Grid>
-            {commentsVisible && comment === post._id && <Comments />}
+            {commentsVisible && comment === post._id && (
+              <Comments post={post} />
+            )}
           </PostContainer>
         ))}
       <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>
         <BasicPagination count={10} />
       </Box>
-      <AlertDialog open={open} setOpen={setOpen} deleteId={deleteId} />
+      <AlertDialog
+        open={open}
+        setOpen={setOpen}
+        deleteId={deleteId}
+        snack={snack}
+        setSnack={setSnack}
+      />
+      <PSnackBar
+        open={snack.open}
+        snack={snack}
+        setOpen={setSnack}
+        severity={snack.severity}
+        message={snack.message}
+      />
     </>
   );
 };
