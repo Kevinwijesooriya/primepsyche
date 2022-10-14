@@ -1,15 +1,40 @@
 import HelpPost from "../models/HelpPost.js";
 
-const HelpComentController = {
+const HelpCommentController = {
   createComment: async (req, res) => {
     try {
-      const id = req.params.id;
-      const { commment } = req.body;
+      const { postId, userId, userName, suggest } = req.body;
+      const payload = { userId, userName, suggest };
 
-      await HelpPost.findOneAndUpdate({ _id: id }, { commment });
+      const resp = await HelpPost.findOneAndUpdate(
+        { _id: postId },
+        { $push: { suggests: payload } }
+      );
       res.json({
         message: "commented",
-        data: { commment },
+        data: suggest,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ message: err.message });
+    }
+  },
+  updateComment: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const { postId, suggest } = req.body;
+      const response = await HelpPost.findOneAndUpdate(
+        { _id: postId, "suggests._id": id },
+        {
+          $set: {
+            "suggests.$.suggest": suggest,
+          },
+        }
+      );
+      response;
+      res.json({
+        message: "Help comment update success",
+        data: { suggest },
       });
     } catch (err) {
       return res.status(500).json({ message: err.message });
@@ -17,4 +42,4 @@ const HelpComentController = {
   },
 };
 
-export default HelpComentController;
+export default HelpCommentController;

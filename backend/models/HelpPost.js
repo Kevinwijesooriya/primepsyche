@@ -27,9 +27,11 @@ const HelpPostSchema = new Schema(
       type: String,
       required: true,
     },
-    response: [
+    suggests: [
       {
-        comment: { type: String },
+        suggest: { type: String },
+        userId: { type: String },
+        userName: { type: String },
       },
     ],
   },
