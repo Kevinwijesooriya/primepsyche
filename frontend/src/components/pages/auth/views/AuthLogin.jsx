@@ -13,21 +13,70 @@ import Paper from "@mui/material/Paper";
 import LogoWName from "../../../../assets/logos/LogoWName.svg";
 import LoginBackground from "./components/LoginBackground";
 import LoginSnackBar from "./components/SnackBars/LoginSnackBar";
+import { login, reset } from "../../../../features/auth/authSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function AuthLogin(props) {
-  const { setIsLoggedIn } = props;
-  const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [error, setError] = React.useState({ field: "", message: "" });
+  const [payload, setPayload] = React.useState({
+    email: "",
+    password: "",
+  });
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+  React.useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      toast.success("🦄 Login Success");
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
+
+  if (isLoading) {
+    return (
+      <Box sx={{ display: "flex" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+    if (isValid()) {
+      dispatch(login(payload));
+    }
+  };
+  const isValid = () => {
+    if (payload.email === "") {
+      setError({ field: "email", message: "Please fill me" });
+      return false;
+    }
+    if (payload.password === "") {
+      setError({ field: "password", message: "Please fill me" });
+      return false;
+    }
+    return true;
+  };
+
+  const onChangeInput = (e) => {
+    setError({ field: "", message: "" });
+    setPayload({
+      ...payload,
+      [e.target.name]: e.target.value,
     });
   };
-  const onClickLogin = () => {
-    setOpen(true);
-  };
+
   return (
     <>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -53,20 +102,10 @@ function AuthLogin(props) {
                 p: 8,
               }}
             />
-            <LoginSnackBar
-              open={open}
-              setOpen={setOpen}
-              setIsLoggedIn={setIsLoggedIn}
-            />
             <Typography component="h1" variant="h5">
               SIGN IN
             </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-              sx={{ mt: 1 }}
-            >
+            <Box noValidate sx={{ mt: 1 }}>
               <InputLabel>Email Address</InputLabel>
               <TextField
                 margin="normal"
@@ -74,8 +113,9 @@ function AuthLogin(props) {
                 fullWidth
                 id="email"
                 name="email"
-
-                // autoFocus
+                error={error.field === "email"}
+                helperText={!payload.email && error.message}
+                onChange={(e) => onChangeInput(e)}
               />
               <InputLabel>Password</InputLabel>
               <TextField
@@ -85,6 +125,9 @@ function AuthLogin(props) {
                 name="password"
                 type="password"
                 id="password"
+                error={error.field === "password"}
+                helperText={!payload.password && error.message}
+                onChange={(e) => onChangeInput(e)}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -95,7 +138,7 @@ function AuthLogin(props) {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={onClickLogin}
+                onClick={(e) => handleSubmit(e)}
               >
                 Sign In
               </Button>
