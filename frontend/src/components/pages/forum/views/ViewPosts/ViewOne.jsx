@@ -19,10 +19,15 @@ import { red } from "@mui/material/colors";
 import ForumPostAPI from "../../../../../core/services/ForumPostAPI";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Comments from "./comments/Comments";
 
 function ViewOne() {
+  const { user } = useSelector((state) => state.auth);
   const params = useParams();
   const postId = params.id;
+  const [commentsVisible, setCommentsVisible] = React.useState(false);
+  const [comment, setComment] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [post, setPost] = React.useState({
     title: "",
@@ -42,6 +47,10 @@ function ViewOne() {
   const onClickDelete = (id) => {
     setOpen(true);
   };
+  const onClickComment = (id) => {
+    setComment(id);
+    setCommentsVisible(!commentsVisible);
+  };
   return (
     <>
       <PostContainer
@@ -59,18 +68,18 @@ function ViewOne() {
           to={`/primepsyche/forum/view/${post._id}`}
           sx={{
             background: (theme) =>
-              theme.palette.prime_psycheColors.prime_psyche_light_green4,
+              theme.palette.prime_psycheColors.prime_psyche_mid_green3,
           }}
         >
           <Card
             sx={{
               display: "flex",
               background: (theme) =>
-                theme.palette.prime_psycheColors.prime_psyche_light_green4,
+                theme.palette.prime_psycheColors.prime_psyche_mid_green3,
             }}
           >
             <CardContent sx={{ flex: 1, p: 2 }}>
-              <Typography component="h2" variant="h5">
+              <Typography component="h2" variant="button">
                 {post.title}
               </Typography>
               <Typography variant="subtitle1" color="text.secondary">
@@ -95,27 +104,30 @@ function ViewOne() {
                 <FavoriteIcon sx={{ color: red[900] }} />
               </IconButton>
               <IconButton>
-                <CommentIcon />
+                <CommentIcon onClick={() => onClickComment(post._id)} />
               </IconButton>
             </Stack>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Stack
-              direction="row"
-              spacing={1}
-              sx={{ display: "flex", justifyContent: "flex-end" }}
-            >
-              <StyledLink to={`/primepsyche/forum/edit/${post._id}`}>
-                <IconButton>
-                  <EditIcon />
+            {user._id === post.userId && (
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ display: "flex", justifyContent: "flex-end" }}
+              >
+                <StyledLink to={`/primepsyche/forum/edit/${post._id}`}>
+                  <IconButton>
+                    <EditIcon />
+                  </IconButton>
+                </StyledLink>
+                <IconButton onClick={() => onClickDelete(post._id)}>
+                  <DeleteIcon sx={{ color: red[900] }} />
                 </IconButton>
-              </StyledLink>
-              <IconButton onClick={() => onClickDelete(post._id)}>
-                <DeleteIcon sx={{ color: red[900] }} />
-              </IconButton>
-            </Stack>
+              </Stack>
+            )}
           </Grid>
         </Grid>
+        {commentsVisible && comment === post._id && <Comments post={post} />}
       </PostContainer>
       <AlertDialog open={open} setOpen={setOpen} deleteId={postId} />
     </>

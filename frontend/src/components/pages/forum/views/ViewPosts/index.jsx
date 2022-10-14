@@ -21,6 +21,7 @@ import ForumPostAPI from "../../../../../core/services/ForumPostAPI";
 import { Link } from "react-router-dom";
 import Comments from "./comments/Comments";
 import PSnackBar from "../components/PSnackBar";
+import { useSelector } from "react-redux";
 
 const ViewPosts = () => {
   const [open, setOpen] = React.useState(false);
@@ -28,6 +29,7 @@ const ViewPosts = () => {
   const [deleteId, setDeleteId] = React.useState("");
   const [comment, setComment] = React.useState("");
   const [commentsVisible, setCommentsVisible] = React.useState(false);
+  const { user } = useSelector((state) => state.auth);
   const [snack, setSnack] = React.useState({
     open: false,
     severity: "",
@@ -139,20 +141,22 @@ const ViewPosts = () => {
                 </Stack>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  sx={{ display: "flex", justifyContent: "flex-end" }}
-                >
-                  <StyledLink to={`/primepsyche/forum/edit/${post._id}`}>
-                    <IconButton>
-                      <EditIcon />
+                {user._id === post.userId && (
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{ display: "flex", justifyContent: "flex-end" }}
+                  >
+                    <StyledLink to={`/primepsyche/forum/edit/${post._id}`}>
+                      <IconButton>
+                        <EditIcon />
+                      </IconButton>
+                    </StyledLink>
+                    <IconButton onClick={() => onClickDelete(post._id)}>
+                      <DeleteIcon sx={{ color: red[900] }} />
                     </IconButton>
-                  </StyledLink>
-                  <IconButton onClick={() => onClickDelete(post._id)}>
-                    <DeleteIcon sx={{ color: red[900] }} />
-                  </IconButton>
-                </Stack>
+                  </Stack>
+                )}
               </Grid>
             </Grid>
             {commentsVisible && comment === post._id && (

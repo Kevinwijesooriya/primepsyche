@@ -89,7 +89,6 @@ const AuthRegister = () => {
     } else {
       setPayload({ ...payload, role: "user" });
     }
-    setPayload(...payload, role);
   };
   const onChangeInput = (e) => {
     setError({ field: "", message: "" });
@@ -197,7 +196,7 @@ const AuthRegister = () => {
                     row
                     name="row-radio-buttons-group"
                     value={isPsychiatrist}
-                    onChange={handleRoleChange}
+                    onChange={(e) => handleRoleChange(e)}
                   >
                     <FormControlLabel
                       value={true}
