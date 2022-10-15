@@ -5,7 +5,7 @@ import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import { Box, Button, Divider } from "@mui/material";
+import { Box, Button, Divider, TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { PostContainer, StyledLink } from "../../styles";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -30,10 +30,18 @@ const ViewPosts = () => {
   const [comment, setComment] = React.useState("");
   const [commentsVisible, setCommentsVisible] = React.useState(false);
   const { user } = useSelector((state) => state.auth);
+  const [searchTerm, setSearchTerm] = React.useState("");
   const [snack, setSnack] = React.useState({
     open: false,
     severity: "",
     message: "",
+  });
+
+  const filteredPosts = postsList.filter((postsList) => {
+    return (
+      postsList.title.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
+      postsList.userName.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+    );
   });
 
   async function fetchData() {
@@ -78,12 +86,18 @@ const ViewPosts = () => {
         </Typography>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", py: 2 }}>
+        <TextField
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <StyledLink to="/primepsyche/forum/add">
           <Button>SHARE YOUR EXPERIENCE</Button>
         </StyledLink>
       </Box>
-      {postsList &&
-        postsList.map((post) => (
+      {filteredPosts &&
+        filteredPosts.map((post) => (
           <PostContainer
             item
             xs={12}
