@@ -20,15 +20,23 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import MaterialsAlertDialog from "../materialsDeleteConfirmation";
+import TextField from "@mui/material/TextField";
 
 const ViewReadable = () => {
   const [open, setOpen] = useState(false);
   const [expand, setExpand] = useState(false);
   const [expandItem, setExpandItem] = useState(false);
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
   const [readable, setReadable] = useState([]);
-  const [userID, setUserID] = useState();
+  const [userID, setUserID] = useState(user._id);
+  // console.log("🚀 ~ file: index.jsx ~ line 34 ~ ViewReadable ~ userID", userID)
   const [approve, setApprove] = useState(true);
+  const [deleteId, setDeleteId] = useState();
+  const [searchTerm, setSearchTerm] = useState("");
+  // console.log("🚀 ~ file: index.jsx ~ line 36 ~ ViewReadable ~ deleteId", deleteId)
 
   // if (userID==readable.userId) {
 
@@ -40,8 +48,9 @@ const ViewReadable = () => {
     "🚀 ~ file: index.jsx ~ line 29 ~ ViewReadable ~ readable",
     readable
   );
-  const onClickDelete = () => {
+  const onClickDelete = (rID) => {
     setOpen(true);
+    setDeleteId(rID);
   };
   const onClickExpand = (id) => {
     setExpandItem(id);
@@ -72,8 +81,25 @@ const ViewReadable = () => {
     );
     navigate(`editReadable/${ReadableID}`);
   };
+  const filteredCountries = readable.filter((readable) => {
+    return (
+      readable.title.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
+      readable.author.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+    );
+  });
   return (
     <>
+      {/* <input class=""   type="search"   placeholder="Search"   aria-label="Search"
+                            onChange={e => setSearchTerm(e.target.value)}
+                        /> */}
+      <TextField
+        id="outlined-multiline-flexible"
+        label="search"
+        multiline
+        maxRows={4}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+
       <Box
         sx={{
           flexGrow: 1,
@@ -101,16 +127,16 @@ const ViewReadable = () => {
         </StyledLink>
       </Box>
       {readable &&
-        readable.map((readable) => (
+        filteredCountries.map((readable, index) => (
           <PostContainer item xs={12} md={6}>
             <ListItem sx={{ justifyContent: "space-between" }}>
               <Stack direction="row">
-                {/* <CardMedia
+                <CardMedia
                   component="img"
                   sx={{ width: 90, display: { xs: "none", sm: "block" } }}
                   alt="image"
                   image={readable.image}
-                /> */}
+                />
 
                 <Box>
                   <Typography component="h2" variant="h5">
@@ -122,7 +148,7 @@ const ViewReadable = () => {
                 </Box>
               </Stack>
               <Box>
-                <Button>Download</Button>
+                <Button href={readable.readableFile}>Download</Button>
 
                 <IconButton onClick={() => onClickExpand(readable._id)}>
                   <KeyboardArrowDownIcon />
@@ -141,12 +167,12 @@ const ViewReadable = () => {
                         {readable.author}
                       </Typography>
                     </CardContent>
-                    {/* <CardMedia
+                    <CardMedia
                       component="img"
                       sx={{ width: 160, display: { xs: "none", sm: "block" } }}
                       alt="image"
                       image={readable.image}
-                    /> */}
+                    />
                   </Card>
                 </CardActionArea>
                 <Divider></Divider>
@@ -166,25 +192,29 @@ const ViewReadable = () => {
                     </Stack>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <Stack
-                      direction="row"
-                      spacing={1}
-                      sx={{ display: "flex", justifyContent: "flex-end" }}
-                    >
-                      <StyledLink
-                        to={`/primepsyche/materials/editReadable/${readable._id}`}
-                      >
-                        <Button variant="outlined" startIcon={<EditIcon />}>
-                          Edit
-                        </Button>
-                      </StyledLink>
-                      <WarningButtonOutlined
-                        startIcon={<DeleteIcon />}
-                        onClick={onClickDelete}
-                      >
-                        Delete
-                      </WarningButtonOutlined>
-                    </Stack>
+                    {userID == readable.userId && (
+                      <>
+                        <Stack
+                          direction="row"
+                          spacing={1}
+                          sx={{ display: "flex", justifyContent: "flex-end" }}
+                        >
+                          <StyledLink
+                            to={`/primepsyche/materials/editReadable/${readable._id}`}
+                          >
+                            <Button variant="outlined" startIcon={<EditIcon />}>
+                              Edit
+                            </Button>
+                          </StyledLink>
+                          <WarningButtonOutlined
+                            startIcon={<DeleteIcon />}
+                            onClick={() => onClickDelete(readable._id)}
+                          >
+                            Delete
+                          </WarningButtonOutlined>
+                        </Stack>
+                      </>
+                    )}
                   </Grid>
                 </Grid>
               </>
@@ -194,7 +224,7 @@ const ViewReadable = () => {
       <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>
         <BasicPagination count={10} />
       </Box>
-      <AlertDialog open={open} setOpen={setOpen} />
+      <MaterialsAlertDialog deleteId={deleteId} open={open} setOpen={setOpen} />
     </>
   );
 };

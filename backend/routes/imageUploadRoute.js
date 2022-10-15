@@ -30,7 +30,8 @@ router.post("/imageUpload", (req, res) => {
       async (err, result) => {
         if (err) throw err;
         removeTmp(file.tempFilePath);
-        res.json({ url: result.secure_url });
+        res.json({
+          message: "image uploaded successfully", url: result.secure_url});
       }
     );
   } catch (err) {
