@@ -40,6 +40,19 @@ const HelpCommentController = {
       return res.status(500).json({ message: err.message });
     }
   },
+  deleteHelpComment: async (req, res) => {
+    try {
+      const commentId = req.params.id;
+      const { postId } = req.body;
+      await HelpPost.findOneAndUpdate(
+        { _id: postId },
+        { $pull: { suggests: { _id: commentId } } }
+      );
+      res.json({ message: "delete success !" });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
 };
 
 export default HelpCommentController;

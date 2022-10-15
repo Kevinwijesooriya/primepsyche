@@ -12,6 +12,16 @@ class HelpPostAPI {
       return error;
     }
   };
+  static getMyPost = async (id) => {
+    try {
+      const response = await axiosClient().get(`/api/HelpPost/getMy/${id}`);
+      console.log("API ~ Help Post ~ getOne ", response);
+      return response;
+    } catch (error) {
+      console.log("ERROR-API ~ Help Post ~ getOne ", error);
+      return error;
+    }
+  };
 
   static getAll = async () => {
     try {

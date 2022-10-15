@@ -8,25 +8,28 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
-
+import { useSelector } from "react-redux";
 import React, { useState } from "react";
 import axios from "axios";
 import AddSnackBar from "../components/AddSnackBar";
 
 const HelpHomePage = () => {
   const [open, setOpen] = React.useState(false);
+  const [userID, setUserID] = useState("");
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const [disorder, setDisorder] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = React.useState({ message: "", field: "" });
+  const { user } = useSelector((state) => state.auth);
 
   function sendData(e) {
     e.preventDefault();
 
     const newPost = {
-      name,
+      userID,
+      name: user.userName,
       age,
       gender,
       disorder,
@@ -79,13 +82,10 @@ const HelpHomePage = () => {
               required
               id="name"
               name="name"
-              placeholder="Enter your name"
+              value={user && user.userName}
               // label="Title"
               sx={{ width: "340px" }}
               multiline
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
               error={error.field === "name"}
               helperText={error.message}
             />
@@ -176,6 +176,7 @@ const HelpHomePage = () => {
               multiline
               onChange={(e) => {
                 setDescription(e.target.value);
+                setUserID(user._id);
               }}
             />
           </Grid>

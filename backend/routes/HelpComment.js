@@ -11,5 +11,9 @@ HelpCommentRoute.put(
   "/api/HelpComment/update/:id",
   HelpCommentController.updateComment
 );
+HelpCommentRoute.put(
+  "/api/HelpComment/delete/:id",
+  HelpCommentController.deleteHelpComment
+);
 
 export default HelpCommentRoute;

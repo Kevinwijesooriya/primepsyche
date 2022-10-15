@@ -71,7 +71,7 @@ const HelpPostController = {
   getMyHelpPosts: async (req, res) => {
     const userID = req.params.id;
     try {
-      const posts = await HelpPost.findOne({ userID: userID });
+      const posts = await HelpPost.find({ userID: userID });
       res.json({ message: "Help posts fetch success", data: posts });
     } catch (err) {
       return res.status(500).json({ message: err.message });

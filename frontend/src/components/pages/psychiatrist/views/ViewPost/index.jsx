@@ -17,21 +17,44 @@ import BasicPagination from "../components/Pagination";
 import { red } from "@mui/material/colors";
 import HelpPostAPI from "../../../../../core/services/HelpPostAPI";
 import { Link } from "react-router-dom";
+import Comments from "./comments/Comments";
+import PSnackBar from "../components/PSnackBar";
+import { useSelector } from "react-redux";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const ViewPosts = () => {
   const [open, setOpen] = React.useState(false);
   const [PostList, setPostList] = React.useState([]);
+  const [comment, setComment] = React.useState("");
+  const [commentsVisible, setCommentsVisible] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState("");
+  const { user } = useSelector((state) => state.auth);
+  const [snack, setSnack] = React.useState({
+    open: false,
+    severity: "",
+    message: "",
+  });
 
   const onClickDelete = (id) => {
     setDeleteId(id);
     setOpen(true);
   };
+  const onClickComment = (id) => {
+    setComment(id);
+    setCommentsVisible(!commentsVisible);
+  };
 
   async function fetchData() {
-    const response = await HelpPostAPI.getAll();
-    if (response.status === 200) {
-      setPostList(response.data.data);
+    if (user.role === "user") {
+      const response = await HelpPostAPI.getMyPost(user._id);
+      if (response.status === 200) {
+        setPostList(response.data.data);
+      }
+    } else {
+      const response = await HelpPostAPI.getAll();
+      if (response.status === 200) {
+        setPostList(response.data.data);
+      }
     }
   }
 
@@ -58,14 +81,16 @@ const ViewPosts = () => {
         }}
       >
         <Typography variant="PageHeader" gutterBottom>
-          My Help Request
+          {user.role === "user" ? "My Help Request" : "All Help Request"}
         </Typography>
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", py: 2 }}>
-        <StyledLink to="/primepsyche/help/add">
-          <Button>ADD A NEW HELP REQUEST</Button>
-        </StyledLink>
-      </Box>
+      {user.role === "user" && (
+        <Box sx={{ display: "flex", justifyContent: "flex-end", py: 2 }}>
+          <StyledLink to="/primepsyche/help/add">
+            <Button>ADD A NEW HELP REQUEST</Button>
+          </StyledLink>
+        </Box>
+      )}
       {PostList &&
         PostList.map((post) => (
           <PostContainer
@@ -94,7 +119,6 @@ const ViewPosts = () => {
                 }}
               >
                 <CardContent sx={{ flex: 1, p: 2 }}>
-                  <Typography component="h2" variant="h5"></Typography>
                   <Typography variant="subtitle1" color="text.secondary">
                     {getDate(post.updatedAt)} by {post.name}
                   </Typography>
@@ -117,31 +141,56 @@ const ViewPosts = () => {
             <Divider></Divider>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
-                <Stack direction="row" spacing={1}></Stack>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  sx={{ display: "flex", justifyContent: "flex-end" }}
-                >
-                  <StyledLink to={`/primepsyche/help/edit/${post._id}`}>
-                    <IconButton>
-                      <EditIcon />
-                    </IconButton>
-                  </StyledLink>
-                  <IconButton onClick={() => onClickDelete(post._id)}>
-                    <DeleteIcon sx={{ color: red[900] }} />
+                <Stack direction="row" spacing={1}>
+                  <IconButton component={Link} to="skjdbk">
+                    <FavoriteIcon sx={{ color: red[900] }} />
+                  </IconButton>
+                  <IconButton>
+                    <CommentIcon onClick={() => onClickComment(post._id)} />
                   </IconButton>
                 </Stack>
               </Grid>
+              <Grid item xs={12} sm={6}>
+                {user.role === "user" && user._id === post.userID && (
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{ display: "flex", justifyContent: "flex-end" }}
+                  >
+                    <StyledLink to={`/primepsyche/help/edit/${post._id}`}>
+                      <IconButton>
+                        <EditIcon />
+                      </IconButton>
+                    </StyledLink>
+                    <IconButton onClick={() => onClickDelete(post._id)}>
+                      <DeleteIcon sx={{ color: red[900] }} />
+                    </IconButton>
+                  </Stack>
+                )}
+              </Grid>
             </Grid>
+            {commentsVisible && comment === post._id && (
+              <Comments post={post} />
+            )}
           </PostContainer>
         ))}
       <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>
         <BasicPagination count={10} />
       </Box>
-      <AlertDialog open={open} setOpen={setOpen} deleteId={deleteId} />
+      <AlertDialog
+        open={open}
+        setOpen={setOpen}
+        deleteId={deleteId}
+        snack={snack}
+        setSnack={setSnack}
+      />
+      <PSnackBar
+        open={snack.open}
+        snack={snack}
+        setOpen={setSnack}
+        severity={snack.severity}
+        message={snack.message}
+      />
     </>
   );
 };
