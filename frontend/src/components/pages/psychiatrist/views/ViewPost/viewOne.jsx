@@ -49,12 +49,14 @@ const ViewOne = () => {
 
   return (
     <>
-      <Box
+      <PostContainer
+        item
+        xs={12}
+        md={6}
+        key={`postList${post._id}`}
         sx={{
-          flexGrow: 1,
-          justifyContent: "center",
-          pb: 1,
-          display: { xs: "none", md: "flex" },
+          background: (theme) =>
+            theme.palette.prime_psycheColors.prime_psyche_light_green5,
         }}
       >
         <CardActionArea
@@ -69,7 +71,7 @@ const ViewOne = () => {
             sx={{
               display: "flex",
               background: (theme) =>
-                theme.palette.prime_psycheColors.prime_psyche_light_green4,
+                theme.palette.prime_psycheColors.prime_psyche_mid_green3,
             }}
           >
             <CardContent sx={{ flex: 1, p: 2 }}>
@@ -92,10 +94,7 @@ const ViewOne = () => {
         </CardActionArea>
         <Divider></Divider>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <Stack direction="row" spacing={1}></Stack>
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={12}>
             <Stack
               direction="row"
               spacing={1}
@@ -112,7 +111,7 @@ const ViewOne = () => {
             </Stack>
           </Grid>
         </Grid>
-      </Box>
+      </PostContainer>
       <AlertDialog open={open} setOpen={setOpen} deleteId={deleteId} />
     </>
   );
