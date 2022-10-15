@@ -13,11 +13,13 @@ import AddSnackBar from "../components/AddSnackBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import { ToastContainer, toast } from "react-toastify";
-
+import { useSelector } from "react-redux";
 const AddReadable = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState({ message: "" });
-  const [userId, setUserId] = useState("123456");
+  const { user } = useSelector((state) => state.auth);
+  const [userId, setUserId] = useState(user._id);
+  console.log("🚀 ~ file: index.jsx ~ line 22 ~ AddReadable ~ userId", userId);
   const [title, setTitle] = useState();
   console.log("🚀 ~ file: index.jsx ~ line 25 ~ AddReadable ~ title", title);
   const [author, setAuthor] = useState();
@@ -73,7 +75,7 @@ const AddReadable = () => {
         return alert("File format is incorrect.");
       let formData = new FormData();
       formData.append("file", file);
-      
+
       const res = await axios.post(
         "http://localhost:5000/api/imageUpload",
         formData,
@@ -84,6 +86,15 @@ const AddReadable = () => {
         }
       );
       setImage(res.data.url);
+      toast.success(res.data.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } catch (err) {
       toast.error(err.response.data.msg, {
         position: "top-right",
@@ -101,7 +112,7 @@ const AddReadable = () => {
     try {
       const file = e.target.files[0];
       if (!file) return alert("File not exist.");
-      
+
       let formData = new FormData();
       formData.append("file", file);
 
@@ -115,6 +126,15 @@ const AddReadable = () => {
         }
       );
       setReadableFile(res.data.url);
+      toast.success(res.data.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       console.log(res.data);
     } catch (err) {
       console.log(err);
@@ -129,6 +149,7 @@ const AddReadable = () => {
       });
     }
   };
+
   const onClickShare = async (e) => {
     {
       isValid() && setOpen(true);
@@ -144,34 +165,34 @@ const AddReadable = () => {
         );
         console.log(res);
         // alert(res.data)
-        // toast.success(res.data.msg, {
-        //     position: "top-right",
-        //     autoClose: 5000,
-        //     hideProgressBar: false,
-        //     closeOnClick: true,
-        //     pauseOnHover: true,
-        //     draggable: true,
-        //     progress: undefined,
-        //   });
+        toast.success(res.data.msg, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         //  window.location.href = '/pharmacist'
       } catch (err) {
         console.log(err);
-        // toast.error(err.response.data.msg, {
-        //   position: "top-right",
-        //   autoClose: 5000,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        // });
+        toast.error(err.response.data.msg, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     }
   };
 
   return (
     <>
-      <ToastContainer/>
+      <ToastContainer />
       <Container>
         <Box
           sx={{

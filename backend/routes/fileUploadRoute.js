@@ -24,7 +24,7 @@ router.post("/fileUpload", (req, res) => {
         if (err) throw err;
           removeTmp(file.tempFilePath);
         //console.log(result);
-        res.json({ url: result.url });
+        res.json({ message: "file uploaded successfully", url: result.url });
       }
     );
   } catch (err) {

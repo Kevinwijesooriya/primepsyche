@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -19,43 +19,71 @@ import AlertDialog from "../../../forum/views/DeleteConfirmation";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
-
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import MaterialsAlertDialog from "../materialsDeleteConfirmation";
+import TextField from "@mui/material/TextField";
+import MusicAlertDialog from "../MusicDeleteConfirmation";
 
 const ViewMusic = () => {
-  const [open, setOpen] = React.useState(false);
-  const [expand, setExpand] = React.useState(false);
-  const [expandItem, setExpandItem] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [expand, setExpand] = useState(false);
+  const [expandItem, setExpandItem] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+  const [music, setMusic] = useState([]);
+  const [userID, setUserID] = useState(user._id);
+  const [approve, setApprove] = useState(true);
+  const [deleteId, setDeleteId] = useState();
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const onClickDelete = () => {
+  const onClickDelete = (mID) => {
     setOpen(true);
+    setDeleteId(mID);
   };
   const onClickExpand = (id) => {
     setExpandItem(id);
     setExpand(!expand);
   };
-  const MusicList = [
-    {
-      _id: "uef-1234",
-      title: "Deep in the Ocean",
-      artist: "Clair de Lune",
-      genre: "Modern Classical",
-      album: "NaturesEye",
-      image:
-        "https://lmg-labmanager.s3.amazonaws.com/assets/articleNo/28124/aImg/50895/deep-ocean-warming-as-climate-changes-l.jpg",
-    },
-    {
-      _id: "uef-12345s",
-      title: "Melody of Nature",
-      artist: "Chet Baker",
-      genre: "Modern Classical",
-      album: "Nature",
-      image: "https://mereinkling.files.wordpress.com/2012/07/naturemusic.jpg",
-    },
-  ];
+  useEffect(() => {
+    const getAllMusic = async () => {
+      await axios
+        .post(
+          `http://localhost:5000/api/audioMaterials/getApproveAudioMaterial`,
+          { approve: true }
+        )
+        .then((res) => {
+          console.log(res);
+          setMusic(res.data.data);
+        })
+        .catch((err) => {
+          alert(err.massage);
+        });
+    };
 
+    getAllMusic();
+  }, []);
+  const handleEditMusic = (MusicID) => {
+    navigate(`editReadable/${MusicID}`);
+  };
+  const filteredCountries = music.filter((music) => {
+    return (
+      music.title.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
+      music.genre.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
+      music.album.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
+      music.artist.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+    );
+  });
   return (
     <>
+      <TextField
+        id="outlined-multiline-flexible"
+        label="search"
+        multiline
+        maxRows={4}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       <Box
         sx={{
           flexGrow: 1,
@@ -82,8 +110,8 @@ const ViewMusic = () => {
           <Button>ADD MUSIC</Button>
         </StyledLink>
       </Box>
-      {MusicList &&
-        MusicList.map((music) => (
+      {music &&
+        filteredCountries.map((music, index) => (
           <PostContainer item xs={12} md={6}>
             <ListItem sx={{ justifyContent: "space-between" }}>
               <Stack direction="row">
@@ -107,7 +135,7 @@ const ViewMusic = () => {
                 </Box>
               </Stack>
               <Box>
-                <Button>Download</Button>
+                <Button href={music.audioFile}>Download</Button>
 
                 <IconButton onClick={() => onClickExpand(music._id)}>
                   <KeyboardArrowDownIcon />
@@ -157,23 +185,29 @@ const ViewMusic = () => {
                     </Stack>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <Stack
-                      direction="row"
-                      spacing={1}
-                      sx={{ display: "flex", justifyContent: "flex-end" }}
-                    >
-                      <StyledLink to="/primepsyche/materials/editMusic">
-                        <Button variant="outlined" startIcon={<EditIcon />}>
-                          Edit
-                        </Button>
-                      </StyledLink>
-                      <WarningButtonOutlined
-                        startIcon={<DeleteIcon />}
-                        onClick={onClickDelete}
-                      >
-                        Delete
-                      </WarningButtonOutlined>
-                    </Stack>
+                    {userID == music.userId && (
+                      <>
+                        <Stack
+                          direction="row"
+                          spacing={1}
+                          sx={{ display: "flex", justifyContent: "flex-end" }}
+                        >
+                          <StyledLink
+                            to={`/primepsyche/materials/editMusic/${music._id}`}
+                          >
+                            <Button variant="outlined" startIcon={<EditIcon />}>
+                              Edit
+                            </Button>
+                          </StyledLink>
+                          <WarningButtonOutlined
+                            startIcon={<DeleteIcon />}
+                            onClick={() => onClickDelete(music._id)}
+                          >
+                            Delete
+                          </WarningButtonOutlined>
+                        </Stack>
+                      </>
+                    )}
                   </Grid>
                 </Grid>
               </>
@@ -183,7 +217,7 @@ const ViewMusic = () => {
       <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>
         <BasicPagination count={10} />
       </Box>
-      <AlertDialog open={open} setOpen={setOpen} />
+      <MusicAlertDialog deleteId={deleteId} open={open} setOpen={setOpen} />
     </>
   );
 };
