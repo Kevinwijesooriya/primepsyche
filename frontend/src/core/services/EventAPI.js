@@ -64,5 +64,16 @@ class EventAPI {
             return error;
         }
     };
+
+    static getMyEvents = async (eventId) => {
+        try {
+            const response = await axiosClient().get(`/api/event/getMy/${eventId}`);
+            console.log("API ~ Event ~ getMy ", response);
+            return response;
+        } catch (error) {
+            console.log("ERROR-API ~ Event ~ getMy ", error);
+            return error;
+        }
+    };
 }
 export default EventAPI;

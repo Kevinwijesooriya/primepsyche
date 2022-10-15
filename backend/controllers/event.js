@@ -21,7 +21,7 @@ const eventController = {
     },
     createEvent: async (req, res) => {
         try {
-            const { title, date, time, conducted_by, description, image } = req.body;
+            const { userId, userName, title, date, time, conducted_by, description, image } = req.body;
             const ExistingPost = await Event.findOne({ title });
             if (ExistingPost)
                 return res.status(400).json({
@@ -33,6 +33,8 @@ const eventController = {
                 return res.status(400).json({ msg: "Please fill in all fields." });
 
             const newEvent = new Event({
+                userId,
+                userName,
                 title,
                 date,
                 time,
@@ -71,6 +73,15 @@ const eventController = {
 
             await Event.findByIdAndDelete({ _id: id });
             res.json({ message: "delete success !" });
+        } catch (err) {
+            return res.status(500).json({ message: err.message });
+        }
+    },
+    getMyEvents: async (req, res) => {
+        const userId = req.params.id;
+        try {
+            const event = await Event.find({ userId: userId });
+            res.json({ message: "My Events fetch success", data: event });
         } catch (err) {
             return res.status(500).json({ message: err.message });
         }
