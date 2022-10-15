@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
-import { Box, Button, Divider } from "@mui/material";
+import { Box, Button, Divider, TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { PostContainer, StyledLink } from "../../styles";
 import EditIcon from "@mui/icons-material/Edit";
@@ -28,13 +28,25 @@ const ViewPosts = () => {
   const [comment, setComment] = React.useState("");
   const [commentsVisible, setCommentsVisible] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState("");
+  const [searchTerm, setSearchTerm] = React.useState("");
   const { user } = useSelector((state) => state.auth);
   const [snack, setSnack] = React.useState({
     open: false,
     severity: "",
     message: "",
   });
-
+  const filteredPosts = PostList.filter((PostList) => {
+    return (
+      PostList.name.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
+      PostList.age.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
+      PostList.disorder
+        .toLowerCase()
+        .includes(searchTerm.toLocaleLowerCase()) ||
+      PostList.description
+        .toLowerCase()
+        .includes(searchTerm.toLocaleLowerCase())
+    );
+  });
   const onClickDelete = (id) => {
     setDeleteId(id);
     setOpen(true);
@@ -84,15 +96,23 @@ const ViewPosts = () => {
           {user.role === "user" ? "My Help Request" : "All Help Request"}
         </Typography>
       </Box>
-      {user.role === "user" && (
-        <Box sx={{ display: "flex", justifyContent: "flex-end", py: 2 }}>
+
+      <Box sx={{ display: "flex", justifyContent: "space-between", py: 2 }}>
+        <TextField
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        {user.role === "user" && (
           <StyledLink to="/primepsyche/help/add">
             <Button>ADD A NEW HELP REQUEST</Button>
           </StyledLink>
-        </Box>
-      )}
-      {PostList &&
-        PostList.map((post) => (
+        )}
+      </Box>
+
+      {filteredPosts &&
+        filteredPosts.map((post) => (
           <PostContainer
             item
             xs={12}
