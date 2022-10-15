@@ -35,9 +35,7 @@ const HelpHomePage = () => {
       disorder,
       description,
     };
-    if (name === "" && age === "") {
-      setError({ field: "name", message: "Please fill me" });
-    } else {
+    if (isValid()) {
       axios
         .post("http://localhost:5000/api/HelpPost/create", newPost)
         .then((res) => {
@@ -54,6 +52,17 @@ const HelpHomePage = () => {
         });
     }
   }
+  const isValid = () => {
+    if (age === "") {
+      setError({ field: "age", message: "Please fill me" });
+      return false;
+    }
+    if (description === "") {
+      setError({ field: "description", message: "Please fill me" });
+      return false;
+    }
+    return true;
+  };
   return (
     <>
       <Container>
@@ -86,8 +95,6 @@ const HelpHomePage = () => {
               // label="Title"
               sx={{ width: "340px" }}
               multiline
-              error={error.field === "name"}
-              helperText={error.message}
             />
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
@@ -106,8 +113,6 @@ const HelpHomePage = () => {
                 onChange={(e) => {
                   setGender(e.target.value);
                 }}
-                error={error.field === "gender"}
-                helperText={error.message}
               >
                 <MenuItem value="">
                   <em>None</em>
@@ -129,7 +134,10 @@ const HelpHomePage = () => {
               multiline
               onChange={(e) => {
                 setAge(e.target.value);
+                setError({ field: "", message: "" });
               }}
+              error={error.field === "age"}
+              helperText={error.message}
             />
           </Grid>
           <Grid item xs={12} sm={6}></Grid>
@@ -177,7 +185,10 @@ const HelpHomePage = () => {
               onChange={(e) => {
                 setDescription(e.target.value);
                 setUserID(user._id);
+                setError({ field: "", message: "" });
               }}
+              error={error.field === "description"}
+              helperText={error.message}
             />
           </Grid>
           {/* <Grid item xs={12}>
