@@ -2,6 +2,8 @@ import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import ForumPostAPI from "../../../../core/services/ForumPostAPI";
 import ForumPostReportGenerator from "../../forum/reports/forumPost";
+import EventAPI from "../../../../core/services/EventAPI";
+import EventReportGenerator from "../../event/reports/event"
 
 const Reports = () => {
   const [posts, setPostsList] = React.useState([]);
@@ -9,6 +11,13 @@ const Reports = () => {
     const response = await ForumPostAPI.getAll();
     if (response.status === 200) {
       setPostsList(response.data.data);
+    }
+  }
+  const [events, setEventsList] = React.useState([]);
+  async function fetchData() {
+    const response = await EventAPI.getAll();
+    if (response.status === 200) {
+      setEventsList(response.data.data);
     }
   }
   React.useEffect(() => {
@@ -35,7 +44,7 @@ const Reports = () => {
           </Button>
         </Grid>
         <Grid item xs={12} sm={12}>
-          <Button>Event Report</Button>
+          <Button onClick={() => EventReportGenerator(events)}>Event Report</Button>
         </Grid>
         <Grid item xs={12} sm={12}>
           <Button>Psychiatrist Report</Button>
