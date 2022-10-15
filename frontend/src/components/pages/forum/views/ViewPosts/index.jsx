@@ -85,7 +85,7 @@ const ViewPosts = () => {
           Welcome To our forum
         </Typography>
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", py: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", py: 2 }}>
         <TextField
           type="search"
           placeholder="Search"
