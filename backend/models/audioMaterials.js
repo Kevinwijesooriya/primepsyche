@@ -41,7 +41,7 @@ const audioMaterialsSchema = new Schema(
 
       required: true,
 
-      default: false,
+      default: true,
     },
   },
   {

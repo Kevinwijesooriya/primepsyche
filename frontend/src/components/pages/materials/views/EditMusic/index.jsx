@@ -9,13 +9,180 @@ import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
 import { ImageUploadButton, StyledLink, WarningButton } from "../../styles";
 import { Stack } from "@mui/material";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const EditMusic = () => {
+  const params = useParams();
+  const id = params.id;
   const [files, setFiles] = React.useState();
-  function handleChange(e) {
-    console.log(e.target.files);
-    setFiles(URL.createObjectURL(e.target.files[0]));
+  const [payload, setPayload] = React.useState({
+    userId: "",
+    title: "",
+    genre: "",
+    album: "",
+    artist: "",
+    audioFile: "",
+    image: "",
+  });
+  const [error, setError] = React.useState({ field: "", message: "" });
+  const { userId, title, genre, album, artist, audioFile, image } = payload;
+
+  async function fetchData() {
+    await axios
+      .get(`http://localhost:5000/api/audioMaterials/get/${id}`)
+      .then((res) => {
+        console.log(res);
+        setPayload(res.data.data);
+      })
+      .catch((err) => {
+        toast.error(err.massage);
+      });
   }
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+  const onClickSave = async (e) => {
+    e.preventDefault();
+    if (isValid()) {
+      await axios
+        .put(
+          `http://localhost:5000/api/audioMaterials/update/${id}`,
+          payload
+        )
+        .then((res) => {
+          console.log(res);
+          toast.success("Changes Saved");
+        })
+        .catch((err) => {
+          toast.error(err.massage);
+        });
+    }
+  };
+  const isValid = () => {
+    if (payload.genre === "") {
+      setError({ field: "genre", message: "Please fill me" });
+      return false;
+    }
+    if (payload.title === "") {
+      setError({ field: "title", message: "Please fill me" });
+      return false;
+    }
+    if (payload.album === "") {
+      setError({ field: "album", message: "Please fill me" });
+      return false;
+    }
+    if (payload.artist === "") {
+      setError({ field: "artist", message: "Please fill me" });
+      return false;
+    }
+    return true;
+  };
+  const onChangeInput = (e) => {
+    setError({ field: "", message: "" });
+    setPayload({
+      ...payload,
+      [e.target.name]: e.target.value,
+    });
+    console.log(payload);
+  };
+  const handleChange = async (e) => {
+    e.preventDefault();
+    try {
+      const file = e.target.files[0];
+      if (!file) return alert("File not exist.");
+      if (file.size > 1024 * 1024)
+        // 1mb
+        return alert("Size too large!");
+      if (file.type !== "image/jpeg" && file.type !== "image/png")
+        // 1mb
+        return alert("File format is incorrect.");
+      let formData = new FormData();
+      formData.append("file", file);
+
+      const res = await axios.post(
+        "http://localhost:5000/api/imageUpload",
+        formData,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      );
+      //  setImage(res.data.url);
+      setPayload({
+        ...payload,
+        image: res.data.url,
+      });
+      toast.success(res.data.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } catch (err) {
+      toast.error(err.response.data.msg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+  const handleFileChange = async (e) => {
+    e.preventDefault();
+    try {
+      const file = e.target.files[0];
+      if (!file) return alert("File not exist.");
+
+      let formData = new FormData();
+      formData.append("file", file);
+
+      const res = await axios.post(
+        "http://localhost:5000/api/fileUpload",
+        formData,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      );
+      // setReadableFile(res.data.url);
+
+      setPayload({
+        ...payload,
+        audioFile: res.data.url,
+      });
+      toast.success(res.data.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response.data.msg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
   return (
     <>
       <Container>
@@ -42,6 +209,9 @@ const EditMusic = () => {
                 defaultValue={"Deep in the Ocean"}
                 fullWidth
                 multiline
+                error={error.field === "title"}
+                helperText={!payload.title && error.message}
+                onChange={(e) => onChangeInput(e)}
               />
             </Grid>
 
@@ -54,6 +224,9 @@ const EditMusic = () => {
                 defaultValue={"Modern Classical"}
                 fullWidth
                 multiline
+                error={error.field === "genre"}
+                helperText={!payload.genre && error.message}
+                onChange={(e) => onChangeInput(e)}
               />
             </Grid>
 
@@ -66,6 +239,9 @@ const EditMusic = () => {
                 defaultValue={"NaturesEye"}
                 fullWidth
                 multiline
+                error={error.field === "album"}
+                helperText={!payload.album && error.message}
+                onChange={(e) => onChangeInput(e)}
               />
             </Grid>
 
@@ -78,6 +254,9 @@ const EditMusic = () => {
                 defaultValue={"Clair de Lune"}
                 fullWidth
                 multiline
+                error={error.field === "artist"}
+                helperText={!payload.artist && error.message}
+                onChange={(e) => onChangeInput(e)}
               />
             </Grid>
 
@@ -100,7 +279,13 @@ const EditMusic = () => {
                   </Typography>
                 </Box>
                 <Button component="label">
-                  <input type="file" hidden onChange={handleChange} />
+                  <input
+                    type="file"
+                    hidden
+                    id="audioFile"
+                    name="audioFile"
+                    onChange={handleChange}
+                  />
                   BROWSE
                 </Button>
               </Stack>
@@ -110,10 +295,10 @@ const EditMusic = () => {
             <InputLabel>Album Art</InputLabel>
             <ImageUploadButton component="label">
               <input type="file" hidden onChange={handleChange} />
-              {files ? (
+              {image ? (
                 <img
                   alt="forum_post"
-                  src={files}
+                  src={image}
                   style={{ minHeight: 400, minWidth: 400 }}
                 />
               ) : (
@@ -133,7 +318,7 @@ const EditMusic = () => {
                 sx={{ display: "flex", justifyContent: "flex-end" }}
               >
                 <StyledLink to="/primepsyche/materials/viewMusic">
-                  <Button>save</Button>
+                  <Button onClick={(e) => onClickSave(e)}>save</Button>
                 </StyledLink>
                 <WarningButton>Cancel</WarningButton>
               </Stack>
