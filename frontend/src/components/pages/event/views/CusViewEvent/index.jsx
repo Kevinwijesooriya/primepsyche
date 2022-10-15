@@ -5,7 +5,7 @@ import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import { Box, Button, Divider } from "@mui/material";
+import { Box, Button, Divider, TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { PostContainer, StyledLink, WarningButtonOutlined } from "../../styles";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -22,6 +22,7 @@ import { useSelector } from "react-redux";
 // import Comments from "./comments/Comments";
 import { red } from "@mui/material/colors";
 import Comments from "../ViewEvent/comments/Comments";
+import { toast } from "react-toastify";
 
 
 
@@ -37,6 +38,7 @@ const CusViewEvents = () => {
         severity: "",
         message: "",
     });
+    const [searchTerm, setSearchTerm] = React.useState("");
     const fetchData = async () => {
         const response = await EventAPI.getAll(user._id);
         if (response.status === 200) {
@@ -50,6 +52,16 @@ const CusViewEvents = () => {
         setComment(id);
         setCommentsVisible(!commentsVisible);
     };
+    const filteredEvents = eventsList.filter((eventsList) => {
+        return (
+            eventsList.title.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
+            eventsList.conducted_by.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+        );
+    });
+
+    const onClickJoin = () => { 
+        toast.success("We will send the meeting link via email")
+     }
 
     return (
         <>
@@ -61,13 +73,19 @@ const CusViewEvents = () => {
                     display: { xs: "none", md: "flex" },
                 }}
             >
+                
                 <Typography variant="PageHeader" gutterBottom>
                    All Events
                 </Typography>
             </Box>
-            
-            {eventsList &&
-                eventsList.map((event) => (
+            <TextField
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            {filteredEvents &&
+                filteredEvents.map((event) => (
                     <PostContainer item xs={12} md={6}>
                         <CardActionArea component="a" href="#">
                             <Card component={Link} to={`/primepsyche/events/view/${event._id}`} sx={{ display: "flex", textDecoration: "none" }}>
@@ -114,7 +132,7 @@ const CusViewEvents = () => {
                                         spacing={1}
                                         sx={{ display: "flex", justifyContent: "flex-end" }}
                                     >   
-                                        <Button sx={{ marginTop: 0.3 , marginRight: 1}} variant="contained">Join</Button>
+                                        <Button sx={{ marginTop: 0.3 , marginRight: 1}} variant="contained"onClick={onClickJoin}>Join</Button>
                                     </Stack>
                                 </Grid>
                             </Grid>
