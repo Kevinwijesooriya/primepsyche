@@ -11,6 +11,7 @@ import MaterialRoutes from "../../components/pages/materials/routes";
 import PsychiatristRoutes from "../../components/pages/psychiatrist/routes";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { ReportRoutes } from "../../components/pages/Reports/routes";
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const PrivateRoutes = (props) => {
         ...ForumRoutes,
         ...MaterialRoutes,
         ...PsychiatristRoutes,
+        ...ReportRoutes,
       ],
     },
   ];

@@ -228,8 +228,8 @@ const Header = () => {
               <MenuItem onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">Account</Typography>
               </MenuItem>
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">Dashboard</Typography>
+              <MenuItem component={Link} to="/primepsyche/reports">
+                <Typography textAlign="center">Reports</Typography>
               </MenuItem>
               <MenuItem onClick={handleLogout}>
                 <Typography textAlign="center">Logout</Typography>
