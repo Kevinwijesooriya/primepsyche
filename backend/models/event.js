@@ -38,7 +38,7 @@ const eventSchema = new Schema(
             required: true,
         },
         image: {
-            type: Object,
+            type: String,
             required: true,
         },
         comments: [

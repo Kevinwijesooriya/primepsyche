@@ -66,7 +66,7 @@ const EventHomePage = () => {
                     display: { xs: "none", md: "flex" },
                 }}
             >
-                x
+                
                 <Typography variant="PageHeader" gutterBottom>
                     MY EVENTS
                 </Typography>
