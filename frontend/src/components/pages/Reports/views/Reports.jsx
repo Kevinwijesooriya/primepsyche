@@ -1,7 +1,9 @@
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import ForumPostAPI from "../../../../core/services/ForumPostAPI";
+import HelpPostAPI from "../../../../core/services/HelpPostAPI";
 import ForumPostReportGenerator from "../../forum/reports/forumPost";
+import HelpPostReportGenerator from "../../psychiatrist/reports/HelpReport";
 
 const Reports = () => {
   const [posts, setPostsList] = React.useState([]);
@@ -9,6 +11,13 @@ const Reports = () => {
     const response = await ForumPostAPI.getAll();
     if (response.status === 200) {
       setPostsList(response.data.data);
+    }
+  }
+  const [help, setHelpPost] = React.useState([]);
+  async function fetchData() {
+    const response = await HelpPostAPI.getAll();
+    if (response.status === 200) {
+      setHelpPost(response.data.data);
     }
   }
   React.useEffect(() => {
@@ -38,7 +47,9 @@ const Reports = () => {
           <Button>Event Report</Button>
         </Grid>
         <Grid item xs={12} sm={12}>
-          <Button>Psychiatrist Report</Button>
+          <Button onClick={() => HelpPostReportGenerator(help)}>
+            Psychiatrist Report
+          </Button>
         </Grid>
         <Grid item xs={12} sm={12}>
           <Button>Materials Report</Button>
