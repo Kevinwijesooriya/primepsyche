@@ -5,7 +5,7 @@ import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import { Box, Button, Divider } from "@mui/material";
+import { Box, Button, Divider, TextField } from "@mui/material";
 import { PostContainer, StyledLink, WarningButtonOutlined } from "../../styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -24,6 +24,7 @@ const EventHomePage = () => {
     const { user } = useSelector((state) => state.auth);
     const [eventsList, setEventsList] = React.useState([]);
     const [deleteId, setDeleteId] = React.useState("");
+    const [searchTerm, setSearchTerm] = React.useState("");
     const [snack, setSnack] = React.useState({
         open: false,
         severity: "",
@@ -48,6 +49,12 @@ const EventHomePage = () => {
         setDeleteId(id);
         setOpen(true);
     };
+    const filteredEvents = eventsList.filter((eventsList) => {
+        return (
+            eventsList.title.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
+            eventsList.conducted_by.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+        );
+    });
 
     return (
         <>
@@ -59,17 +66,24 @@ const EventHomePage = () => {
                     display: { xs: "none", md: "flex" },
                 }}
             >
+                x
                 <Typography variant="PageHeader" gutterBottom>
                     MY EVENTS
                 </Typography>
             </Box>
-            <Box sx={{ display: "flex", justifyContent: "flex-end", py: 2 }}>
+            <Box sx={{ display: "flex", justifyContent: "space-between", py: 2 }}>
+                <TextField
+                    type="search"
+                    placeholder="Search"
+                    aria-label="Search"
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
                 <StyledLink to="/primepsyche/events/add">
                     <Button>ADD NEW EVENT</Button>
                 </StyledLink>
             </Box>
-            {eventsList &&
-                eventsList.map((event) => (
+            {filteredEvents &&
+                filteredEvents.map((event) => (
                     <PostContainer item xs={12} md={6}>
                         <CardActionArea component="a" href="#">
                             <Card component={Link} to={`/primepsyche/events/view/${event._id}`} sx={{ display: "flex",textDecoration:"none" }}>
