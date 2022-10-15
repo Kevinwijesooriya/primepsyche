@@ -56,7 +56,7 @@ const PrivateRoutes = (props) => {
       path: "/primepsyche",
       element: <DefaultLayout />,
       children: [
-        ...EventRoutes(user.role),
+        ...EventRoutes(user && user.role),
         ...ForumRoutes,
         ...MaterialRoutes,
         ...PsychiatristRoutes,
