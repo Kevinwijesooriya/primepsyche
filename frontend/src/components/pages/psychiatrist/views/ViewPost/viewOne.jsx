@@ -18,12 +18,14 @@ import { red } from "@mui/material/colors";
 import HelpPostAPI from "../../../../../core/services/HelpPostAPI";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const ViewOne = () => {
   const params = useParams();
   const postId = params.id;
   const [open, setOpen] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState("");
+  const { user } = useSelector((state) => state.auth);
   const [post, setPost] = React.useState({
     name: "",
     age: "",
@@ -95,20 +97,22 @@ const ViewOne = () => {
         <Divider></Divider>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12}>
-            <Stack
-              direction="row"
-              spacing={1}
-              sx={{ display: "flex", justifyContent: "flex-end" }}
-            >
-              <StyledLink to={`/primepsyche/help/edit/${post._id}`}>
-                <IconButton>
-                  <EditIcon />
+            {user.role === "user" && user._id === post.userID && (
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ display: "flex", justifyContent: "flex-end" }}
+              >
+                <StyledLink to={`/primepsyche/help/edit/${post._id}`}>
+                  <IconButton>
+                    <EditIcon />
+                  </IconButton>
+                </StyledLink>
+                <IconButton onClick={() => onClickDelete(post._id)}>
+                  <DeleteIcon sx={{ color: red[900] }} />
                 </IconButton>
-              </StyledLink>
-              <IconButton onClick={() => onClickDelete(post._id)}>
-                <DeleteIcon sx={{ color: red[900] }} />
-              </IconButton>
-            </Stack>
+              </Stack>
+            )}
           </Grid>
         </Grid>
       </PostContainer>
