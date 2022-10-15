@@ -53,7 +53,7 @@ const EditReadable = () => {
     e.preventDefault();
     if (isValid()) {
       await axios
-        .post(
+        .put(
           `http://localhost:5000/api/readableMaterials/update/${id}`,
           payload
         )

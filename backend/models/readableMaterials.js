@@ -31,7 +31,7 @@ const readableMaterialsSchema = new Schema(
 
       required: true,
 
-      default: false,
+      default: true,
     },
   },
   {
