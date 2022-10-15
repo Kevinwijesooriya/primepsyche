@@ -83,7 +83,7 @@ const CusViewEvents = () => {
                 placeholder="Search"
                 aria-label="Search"
                 onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            /><hr></hr>
             {filteredEvents &&
                 filteredEvents.map((event) => (
                     <PostContainer item xs={12} md={6}>

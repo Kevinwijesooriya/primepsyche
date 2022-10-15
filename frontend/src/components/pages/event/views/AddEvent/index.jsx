@@ -14,6 +14,8 @@ import moment from "moment";
 import AddSnackBar from "../components/AddSnackBar";
 import EventAPI from "../../../../../core/services/EventAPI";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 
 const AddEvent = () => {
@@ -34,13 +36,13 @@ const AddEvent = () => {
         description: "",
         image: "",
     });
-
+    console.log(postPayload)
 
     const [files, setFiles] = React.useState();
-    function handleChange(e) {
-        console.log(e.target.files);
-        setFiles(URL.createObjectURL(e.target.files[0]));
-    };
+    // function handleChange(e) {
+    //     console.log(e.target.files);
+    //     setFiles(URL.createObjectURL(e.target.files[0]));
+    // };
     const onClickAdd = async(e) => {
         e.preventDefault();
         {
@@ -75,14 +77,14 @@ const AddEvent = () => {
         });
         console.log("postPayload",postPayload)
     };
-    function handleChange(e) {
-        console.log(e.target.files);
-        setFiles(URL.createObjectURL(e.target.files[0]));
-        setPostPayload({
-            ...postPayload,
-            image: URL.createObjectURL(e.target.files[0]),
-        });
-    }
+    // function handleChange(e) {
+    //     console.log(e.target.files);
+    //     setFiles(URL.createObjectURL(e.target.files[0]));
+    //     setPostPayload({
+    //         ...postPayload,
+    //         image: URL.createObjectURL(e.target.files[0]),
+    //     });
+    // }
 
 
     const handleChangeDate = (newValue) => {
@@ -98,6 +100,48 @@ const AddEvent = () => {
             time: newValue,
         });
     };
+
+    const handleChange = async (e) => {
+    e.preventDefault();
+    try {
+      const file = e.target.files[0];
+      if (!file) return alert("File not exist.");
+      if (file.size > 1024 * 1024)
+        // 1mb
+        return alert("Size too large!");
+      if (file.type !== "image/jpeg" && file.type !== "image/png")
+        // 1mb
+        return alert("File format is incorrect.");
+      let formData = new FormData();
+      formData.append("file", file);
+      
+      const res = await axios.post(
+        "http://localhost:5000/api/imageUpload",
+        formData,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      );
+        setFiles(res.data.url);
+        setPostPayload({
+             ...postPayload,
+            image: res.data.url,
+        });
+    } catch (err) {
+      toast.error(err.response.data.msg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
     return (
         <>
             <Container>
