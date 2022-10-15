@@ -4,6 +4,8 @@ import ForumPostAPI from "../../../../core/services/ForumPostAPI";
 import HelpPostAPI from "../../../../core/services/HelpPostAPI";
 import ForumPostReportGenerator from "../../forum/reports/forumPost";
 import HelpPostReportGenerator from "../../psychiatrist/reports/HelpReport";
+import EventAPI from "../../../../core/services/EventAPI";
+import EventReportGenerator from "../../event/reports/event"
 
 const Reports = () => {
   const [posts, setPostsList] = React.useState([]);
@@ -18,6 +20,13 @@ const Reports = () => {
     const response = await HelpPostAPI.getAll();
     if (response.status === 200) {
       setHelpPost(response.data.data);
+    }
+  }
+  const [events, setEventsList] = React.useState([]);
+  async function fetchData() {
+    const response = await EventAPI.getAll();
+    if (response.status === 200) {
+      setEventsList(response.data.data);
     }
   }
   React.useEffect(() => {
@@ -44,7 +53,7 @@ const Reports = () => {
           </Button>
         </Grid>
         <Grid item xs={12} sm={12}>
-          <Button>Event Report</Button>
+          <Button onClick={() => EventReportGenerator(events)}>Event Report</Button>
         </Grid>
         <Grid item xs={12} sm={12}>
           <Button onClick={() => HelpPostReportGenerator(help)}>
