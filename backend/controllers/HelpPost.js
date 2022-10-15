@@ -22,9 +22,6 @@ const HelpPostController = {
   createHelpPost: async (req, res) => {
     try {
       const { userID, name, age, gender, disorder, description } = req.body;
-      if (!userID || !name || !age || !gender || !disorder)
-        return res.status(400).json({ msg: "Please fill in all fields." });
-
       const newHelpPost = new HelpPost({
         userID,
         name,
