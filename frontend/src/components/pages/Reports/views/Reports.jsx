@@ -1,4 +1,5 @@
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import axios from "axios";
 import React from "react";
 import ForumPostAPI from "../../../../core/services/ForumPostAPI";
 import HelpPostAPI from "../../../../core/services/HelpPostAPI";
@@ -6,6 +7,7 @@ import ForumPostReportGenerator from "../../forum/reports/forumPost";
 import HelpPostReportGenerator from "../../psychiatrist/reports/HelpReport";
 import EventAPI from "../../../../core/services/EventAPI";
 import EventReportGenerator from "../../event/reports/event"
+import ReadablesReportGenerator from "../../materials/reports/ReadblesReport";
 
 const Reports = () => {
   const [posts, setPostsList] = React.useState([]);
@@ -29,8 +31,21 @@ const Reports = () => {
       setEventsList(response.data.data);
     }
   }
+  const [readable, setReadable] = React.useState([]);
+  const getAllReadable = async () => {
+    await axios
+      .get("http://localhost:5000/api/readableMaterials/getAll")
+      .then((res) => {
+        console.log(res);
+        setReadable(res.data.data);
+      })
+      .catch((err) => {
+        alert(err.massage);
+      });
+  };
   React.useEffect(() => {
     fetchData();
+    getAllReadable();
   }, []);
   return (
     <Container>
@@ -61,7 +76,9 @@ const Reports = () => {
           </Button>
         </Grid>
         <Grid item xs={12} sm={12}>
-          <Button>Materials Report</Button>
+          <Button onClick={() => ReadablesReportGenerator(readable)}>
+            Materials Report
+          </Button>
         </Grid>
       </Grid>
     </Container>
