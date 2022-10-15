@@ -11,6 +11,8 @@ import { ImageUploadButton } from "../../styles";
 import AddSnackBar from "../components/AddSnackBar";
 import ForumPostAPI from "../../../../../core/services/ForumPostAPI";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddPost = () => {
   const { user } = useSelector((state) => state.auth);
@@ -67,6 +69,39 @@ const AddPost = () => {
       userName: user.userName,
     });
   };
+
+  const handleImageChange = async (e) => {
+    e.preventDefault();
+    try {
+      const file = e.target.files[0];
+      if (!file) return alert("File not exist.");
+      if (file.size > 1024 * 1024)
+        // 1mb
+        return alert("Size too large!");
+      if (file.type !== "image/jpeg" && file.type !== "image/png")
+        // 1mb
+        return alert("File format is incorrect.");
+      let formData = new FormData();
+      formData.append("file", file);
+
+      const res = await axios.post(
+        "http://localhost:5000/api/imageUpload",
+        formData,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      );
+      setPostPayload({
+        ...postPayload,
+        image: res.data.url,
+      });
+      toast.success(res.data.message);
+    } catch (err) {
+      toast.error(err.response.data.msg);
+    }
+  };
   return (
     <>
       <Container>
@@ -120,12 +155,12 @@ const AddPost = () => {
           <Grid item xs={12}>
             <InputLabel>Enhance your post with an image!</InputLabel>
             <ImageUploadButton component="label">
-              <input type="file" hidden onChange={handleChange} />
-              {files ? (
+              <input type="file" hidden onChange={handleImageChange} />
+              {postPayload.image ? (
                 <img
                   alt="forum_post"
-                  src={files}
-                  style={{ minHeight: 600, minWidth: 600 }}
+                  src={postPayload.image}
+                  style={{ height: 600, width: 600, objectFit: "cover" }}
                 />
               ) : (
                 <ImageOutlinedIcon sx={{ minHeight: 600, minWidth: 600 }} />
