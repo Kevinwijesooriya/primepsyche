@@ -5,7 +5,7 @@ import App from "./App";
 import { ThemeProvider } from "@mui/material/styles";
 import { PrimePsycheTheme } from "./core/styles/theme/PrimePsycheTheme";
 import { AuthProvider } from "./core/context/AuthProvider";
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
